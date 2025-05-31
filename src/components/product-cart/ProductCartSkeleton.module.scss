@@ -1,0 +1,94 @@
+@use '../../app/vars' as *;
+
+.skeleton {
+	pointer-events: none;
+}
+
+.pulse {
+	animation: pulse 1.5s infinite;
+	background: linear-gradient(90deg, rgba(#e0e0e0, 0.6) 25%, rgba(#f0f0f0, 0.8) 50%, rgba(#e0e0e0, 0.6) 75%);
+	background-size: 200% 100%;
+}
+
+@keyframes pulse {
+	0% {
+		background-position: 0% 0%;
+	}
+	100% {
+		background-position: -200% 0%;
+	}
+}
+
+.imageSkeleton {
+	position: relative;
+	background-color: #e0e0e0;
+	overflow: hidden;
+
+	.pulse {
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+	}
+}
+
+.nameSkeleton {
+	position: relative;
+	background-color: #e0e0e0;
+	overflow: hidden;
+
+	.pulse {
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+	}
+}
+
+.originalPriceSkeleton {
+	width: 80px;
+	height: 15px;
+	border-radius: 4px;
+	background-color: #e0e0e0;
+}
+
+.discountedPriceSkeleton {
+	width: 100px;
+	height: 20px;
+	border-radius: 4px;
+	background-color: $primary-color;
+}
+
+.actionSkeleton {
+	width: 32px;
+	height: 32px;
+	border-radius: 4px;
+	background-color: #e0e0e0;
+
+	&:last-child {
+		width: 72.38px;
+	}
+}
+
+@media screen and (max-width: $breakpoint-md) {
+	.nameSkeleton {
+		margin: 0 auto;
+		width: 90%;
+	}
+
+	.originalPriceSkeleton {
+		width: 60px;
+		height: 14px;
+	}
+
+	.discountedPriceSkeleton {
+		width: 80px;
+		height: 18px;
+	}
+
+	.actionSkeleton {
+		display: none;
+	}
+}

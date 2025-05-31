@@ -1,0 +1,70 @@
+@use '../../app/vars' as *;
+
+.search {
+	cursor: pointer;
+	position: relative;
+	display: flex;
+	justify-content: flex-start;
+	align-items: center;
+	transition: padding 0.3s ease, background-color 0.3s ease;
+
+	.input {
+		font-size: $font-size-12;
+		background-color: transparent;
+		transition: width 0.3s ease;
+	}
+}
+
+@media screen and (min-width: $breakpoint-md) {
+	.full {
+		display: none;
+	}
+
+	.search {
+		border-radius: 0.25em;
+		gap: $spacing-8;
+
+		.input.empty {
+			width: 0;
+			padding-right: $spacing-8;
+		}
+
+		&:has(.input.empty) {
+			&:hover {
+				padding: $spacing-8 $spacing-16 !important;
+				background-color: rgba($black-100, 0.6);
+				.input {
+					width: $unit * 50;
+				}
+			}
+		}
+
+		&:not(:has(.input.empty)) {
+			padding: $spacing-8 $spacing-16;
+			background-color: rgba($black-100, 0.6);
+			.input {
+				width: $unit * 50;
+			}
+		}
+	}
+}
+
+@media screen and (max-width: $breakpoint-md) {
+	.search {
+		position: relative;
+		width: 100%;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		background-color: $white;
+		padding: $spacing-4 $spacing-16;
+		border-radius: 2em;
+
+		.input {
+			width: 100%;
+			padding: $spacing-4 $spacing-16;
+			background-color: transparent;
+			border-radius: 0.25em;
+		}
+	}
+}

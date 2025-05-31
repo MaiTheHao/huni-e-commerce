@@ -1,0 +1,238 @@
+@use '../../vars' as *;
+
+.contactHeader {
+	position: relative;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: $spacing-16;
+	margin-bottom: $spacing-56;
+
+	.contactHeaderItem {
+		max-width: 500px;
+		text-align: center;
+	}
+
+	h1 {
+		font-size: $font-size-32;
+		font-weight: $font-weight-semibold;
+		color: $primary-color;
+		text-transform: capitalize;
+	}
+
+	p {
+		font-size: $font-size-16;
+		font-weight: $font-weight-regular;
+		color: $txt-secondary;
+	}
+}
+
+.contactBody {
+	position: relative;
+	display: flex;
+	gap: $spacing-16;
+
+	.contactFormSection {
+		flex: 1;
+		.contactForm {
+			display: flex;
+			flex-direction: column;
+			justify-content: flex-start;
+			gap: $spacing-16;
+
+			.privacyLink {
+				color: $primary-color;
+				text-decoration: underline;
+			}
+		}
+	}
+
+	.contactInfoSection {
+		flex: 1;
+
+		.contactInfoList {
+			display: flex;
+			flex-direction: column;
+			gap: $spacing-24;
+
+			.contactInfoItem {
+				position: relative;
+				display: flex;
+				align-items: center;
+				gap: $spacing-16;
+
+				.contactInfoIcon {
+					aspect-ratio: 1;
+					position: relative;
+					width: $font-size-24;
+					height: $font-size-24;
+					display: flex;
+					align-items: center;
+					justify-content: center;
+				}
+
+				.contactInfoContent {
+					display: flex;
+					flex-direction: column;
+					gap: $spacing-8;
+
+					.contactInfoTitle {
+						font-size: $font-size-16;
+						font-weight: $font-weight-semibold;
+						color: $txt-primary;
+					}
+
+					.contactInfoText {
+						font-size: $font-size-14;
+						font-weight: $font-weight-regular;
+						color: $txt-secondary;
+					}
+				}
+			}
+		}
+
+		.socialLinksList {
+			display: flex;
+			gap: $spacing-16;
+			margin-top: $spacing-24;
+
+			.socialLinkItem {
+				.socialLink {
+					aspect-ratio: 1;
+					width: $font-size-32;
+					display: flex;
+					align-items: center;
+					justify-content: center;
+					background-color: $black-200;
+					border-radius: 50%;
+					svg {
+						aspect-ratio: 1;
+						color: $primary-color;
+						font-size: $font-size-20;
+					}
+
+					transition: background-color 0.3s, transform 0.3s;
+
+					&:hover,
+					&:focus {
+						background-color: $primary-color;
+						transform: translateY(-4px) scale(1.08);
+
+						svg {
+							color: $white;
+						}
+					}
+
+					&:hover {
+						transform: translateY(-4px) scale(1.15) rotate(10deg);
+
+						svg {
+							color: $white;
+						}
+					}
+
+					&:active {
+						transform: scale(0.95) rotate(0deg);
+
+						svg {
+							color: $white;
+						}
+					}
+				}
+			}
+		}
+	}
+}
+
+.contactFooter {
+	aspect-ratio: 1200 / 400;
+	position: relative;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	gap: $spacing-16;
+	margin-top: $spacing-32;
+	border-radius: $spacing-8;
+	border-radius: $spacing-8;
+	box-shadow: 0 0 4px rgba(0, 0, 0, 0.1);
+	overflow: hidden;
+
+	img {
+		max-width: 100%;
+		height: auto;
+		object-fit: cover;
+	}
+}
+
+@media screen and (max-width: $breakpoint-md) {
+	.contactBody {
+		flex-direction: column;
+
+		.contactFormSection,
+		.contactInfoSection {
+			flex: 1 0 100%;
+		}
+	}
+
+	.contactFooter {
+		aspect-ratio: 16 / 9;
+	}
+}
+
+@media screen and (max-width: $breakpoint-sm) {
+	.contactHeader {
+		h1 {
+			font-size: $font-size-24;
+		}
+
+		p {
+			font-size: $font-size-14;
+		}
+	}
+
+	.contactBody {
+		gap: $spacing-8;
+
+		.contactFormSection,
+		.contactInfoSection {
+			flex: 1 0 100%;
+		}
+
+		.contactInfoList {
+			gap: $spacing-16;
+
+			.contactInfoItem {
+				gap: $spacing-8;
+
+				.contactInfoIcon {
+					width: $font-size-20;
+					height: $font-size-20;
+				}
+
+				.contactInfoContent {
+					gap: $spacing-4;
+
+					.contactInfoTitle {
+						font-size: $font-size-14;
+					}
+
+					.contactInfoText {
+						font-size: $font-size-12;
+					}
+				}
+			}
+		}
+
+		.socialLinksList {
+			gap: $spacing-8;
+
+			.socialLinkItem {
+				width: $font-size-24;
+
+				svg {
+					font-size: $font-size-16;
+				}
+			}
+		}
+	}
+}

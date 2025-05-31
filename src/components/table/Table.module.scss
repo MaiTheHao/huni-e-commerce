@@ -1,0 +1,57 @@
+@use '../../app/vars' as *;
+
+.table {
+	position: relative;
+	display: flex;
+	flex-direction: column;
+	gap: $spacing-24;
+	background-color: $white;
+	padding: $spacing-24;
+	border-radius: $spacing-8;
+	box-shadow: 0 0 4px rgba(0, 0, 0, 0.1);
+}
+
+.tableSection {
+	display: flex;
+	flex-direction: column;
+	gap: $spacing-24;
+}
+
+.tableHeader {
+	display: flex;
+	justify-content: space-between;
+	padding: $spacing-16 0;
+	border-bottom: 2px solid $accent-color;
+	color: $accent-color;
+	font-weight: $font-weight-semibold;
+	font-size: $font-size-20;
+	text-transform: capitalize;
+}
+
+.tableTitle {
+	// Inherits từ tableHeader styling
+}
+
+.tableBody {
+	position: relative;
+	width: 100%;
+	display: flex;
+	flex-direction: column;
+}
+
+.tableFooter {
+	display: flex;
+	flex-direction: column;
+	gap: $spacing-16;
+}
+
+.loadingOverlay {
+	position: absolute;
+	inset: 0;
+	background-color: rgba($black-700, 0.2);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	border-radius: $spacing-8;
+	z-index: 10;
+}

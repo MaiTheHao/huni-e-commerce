@@ -1,0 +1,50 @@
+@use 'vars' as *;
+
+* {
+	margin: 0;
+	padding: 0;
+
+	box-sizing: border-box;
+	border: 0;
+	outline: 0;
+	font-family: inherit;
+	font-size: inherit;
+	background-color: transparent;
+}
+
+html,
+body {
+	height: 100%;
+	width: 100%;
+	overflow-x: hidden;
+	overflow-y: auto;
+}
+
+html {
+	font-size: 16px;
+}
+
+body {
+	background-color: $white;
+	color: $txt-primary;
+	font-family: var(--font-be-vietnam-pro);
+
+	/* Ẩn scroll bar của body */
+	& {
+		scrollbar-width: none; /* Firefox */
+		-ms-overflow-style: none; /* IE and Edge */
+	}
+	&::-webkit-scrollbar {
+		display: none; /* Chrome, Safari, Opera */
+	}
+}
+
+a {
+	text-decoration: none;
+	color: inherit;
+}
+
+ul,
+ol {
+	list-style: none;
+}

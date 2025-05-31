@@ -1,0 +1,6 @@
+@use '../../app/vars' as *;
+
+.container {
+	min-height: 100vh;
+	background-color: $body-bg-color;
+}

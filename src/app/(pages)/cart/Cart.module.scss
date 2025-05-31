@@ -1,0 +1,246 @@
+@use '../../vars' as *;
+
+// ==> CART GENERAL STYLES
+.cart {
+	position: relative;
+	width: 100%;
+	display: flex;
+	gap: $spacing-16;
+}
+
+// ==> ITEMS TABLE SPECIFIC STYLES
+.itemsTable {
+	flex: 1 1 794px;
+}
+
+.itemsList {
+	position: relative;
+	width: 100%;
+	min-height: 200px;
+	display: flex;
+	flex-direction: column;
+	gap: $spacing-16;
+}
+
+.cartItem {
+	position: relative;
+	display: flex;
+	align-items: center;
+	gap: $spacing-32;
+	padding: $spacing-16 0;
+	border-bottom: 1px solid $gray-300;
+}
+
+.itemRemoveButton {
+	color: $error-color;
+
+	svg {
+		aspect-ratio: 1;
+		font-size: $font-size-14;
+	}
+}
+
+.itemImage {
+	position: relative;
+	aspect-ratio: 1;
+	width: calc($unit * 20);
+	min-width: calc($unit * 10);
+	border-radius: $spacing-8;
+	background-color: $gray-200;
+	border: 1px solid $gray-300;
+	overflow: hidden;
+
+	img {
+		aspect-ratio: 1;
+		width: 100%;
+	}
+}
+
+.itemName {
+	flex: 1;
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+	padding: $spacing-8;
+	font-size: $font-size-14;
+	color: $txt-primary;
+	text-align: left;
+}
+
+.itemQuantityControl {
+	position: relative;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: $spacing-8;
+}
+
+.quantityButton {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: calc($unit * 8);
+	height: calc($unit * 8);
+	font-size: $font-size-14;
+	color: $txt-primary;
+	background-color: $white;
+	border: 1px solid $gray-300;
+	border-radius: $spacing-4;
+	cursor: pointer;
+	transition: all 0.2s ease;
+
+	&:hover {
+		background-color: $primary-color;
+		color: $white;
+		border-color: $primary-color;
+	}
+
+	&:active {
+		transform: scale(0.95);
+	}
+}
+
+.quantityInput {
+	width: 3em;
+	text-align: center;
+	font-size: $font-size-14;
+	font-weight: $font-weight-regular;
+	color: $primary-color;
+	padding: $spacing-4 $spacing-8;
+}
+
+.itemPrice {
+	flex: 1;
+	display: flex;
+	justify-content: flex-end;
+	color: $secondary-color;
+	font-size: $font-size-16;
+	font-weight: $font-weight-semibold;
+}
+
+.itemMobilePrice {
+	@extend .itemPrice;
+	display: none;
+}
+
+// ==> PRICE TABLE SPECIFIC STYLES
+.priceTable {
+	flex: 1 0 390px;
+}
+
+.priceSummaryList {
+	position: relative;
+	width: 100%;
+	display: flex;
+	flex-direction: column;
+	gap: $spacing-16;
+}
+
+.priceSummaryItem {
+	position: relative;
+	display: flex;
+	align-items: center;
+	gap: $spacing-32;
+	padding: $spacing-16 0;
+	border-bottom: 1px solid $gray-300;
+}
+
+.summaryTitle {
+	font-size: $font-size-16;
+}
+
+.summaryPrice {
+	flex: 1;
+	display: flex;
+	justify-content: flex-end;
+	color: $secondary-color;
+	font-size: $font-size-16;
+	font-weight: $font-weight-semibold;
+}
+
+.discountSection {
+	width: 100%;
+	display: flex;
+	align-items: center;
+	gap: $spacing-8;
+
+	input {
+		flex: 1;
+		background-color: $black-100;
+		padding: $spacing-8 $spacing-16;
+		border-radius: 0.25em;
+		text-align: center;
+		color: $txt-primary;
+		&::placeholder {
+			color: $txt-secondary;
+		}
+	}
+
+	button {
+		aspect-ratio: 1;
+		cursor: pointer;
+		width: calc($unit * 9);
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		background-color: $black-700;
+		color: $txt-white;
+		border-radius: 0.25em;
+		transition: all 0.2s ease;
+
+		svg {
+			aspect-ratio: 1;
+			font-size: $font-size-14;
+		}
+
+		&:hover {
+			background-color: $black-600;
+		}
+
+		&:active {
+			transform: scale(0.95);
+		}
+	}
+}
+
+@media screen and (max-width: $breakpoint-lg) {
+	.cart {
+		flex-direction: column;
+		gap: $spacing-16;
+	}
+
+	.itemsTable,
+	.priceTable {
+		flex: 1 0 100%;
+	}
+}
+
+@media screen and (max-width: $breakpoint-md) {
+	.cartItem {
+		gap: $spacing-8;
+	}
+
+	.quantityButton {
+		width: calc($unit * 6);
+		height: calc($unit * 6);
+		font-size: $font-size-12;
+		padding: 0;
+	}
+
+	.quantityInput {
+		width: 2em;
+		font-size: $font-size-12;
+		padding: $spacing-4 $spacing-4;
+	}
+}
+
+@media screen and (max-width: $breakpoint-sm) {
+	.itemPrice {
+		display: none;
+	}
+
+	.itemMobilePrice {
+		display: flex;
+		font-size: $font-size-14;
+	}
+}

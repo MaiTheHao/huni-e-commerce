@@ -1,0 +1,83 @@
+$black-100: #f5f5f5;
+$black-200: #e0e0e0;
+$black-300: #bdbdbd;
+$black-400: #9e9e9e;
+$black-500: #757575;
+$black-600: #616161;
+$black-700: #424242;
+$black-800: #212121;
+$black-900: #000000;
+
+$gray-100: #f8f9fa;
+$gray-200: #e9ecef;
+$gray-300: #dee2e6;
+$gray-400: #ced4da;
+$gray-500: #adb5bd;
+$gray-600: #6c757d;
+$gray-700: #495057;
+$gray-800: #343a40;
+$gray-900: #212529;
+
+$primary-color: #255f38;
+$secondary-color: #3f7d58;
+$accent-color: #194026;
+$body-bg-color: #eef1f2;
+$white: #ffffff;
+$txt-primary: $black-800;
+$txt-secondary: $black-500;
+$txt-tertiary: $black-300;
+$txt-light: $gray-300;
+$txt-white: $white;
+$txt-accent: $primary-color;
+$success-color: #4ade80;
+$info-color: #38bdf8;
+$error-color: #f87171;
+$warning-color: #fde047;
+$yellow-color: #ffe066;
+$orange-color: #ffc145;
+
+$unit: 0.25rem;
+$font-size-12: $unit * 3;
+$font-size-14: $unit * 3.5;
+$font-size-16: $unit * 4;
+$font-size-18: $unit * 4.5; // Thêm kích thước font trung gian
+$font-size-20: $unit * 5;
+$font-size-24: $unit * 6;
+$font-size-32: $unit * 8;
+$font-size-40: $unit * 10;
+$font-weight-light: 300;
+$font-weight-regular: 400;
+$font-weight-semibold: 600;
+$font-weight-bold: 700;
+
+$spacing-4: $unit * 1; // 4px
+$spacing-6: $unit * 1.5; // 6px - Thêm spacing trung gian
+$spacing-8: $unit * 2; // 8px
+$spacing-12: $unit * 3; // 12px
+$spacing-16: $unit * 4; // 16px
+$spacing-20: $unit * 5; // 20px
+$spacing-24: $unit * 6; // 24px
+$spacing-28: $unit * 7; // 28px
+$spacing-32: $unit * 8; // 32px
+$spacing-36: $unit * 9; // 36px
+$spacing-40: $unit * 10; // 40px
+$spacing-44: $unit * 11; // 44px
+$spacing-48: $unit * 12; // 48px
+$spacing-52: $unit * 13; // 52px
+$spacing-56: $unit * 14; // 56px
+
+$breakpoint-xs: 0;
+$breakpoint-xs-plus: 480px; // Điện thoại nhỏ
+$breakpoint-sm: 576px; // Điện thoại
+$breakpoint-md: 768px; // Máy tính bảng
+$breakpoint-lg: 992px; // Laptop nhỏ
+$breakpoint-xl: 1200px; // Desktop
+$breakpoint-xxl: 1400px; // Màn hình lớn
+$app-body-padding-x-desktop: 24px;
+$app-body-padding-y-desktop: 56px;
+
+$app-body-padding-x-tablet: 24px;
+$app-body-padding-y-tablet: 56px;
+
+$app-body-padding-x-mobile: 8px;
+$app-body-padding-y-mobile: 32px;

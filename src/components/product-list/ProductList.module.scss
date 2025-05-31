@@ -1,0 +1,45 @@
+@use '../../app/vars' as *;
+
+// ===== GRID CONFIGURATION =====
+$products-per-row: 4;
+$products-per-row-md: 3;
+$products-per-row-sm: 2;
+
+// ===== GAP CONFIGURATION =====
+$product-basic-gap: $spacing-16;
+$product-md-gap: $spacing-16;
+$product-sm-gap: $spacing-8;
+
+// ===== STYLES =====
+.productList {
+	display: flex;
+	width: 100%;
+	flex-wrap: wrap;
+	gap: $product-basic-gap;
+	justify-content: left;
+}
+
+.productListItem {
+	width: calc((100% - ($products-per-row - 1) * $product-basic-gap) / $products-per-row);
+}
+
+@media screen and (max-width: $breakpoint-lg) {
+	.productListItem {
+		width: calc((100% - ($products-per-row-md - 1) * $product-md-gap) / $products-per-row-md);
+	}
+
+	.productList {
+		gap: $product-md-gap;
+		justify-content: flex-start;
+	}
+}
+
+@media screen and (max-width: $breakpoint-sm) {
+	.productListItem {
+		width: calc((100% - ($products-per-row-sm - 1) * $product-sm-gap) / $products-per-row-sm);
+	}
+
+	.productList {
+		gap: $product-sm-gap;
+	}
+}

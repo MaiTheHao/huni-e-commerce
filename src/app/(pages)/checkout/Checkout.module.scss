@@ -1,0 +1,95 @@
+@use '../../vars' as *;
+
+.container {
+	display: flex;
+	gap: $spacing-16;
+}
+
+.table {
+	flex: 1;
+}
+
+.formTable {
+	.form {
+		display: flex;
+		flex-direction: column;
+		gap: $spacing-16;
+	}
+}
+
+.orderTable {
+	.orderItems {
+		display: flex;
+		flex-direction: column;
+		gap: $spacing-16;
+		.orderItem {
+			position: relative;
+			display: flex;
+			align-items: center;
+			gap: $spacing-16;
+			padding: $spacing-16 0;
+			border-bottom: 1px solid $gray-300;
+
+			.itemName {
+				flex: 6;
+				font-size: $font-size-16;
+				font-weight: $font-weight-regular;
+				color: $txt-secondary;
+			}
+			.itemQuantity {
+				flex: 1;
+				text-align: center;
+				font-size: $font-size-16;
+				font-weight: $font-weight-regular;
+				color: $primary-color;
+			}
+			.itemPrice {
+				flex: 2;
+				text-align: right;
+				font-size: $font-size-16;
+				font-weight: $font-weight-semibold;
+				color: $primary-color;
+			}
+		}
+	}
+
+	.orderSummary {
+		position: relative;
+		display: flex;
+		flex-direction: column;
+		gap: $spacing-16;
+		margin-top: $spacing-32;
+
+		.orderSummaryItem {
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+			.orderSummaryLabel {
+				font-size: $font-size-16;
+				font-weight: $font-weight-semibold;
+				color: $txt-primary;
+			}
+
+			.orderSummaryValue {
+				font-size: $font-size-16;
+				font-weight: $font-weight-semibold;
+				color: $primary-color;
+			}
+		}
+	}
+}
+
+.paymentMethods {
+	display: flex;
+	flex-direction: column;
+	gap: $spacing-16;
+}
+
+@media screen and (max-width: $breakpoint-md) {
+	.container {
+		flex-direction: column;
+	}
+}
+
+@media screen and (max-width: $breakpoint-sm) {
+}

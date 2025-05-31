@@ -1,0 +1,116 @@
+@use '../../app/vars' as *;
+
+.sortFilter {
+	position: relative;
+	display: flex;
+	flex-wrap: wrap;
+	align-items: flex-start;
+	gap: $spacing-16;
+
+	@media screen and (max-width: $breakpoint-md) {
+		flex-direction: column;
+	}
+}
+
+.sortFilterActions {
+	display: flex;
+	align-items: center;
+	gap: $spacing-8;
+
+	.sortFilterAction {
+		cursor: pointer;
+		display: flex;
+		align-items: center;
+		gap: $spacing-8;
+		padding: $spacing-8 $spacing-16;
+		border-radius: 0.25em;
+		background-color: $black-800;
+
+		* {
+			color: $txt-white;
+			text-wrap: nowrap;
+		}
+
+		&:hover {
+			background-color: $black-700;
+		}
+
+		&:active {
+			background-color: $black-600;
+		}
+	}
+
+	.sortTrigger {
+		@extend .sortFilterAction;
+		color: $txt-white !important;
+	}
+}
+
+.quickFilter {
+	position: relative;
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: $spacing-8;
+
+	@media screen and (max-width: $breakpoint-sm) {
+		display: none;
+	}
+}
+
+.modal {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	gap: $spacing-40;
+}
+
+.modalList {
+	position: relative;
+	display: flex;
+	flex-wrap: wrap;
+	align-items: flex-start;
+	gap: $spacing-40;
+
+	.modalItem {
+		flex: 1 1 calc(50% - $spacing-40);
+		display: flex;
+		flex-direction: column;
+		align-items: flex-start;
+		gap: $spacing-16;
+
+		h4 {
+			font-size: $spacing-20;
+			font-weight: $font-weight-bold;
+			color: $accent-color;
+			text-align: left;
+			text-wrap: nowrap;
+		}
+
+		.checkboxList {
+			display: flex;
+			flex-direction: column;
+			width: 100%;
+			margin-top: -$spacing-4;
+
+			.checkboxLabel {
+				padding: $spacing-4 0;
+			}
+		}
+	}
+}
+
+.modalActions {
+	position: relative;
+	width: 100%;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	gap: $spacing-16;
+
+	.modalButton {
+		width: 100%;
+	}
+}

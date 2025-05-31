@@ -1,0 +1,134 @@
+@use '../../../vars' as *;
+
+.detail {
+	position: relative;
+	display: flex;
+	border-radius: $spacing-8;
+	background-color: $white;
+	overflow: hidden;
+	.images {
+		flex: 1 0 50%;
+		display: flex;
+		flex-direction: column;
+		gap: $spacing-16;
+		padding: $spacing-16;
+
+		.mainImagesContainer {
+			position: relative;
+			overflow: hidden;
+			.mainImages {
+				position: relative;
+				display: flex;
+				overflow: hidden;
+				border: 1px solid $txt-tertiary;
+				border-radius: $spacing-8;
+
+				.mainImage {
+					flex: 1 0 100%;
+					aspect-ratio: 1;
+					position: relative;
+					overflow: hidden;
+				}
+			}
+			$discountTag-offset-x: 3%;
+			.discountTag {
+				position: absolute;
+				top: $discountTag-offset-x;
+				left: calc(-47% + $discountTag-offset-x);
+				width: 100%;
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				transform: rotate(-45deg);
+				color: $txt-white;
+				font-size: $font-size-20;
+				line-height: 1.5;
+				font-weight: $font-weight-semibold;
+				background-color: $orange-color;
+			}
+
+			&:hover {
+				.thumbnailsNav {
+					opacity: 1;
+				}
+			}
+		}
+
+		.thumbnailsContainer {
+			position: relative;
+			overflow: hidden;
+			.thumbnails {
+				position: relative;
+				display: flex;
+				align-items: center;
+				gap: $spacing-16;
+				overflow: hidden;
+
+				.thumbnail {
+					cursor: pointer;
+					flex: 0 0 auto;
+					aspect-ratio: 1;
+					position: relative;
+					width: calc((100% - $spacing-16 * 3) / 4);
+					display: flex;
+					align-items: center;
+					justify-content: center;
+					border-radius: $spacing-8;
+					border: 1px solid $txt-tertiary;
+					overflow: hidden;
+					img {
+						aspect-ratio: 1;
+						transition: transform 0.2s ease-in-out;
+					}
+
+					&:not(.isActive):hover {
+						img {
+							transform: scale(1.1);
+						}
+					}
+
+					&.isActive {
+						border: 1px solid $accent-color;
+					}
+				}
+			}
+
+			&:hover {
+				.thumbnailsNav {
+					opacity: 1;
+				}
+			}
+		}
+
+		.thumbnailsNav {
+			opacity: 0;
+			transition: opacity 0.2s ease-in-out;
+		}
+	}
+
+	.info {
+		flex: 1 0 50%;
+		padding: $spacing-32;
+		background-color: orange;
+
+		.name {
+			background-color: pink;
+		}
+
+		.line .price {
+			background-color: lightgreen;
+		}
+
+		.features {
+			background-color: lightcoral;
+		}
+
+		.actions {
+			background-color: lightgray;
+		}
+	}
+}
+
+.content {
+	background-color: yellow;
+}
