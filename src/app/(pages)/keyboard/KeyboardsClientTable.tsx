@@ -1,5 +1,5 @@
 'use client';
-import React, { useCallback, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { ProductCartProps } from '@/components/product-cart/ProductCart';
 import ProductList from '@/components/product-list/ProductList';
 import ProductListSkeleton from '@/components/product-list/ProductListSkeleton';
@@ -80,6 +80,12 @@ function KeyboardsClientTable({ initialKeyboards, initialPagination }: Keyboards
 		},
 		[fetchKeyboards, pagination.limit]
 	);
+
+	useEffect(() => {
+		if (initialKeyboards.length === 0 || initialPagination.total === 0) {
+			fetchKeyboards(1, initialPagination.limit);
+		}
+	}, []);
 
 	return (
 		<>
