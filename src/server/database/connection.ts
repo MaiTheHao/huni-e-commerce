@@ -15,11 +15,11 @@ export async function connectToDatabase(): Promise<void> {
 	}
 
 	try {
-		loggerService.info('Đang kết nối với MongoDB...');
-		const isDevelopment = process.env.NODE_ENV === 'development';
+		const isDevelopment = process.env.NODE_ENV === 'development' || process.env.NODE_ENV === 'test';
+		loggerService.info(`Kết nối tới DB. Chế độ hiện tại: ${isDevelopment ? 'Phát triển' : 'Sản xuất'}`);
 		const dbUri = isDevelopment
 			? 'mongodb://localhost:27017/ekeyboard'
-			: process.env.MONGODB_URI_PROD || 'mongodb://localhost:27017/ekeyboard';
+			: process.env.MONGODB_URI || 'mongodb://localhost:27017/ekeyboard';
 		const db = await mongoose.connect(dbUri);
 
 		connection.isConnected = db.connections[0].readyState;
