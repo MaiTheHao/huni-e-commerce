@@ -2,10 +2,7 @@
 import AppBody from '@/components/app-body/AppBody';
 import styles from './Cart.module.scss';
 import React, { useEffect, useState } from 'react';
-import { ICart, Product } from '@/entities';
 import tax from '@/data/tax.json';
-import CartItemsTable from './CartItemsTable';
-import CartPriceTable from './CartPriceTable';
 
 type Props = {};
 const VAT: number = parseInt(tax.VAT, 10) / 100;
