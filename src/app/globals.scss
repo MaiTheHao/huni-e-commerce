@@ -1,6 +1,7 @@
 @use './reset.scss';
 @use 'vars' as *;
 @use 'sass:color';
+@use 'sass:map';
 
 // Custom scrollbar styles
 * {
@@ -180,13 +181,13 @@ $link-underline-offset: -0.5ch !default;
 
 	&:has(.swal2-error) {
 		.swal2-title {
-			color: $error-color;
+			color: map.get($error, text);
 		}
 
 		.swal2-actions {
 			.swal2-confirm {
 				@extend .cta-button;
-				background-color: $error-color;
+				background-color: map.get($error, bg);
 			}
 		}
 	}

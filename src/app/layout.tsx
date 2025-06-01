@@ -3,6 +3,7 @@ import { Be_Vietnam_Pro } from 'next/font/google';
 import './globals.scss';
 import AppHeader from '@/components/app-header/AppHeader';
 import AppFooter from '@/components/app-footer/AppFooter';
+import CartContextProvider from '@/contexts/CartContext/CartContextProvider';
 
 const beVietnamPro = Be_Vietnam_Pro({
 	variable: '--font-be-vietnam-pro',
@@ -31,11 +32,13 @@ export default function RootLayout({
 }>) {
 	return (
 		<html lang='vi'>
-			<body className={`${beVietnamPro.variable}`}>
-				<AppHeader />
-				{children}
-				<AppFooter />
-			</body>
+			<CartContextProvider>
+				<body className={`${beVietnamPro.variable}`}>
+					<AppHeader />
+					{children}
+					<AppFooter />
+				</body>
+			</CartContextProvider>
 		</html>
 	);
 }

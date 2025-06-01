@@ -64,10 +64,10 @@ function CartItemsTable({ items, products, loading, onRemove, onQuantity }: Prop
 											<div className={styles.itemQuantityControl}>
 												<Quantity
 													value={item.quantity}
-													onNext={() => onQuantity(item.productId, item.quantity + 1)}
-													onPrev={() => onQuantity(item.productId, item.quantity - 1)}
-													onInput={(value) => onQuantity(item.productId, value)}
-													prevDisabled={item.quantity <= 1}
+													onChange={(newQuantity) => onQuantity(item.productId, newQuantity)}
+													min={1}
+													max={product.stock}
+													className={styles.itemQuantityControlInput}
 												/>
 											</div>
 											<span className={styles.itemPrice}>

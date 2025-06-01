@@ -29,12 +29,28 @@ $txt-tertiary: $black-300;
 $txt-light: $gray-300;
 $txt-white: $white;
 $txt-accent: $primary-color;
-$success-color: #4ade80;
-$info-color: #38bdf8;
-$error-color: #f87171;
-$warning-color: #fde047;
 $yellow-color: #ffe066;
 $orange-color: #ffc145;
+$success: (
+	bg: #e6f9f0,
+	icon: #27ae60,
+	text: #145c32,
+);
+$info: (
+	bg: #eaf6fb,
+	icon: #2980b9,
+	text: #17496b,
+);
+$warning: (
+	bg: #fff8e1,
+	icon: #f1c40f,
+	text: #7d6608,
+);
+$error: (
+	bg: #fdecea,
+	icon: #e74c3c,
+	text: #922b21,
+);
 
 $unit: 0.25rem;
 $font-size-12: $unit * 3;

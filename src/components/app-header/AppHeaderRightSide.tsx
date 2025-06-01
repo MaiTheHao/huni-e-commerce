@@ -5,10 +5,13 @@ import styles from './AppHeader.module.scss';
 import Link from 'next/link';
 import { useState } from 'react';
 import clsx from 'clsx';
+import { useCartContext } from '@/contexts/CartContext/useCartContext';
 type Props = {};
 
 export default function AppHeaderRightSide({}: Props) {
 	const [isSearchOpen, setIsSearchOpen] = useState(false);
+	const { items } = useCartContext();
+	const totalQuantity = items.reduce((total, item) => total + item.quantity, 0);
 
 	const toggleSearch = () => {
 		setIsSearchOpen(!isSearchOpen);
@@ -39,14 +42,15 @@ export default function AppHeaderRightSide({}: Props) {
 			<Link
 				href='/cart'
 				aria-label='Shopping Cart'
-				className={`${styles.header__link} ${styles['header__link--redirect']}`}
+				className={`${styles.header__link} ${styles.header__cart} ${styles['header__link--redirect']}`}
 			>
 				<FontAwesomeIcon icon={faCartShopping} />
+				{totalQuantity > 0 && <span className={styles.header__cart__badge}>{totalQuantity}</span>}
 			</Link>
 			<Link
 				href='/profile'
 				aria-label='Profile'
-				className={`${styles.header__link} ${styles['header__link--redirect']}`}
+				className={`${styles.header__link} ${styles.header__profile} ${styles['header__link--redirect']}`}
 			>
 				<FontAwesomeIcon icon={faUser} />
 			</Link>

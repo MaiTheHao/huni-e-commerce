@@ -14,7 +14,6 @@ export async function setCookie(
 	}
 ) {
 	const cookieStore = await cookies();
-
 	cookieStore.set(name, value, {
 		maxAge: options?.maxAge || 60 * 60 * 24 * 7,
 		httpOnly: options?.httpOnly ?? true,

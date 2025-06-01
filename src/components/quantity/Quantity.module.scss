@@ -4,9 +4,9 @@
 	display: inline-flex;
 	align-items: center;
 	background: $white;
-	border: 1px solid $gray-300;
-	border-radius: $spacing-8;
-	padding: $spacing-4 $spacing-8;
+	box-shadow: 0 0 0 1px inset $gray-300;
+	border-radius: $spacing-4;
+	padding: $spacing-4;
 	gap: $spacing-8;
 	min-width: 96px;
 
@@ -18,15 +18,14 @@
 }
 
 .quantity__button {
-	width: 32px;
-	height: 32px;
+	width: $font-size-24;
+	height: $font-size-24;
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	background: $gray-100;
-	border: 1px solid $gray-300;
-	border-radius: $spacing-4; // hoặc 4px
-	color: $txt-primary;
+	background: transparent;
+	border-radius: $spacing-4;
+	color: $txt-accent;
 	font-size: $font-size-18;
 	font-weight: $font-weight-semibold;
 	cursor: pointer;
@@ -63,7 +62,7 @@
 	text-align: center;
 	font-size: $font-size-16;
 	font-weight: $font-weight-semibold;
-	color: $txt-primary;
+	color: $txt-accent;
 
 	@media (max-width: $breakpoint-sm) {
 		font-size: $font-size-14;

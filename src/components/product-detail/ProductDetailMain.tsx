@@ -1,5 +1,5 @@
 'use client';
-import React, { useEffect, useReducer, useMemo } from 'react';
+import React, { useEffect, useReducer, useMemo, useCallback } from 'react';
 import styles from './ProductDetail.module.scss';
 import { calcDiscountPrice } from '@/util/calcDiscountPrice';
 import { loggerService } from '@/services/logger.service';
@@ -60,21 +60,24 @@ function ProductDetailMain<T extends IProduct>({ productId, attrs, fetchProductB
 		[(state.product as any)?.discountPercent, state.discountedPrice, (state.product as any)?.price]
 	);
 
-	const handleChangeThumbnail = (index: number) => {
-		dispatch({ type: 'SET_THUMBNAIL_INDEX', payload: index });
-	};
+	const handleChangeThumbnail = useCallback(
+		(index: number) => {
+			dispatch({ type: 'SET_THUMBNAIL_INDEX', payload: index });
+		},
+		[state.thumbnailIndex]
+	);
 
-	const handlePrevThumbnail = () => {
+	const handlePrevThumbnail = useCallback(() => {
 		const newIndex =
 			(state.thumbnailIndex - 1 + ((state.product as any)?.images.length || 0)) %
 			((state.product as any)?.images.length || 1);
 		handleChangeThumbnail(newIndex);
-	};
+	}, [handleChangeThumbnail]);
 
-	const handleNextThumbnail = () => {
+	const handleNextThumbnail = useCallback(() => {
 		const newIndex = (state.thumbnailIndex + 1) % ((state.product as any)?.images.length || 1);
 		handleChangeThumbnail(newIndex);
-	};
+	}, [handleChangeThumbnail]);
 
 	const handleChangeQuantity = (newQuantity: number) => {
 		if (newQuantity < MIN_QUANTITY) {
@@ -83,14 +86,6 @@ function ProductDetailMain<T extends IProduct>({ productId, attrs, fetchProductB
 			newQuantity = MAX_QUANTITY;
 		}
 		dispatch({ type: 'SET_QUANTITY', payload: newQuantity });
-	};
-
-	const handleNextQuantity = () => {
-		handleChangeQuantity(state.quantity + 1);
-	};
-
-	const handlePrevQuantity = () => {
-		handleChangeQuantity(state.quantity - 1);
 	};
 
 	const isNextDisabled = useMemo(
@@ -124,7 +119,6 @@ function ProductDetailMain<T extends IProduct>({ productId, attrs, fetchProductB
 
 	useEffect(() => {
 		fetchProduct();
-		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [productId]);
 
 	return (
@@ -144,13 +138,11 @@ function ProductDetailMain<T extends IProduct>({ productId, attrs, fetchProductB
 			/>
 			<ProductDetailMainContent
 				product={state.product}
-				attrs={attrs}
+				attrs={attrs as { field: keyof IProduct; label: string }[]}
 				price={(state.product as any)?.price}
 				discountedPrice={state.discountedPrice}
 				quantity={state.quantity}
 				onChangeQuantity={handleChangeQuantity}
-				onNextQuantity={handleNextQuantity}
-				onPrevQuantity={handlePrevQuantity}
 				minQuantity={MIN_QUANTITY}
 				maxQuantity={MAX_QUANTITY}
 			/>

@@ -1,43 +1,83 @@
 'use client';
+import React, { useEffect, useRef, useState } from 'react';
 import styles from './Quantity.module.scss';
 
 export type QuantityProps = {
 	value: number;
-	onNext: () => void;
-	onPrev: () => void;
-	onInput?: (value: number) => void;
-	nextDisabled?: boolean;
-	prevDisabled?: boolean;
+	onChange: (value: number) => void;
+	min?: number;
+	max?: number;
 	className?: string;
 };
 
-function Quantity({ value, onNext, onPrev, onInput, nextDisabled, prevDisabled, className }: QuantityProps) {
+function Quantity({ value, onChange, min = 1, max = Infinity, className = '' }: QuantityProps) {
+	const [curValue, setCurValue] = useState(value);
+	const debounceRef = useRef<NodeJS.Timeout | null>(null);
+
+	const debounceCallback = (callback: () => void) => {
+		if (debounceRef.current) {
+			clearTimeout(debounceRef.current);
+		}
+		debounceRef.current = setTimeout(() => {
+			callback();
+		}, 300);
+	};
+
 	const handleNext = () => {
-		if (nextDisabled) return;
-		onNext();
+		if (curValue >= max) return;
+		const nextValue = curValue + 1;
+		setCurValue(nextValue);
+		debounceCallback(() => onChange(nextValue));
 	};
 
 	const handlePrev = () => {
-		if (prevDisabled) return;
-		onPrev();
+		if (curValue <= min) return;
+		const prevValue = curValue - 1;
+		setCurValue(prevValue);
+		debounceCallback(() => onChange(prevValue));
 	};
 
 	const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-		if (onInput) {
-			const inputValue = Number(e.target.value);
-			if (!isNaN(inputValue)) {
-				onInput(inputValue);
-			}
+		const inputValue = Number(e.target.value);
+
+		let newValue = curValue;
+		if (!isNaN(inputValue) && inputValue >= min && inputValue <= max) {
+			newValue = inputValue;
+		} else if (inputValue > max) {
+			newValue = max;
+		} else if (inputValue < min) {
+			newValue = min;
 		}
+		setCurValue(newValue);
+		debounceCallback(() => onChange(newValue));
 	};
 
+	useEffect(() => {
+		setCurValue(value);
+	}, [value]);
+
 	return (
-		<div className={`${styles.quantity} ${className || ''}`}>
-			<button className={styles.quantity__button} onClick={handlePrev} disabled={prevDisabled}>
+		<div className={`${styles.quantity} ${className}`}>
+			<button
+				className={styles.quantity__button}
+				onClick={handlePrev}
+				disabled={curValue <= min}
+				aria-label='Giảm số lượng'
+			>
 				-
 			</button>
-			<input className={styles.quantity__value} value={value} onChange={handleInputChange} />
-			<button className={styles.quantity__button} onClick={handleNext} disabled={nextDisabled}>
+			<input
+				className={styles.quantity__value}
+				value={curValue}
+				onChange={handleInputChange}
+				aria-label='Số lượng'
+			/>
+			<button
+				className={styles.quantity__button}
+				onClick={handleNext}
+				disabled={curValue >= max}
+				aria-label='Tăng số lượng'
+			>
 				+
 			</button>
 		</div>

@@ -7,6 +7,7 @@ import AppFooterSocials from './AppFooterSocials';
 type AppFooterProps = {};
 
 function AppFooter({}: AppFooterProps) {
+	console.log('AppFooter rendered');
 	return (
 		<footer className={`app-container ${styles.container}`}>
 			<section className={`app-block ${styles.main}`}>

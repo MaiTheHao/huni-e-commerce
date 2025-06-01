@@ -1,5 +1,5 @@
 'use client';
-import React from 'react';
+import React, { memo } from 'react';
 import styles from './ProductDetail.module.scss';
 import Image from 'next/image';
 import clsx from 'clsx';
@@ -131,4 +131,4 @@ function ProductDetailMainVisual({
 	);
 }
 
-export default ProductDetailMainVisual;
+export default memo(ProductDetailMainVisual);

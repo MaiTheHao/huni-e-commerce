@@ -12,30 +12,23 @@ import { IProductCart } from '@/interfaces';
 import ProductCartImage from './ProductCartImage';
 import ProductCartInfo from './ProductCartInfo';
 import Spinner from '../spinner/Spinner';
+import ModalAlert from '../modal-alert/ModalAlert';
+import { useCartContext } from '@/contexts/CartContext/useCartContext';
 
 export type ProductCartProps = {} & IProductCart;
 
 function ProductCart({ _id, name, price, discountPercent, image, ctaHref }: ProductCartProps) {
+	const { handleAddToCart } = useCartContext();
 	const { width } = useScreenSize();
 	const [isActive, setIsActive] = useState(false);
 	const [isRedirectToDetail, setIsRedirectToDetail] = useState(false);
 	const [cartStatus, setCartStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
-
 	const isAbleToShowModal = width <= BREAKPOINT_LG;
 
-	const handleAddToCart = async () => {
+	const handleContextAddToCart = async () => {
 		try {
 			setCartStatus('loading');
-			const res = await fetch('/api/v1/cart', {
-				method: 'POST',
-				headers: {
-					'Content-Type': 'application/json',
-				},
-				body: JSON.stringify({ productId: _id, quantity: 1 }),
-			});
-			if (!res.ok) {
-				throw new Error('Không thể thêm sản phẩm vào giỏ hàng');
-			}
+			await handleAddToCart(_id);
 			setCartStatus('success');
 		} catch (error) {
 			setCartStatus('error');
@@ -58,12 +51,12 @@ function ProductCart({ _id, name, price, discountPercent, image, ctaHref }: Prod
 				<ProductCartImage image={image} name={name} price={price} discountPercent={discountPercent}>
 					<div
 						className={clsx(styles.productActions, {
-							[styles.touched]: isActive,
+							[styles.touched]: isActive && (isRedirectToDetail || cartStatus === 'loading'),
 						})}
 					>
 						<button
 							className={clsx(styles.addToCartButton, styles.productActionsButton)}
-							onClick={handleAddToCart}
+							onClick={handleContextAddToCart}
 						>
 							{cartStatus === 'loading' ? <Spinner /> : <FontAwesomeIcon icon={faCartShopping} />}
 						</button>
@@ -82,7 +75,7 @@ function ProductCart({ _id, name, price, discountPercent, image, ctaHref }: Prod
 			{isAbleToShowModal && isActive && (
 				<ModalBottom isOpen={isActive} onClose={() => setIsActive(false)}>
 					<>
-						<button className={styles.addToCartButtonMobile} onClick={handleAddToCart}>
+						<button className={styles.addToCartButtonMobile} onClick={handleContextAddToCart}>
 							{cartStatus === 'loading' ? <Spinner /> : <FontAwesomeIcon icon={faCartShopping} />}
 							Thêm vào giỏ
 						</button>
@@ -95,6 +88,16 @@ function ProductCart({ _id, name, price, discountPercent, image, ctaHref }: Prod
 						</Link>
 					</>
 				</ModalBottom>
+			)}
+
+			{cartStatus === 'success' && (
+				<ModalAlert
+					title='Thành công'
+					message='Sản phẩm đã được thêm vào giỏ hàng.'
+					type='success'
+					timeout={3000}
+					onClose={() => setCartStatus('idle')}
+				/>
 			)}
 		</>
 	);

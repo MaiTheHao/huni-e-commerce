@@ -1,4 +1,5 @@
 @use '../../vars' as *;
+@use 'sass:map';
 
 // ==> CART GENERAL STYLES
 .cart {
@@ -32,11 +33,20 @@
 }
 
 .itemRemoveButton {
-	color: $error-color;
+	cursor: pointer;
+	color: map.get($error, icon);
 
 	svg {
 		aspect-ratio: 1;
 		font-size: $font-size-14;
+	}
+
+	&:hover {
+		color: map.get($error, text);
+	}
+
+	&:active {
+		transform: scale(0.95);
 	}
 }
 
@@ -44,7 +54,6 @@
 	position: relative;
 	aspect-ratio: 1;
 	width: calc($unit * 20);
-	min-width: calc($unit * 10);
 	border-radius: $spacing-8;
 	background-color: $gray-200;
 	border: 1px solid $gray-300;
@@ -206,22 +215,14 @@
 	.cartItem {
 		gap: $spacing-8;
 	}
-
-	.quantityButton {
-		width: calc($unit * 6);
-		height: calc($unit * 6);
-		font-size: $font-size-12;
-		padding: 0;
-	}
-
-	.quantityInput {
-		width: 2em;
-		font-size: $font-size-12;
-		padding: $spacing-4 $spacing-4;
-	}
 }
 
 @media screen and (max-width: $breakpoint-sm) {
+	.itemImage {
+		aspect-ratio: 1;
+		max-width: 60px;
+	}
+
 	.itemPrice {
 		display: none;
 	}
@@ -229,5 +230,16 @@
 	.itemMobilePrice {
 		display: flex;
 		font-size: $font-size-14;
+	}
+
+	.itemQuantityControl {
+		.itemQuantityControlInput {
+			width: max-content;
+			flex-direction: column-reverse;
+
+			button {
+				width: 100%;
+			}
+		}
 	}
 }

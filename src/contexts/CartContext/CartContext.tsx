@@ -1,0 +1,30 @@
+'use client';
+import { createContext } from 'react';
+import { ICartItem } from '../../interfaces/cart.interface';
+import { IProduct } from '@/interfaces';
+
+interface CartContextType {
+	items: ICartItem[];
+	products: Record<string, IProduct | null>;
+	setItems: (items: ICartItem[]) => void;
+	setProducts: (products: Record<string, IProduct | null>) => void;
+	loading: boolean;
+	fetchCart: () => Promise<void>;
+	handleRemove: (productId: string) => Promise<void>;
+	handleQuantity: (productId: string, quantity: number) => Promise<void>;
+	handleAddToCart: (productId: string, quantity?: number) => Promise<void>;
+}
+
+const CartContext = createContext<CartContextType>({
+	items: [],
+	products: {},
+	setItems: () => {},
+	setProducts: () => {},
+	loading: false,
+	fetchCart: async () => {},
+	handleRemove: async () => {},
+	handleQuantity: async () => {},
+	handleAddToCart: async () => {},
+});
+
+export default CartContext;

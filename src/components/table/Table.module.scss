@@ -55,3 +55,26 @@
 	border-radius: $spacing-8;
 	z-index: 10;
 }
+
+@media screen and (max-width: $breakpoint-md) {
+	.table {
+		padding: $spacing-16;
+	}
+
+	.tableHeader {
+		padding: $spacing-8 0;
+		font-size: $font-size-18;
+	}
+
+	.tableTitle {
+		font-size: $font-size-18;
+	}
+
+	.tableBody {
+		gap: $spacing-16;
+	}
+
+	.tableFooter {
+		gap: $spacing-8;
+	}
+}

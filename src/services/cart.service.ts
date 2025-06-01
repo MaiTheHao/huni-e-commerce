@@ -21,7 +21,7 @@ class CartService {
 			const cart = await getJsonCookie<Cart>(CART_COOKIE_NAME);
 			return cart || { items: [] };
 		} catch (error) {
-			responseService.error('Lỗi khi lấy giỏ hàng', undefined, error); // Sử dụng responseService
+			responseService.error('Lỗi khi lấy giỏ hàng', undefined, error);
 			return { items: [] };
 		}
 	}

@@ -17,6 +17,21 @@ $logo-size: $unit * 10;
 		color: $txt-secondary;
 		transition: color 0.3s ease, transform 0.3s ease;
 	}
+
+	&.header__cart {
+		.header__cart__badge {
+			position: absolute;
+			top: 0;
+			right: 0;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			font-size: $font-size-12;
+			color: $primary-color;
+			line-height: 1;
+			border-bottom: 1px solid $primary-color;
+		}
+	}
 }
 
 .header__link--redirect {
