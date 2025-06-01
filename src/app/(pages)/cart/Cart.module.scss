@@ -68,11 +68,7 @@
 }
 
 .itemQuantityControl {
-	position: relative;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	gap: $spacing-8;
+	min-width: max-content;
 }
 
 .quantityButton {
@@ -98,15 +94,6 @@
 	&:active {
 		transform: scale(0.95);
 	}
-}
-
-.quantityInput {
-	width: 3em;
-	text-align: center;
-	font-size: $font-size-14;
-	font-weight: $font-weight-regular;
-	color: $primary-color;
-	padding: $spacing-4 $spacing-8;
 }
 
 .itemPrice {

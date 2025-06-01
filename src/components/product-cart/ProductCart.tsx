@@ -3,7 +3,7 @@ import React, { useState, memo } from 'react';
 import Link from 'next/link';
 import clsx from 'clsx';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCartShopping } from '@fortawesome/free-solid-svg-icons';
+import { faCartShopping, faCheck } from '@fortawesome/free-solid-svg-icons';
 
 import styles from './ProductCart.module.scss';
 import useScreenSize, { BREAKPOINT_LG } from '@/hooks/useScreenSize';
@@ -19,9 +19,29 @@ function ProductCart({ _id, name, price, discountPercent, image, ctaHref }: Prod
 	const { width } = useScreenSize();
 	const [isActive, setIsActive] = useState(false);
 	const [isRedirectToDetail, setIsRedirectToDetail] = useState(false);
+	const [cartStatus, setCartStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
+
 	const isAbleToShowModal = width <= BREAKPOINT_LG;
 
-	const handleAddToCart = () => {};
+	const handleAddToCart = async () => {
+		try {
+			setCartStatus('loading');
+			const res = await fetch('/api/v1/cart', {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+				},
+				body: JSON.stringify({ productId: _id, quantity: 1 }),
+			});
+			if (!res.ok) {
+				throw new Error('Không thể thêm sản phẩm vào giỏ hàng');
+			}
+			setCartStatus('success');
+		} catch (error) {
+			setCartStatus('error');
+			console.error(error);
+		}
+	};
 
 	return (
 		<>
@@ -41,8 +61,11 @@ function ProductCart({ _id, name, price, discountPercent, image, ctaHref }: Prod
 							[styles.touched]: isActive,
 						})}
 					>
-						<button className={clsx(styles.addToCartButton, styles.productActionsButton)}>
-							<FontAwesomeIcon icon={faCartShopping} />
+						<button
+							className={clsx(styles.addToCartButton, styles.productActionsButton)}
+							onClick={handleAddToCart}
+						>
+							{cartStatus === 'loading' ? <Spinner /> : <FontAwesomeIcon icon={faCartShopping} />}
 						</button>
 						<Link
 							href={ctaHref}
@@ -60,7 +83,7 @@ function ProductCart({ _id, name, price, discountPercent, image, ctaHref }: Prod
 				<ModalBottom isOpen={isActive} onClose={() => setIsActive(false)}>
 					<>
 						<button className={styles.addToCartButtonMobile} onClick={handleAddToCart}>
-							<FontAwesomeIcon icon={faCartShopping} />
+							{cartStatus === 'loading' ? <Spinner /> : <FontAwesomeIcon icon={faCartShopping} />}
 							Thêm vào giỏ
 						</button>
 						<Link

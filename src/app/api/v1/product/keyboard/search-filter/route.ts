@@ -1,6 +1,6 @@
 import { keyboardRepository } from '@/server/repositories/keyboard.repository';
-import { loggerService } from '@/server/services/logger.service';
-import { responseService } from '@/server/services/response.service';
+import { loggerService } from '@/services/logger.service';
+import { responseService } from '@/services/response.service';
 import { NextRequest } from 'next/server';
 
 export async function POST(req: NextRequest) {

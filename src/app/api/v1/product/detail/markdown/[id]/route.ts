@@ -1,5 +1,5 @@
 import { NextRequest } from 'next/server';
-import { responseService } from '@/server/services/response.service';
+import { responseService } from '@/services/response.service';
 import { productDetailMarkdownRepository } from '@/server/repositories/product-detail-markdown.repository';
 
 export async function GET(req: NextRequest) {

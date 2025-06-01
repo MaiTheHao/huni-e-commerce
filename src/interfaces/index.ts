@@ -4,6 +4,7 @@ export * from './product.interface';
 export * from './keyboard.interface';
 export * from './hero-section.interface';
 export * from './product-detail-markdown.interface';
+export * from './cart.interface';
 
 // API Related
 export * from './response.interface';

@@ -2,11 +2,14 @@
 import React, { useEffect, useReducer, useMemo } from 'react';
 import styles from './ProductDetail.module.scss';
 import { calcDiscountPrice } from '@/util/calcDiscountPrice';
-import { loggerService } from '@/server/services/logger.service';
+import { loggerService } from '@/services/logger.service';
 import { IProduct } from '@/interfaces';
 import ProductDetailMainVisual from './ProductDetailMainVisual';
 import ProductDetailMainContent from './ProductDetailMainContent';
 import { ProductDetailProps } from './ProductDetail';
+
+const MAX_QUANTITY = 999;
+const MIN_QUANTITY = 0;
 
 type ProductDetailMainProps<T extends IProduct> = ProductDetailProps<T>;
 
@@ -74,7 +77,11 @@ function ProductDetailMain<T extends IProduct>({ productId, attrs, fetchProductB
 	};
 
 	const handleChangeQuantity = (newQuantity: number) => {
-		if (newQuantity < 0) return;
+		if (newQuantity < MIN_QUANTITY) {
+			newQuantity = MIN_QUANTITY;
+		} else if (newQuantity > MAX_QUANTITY) {
+			newQuantity = MAX_QUANTITY;
+		}
 		dispatch({ type: 'SET_QUANTITY', payload: newQuantity });
 	};
 
@@ -144,6 +151,8 @@ function ProductDetailMain<T extends IProduct>({ productId, attrs, fetchProductB
 				onChangeQuantity={handleChangeQuantity}
 				onNextQuantity={handleNextQuantity}
 				onPrevQuantity={handlePrevQuantity}
+				minQuantity={MIN_QUANTITY}
+				maxQuantity={MAX_QUANTITY}
 			/>
 		</section>
 	);

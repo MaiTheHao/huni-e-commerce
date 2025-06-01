@@ -1,6 +1,6 @@
 import { NextRequest } from 'next/server';
 import { keyboardRepository } from '@/server/repositories/keyboard.repository';
-import { responseService } from '@/server/services/response.service';
+import { responseService } from '@/services/response.service';
 
 export async function GET(req: NextRequest) {
 	const id = req.nextUrl.pathname.split('/').pop();

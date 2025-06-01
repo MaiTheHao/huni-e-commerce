@@ -1,7 +1,7 @@
 'use server';
 
 import { IKeyboard } from '@/interfaces';
-import { loggerService } from '../../services/logger.service';
+import { loggerService } from '../../../services/logger.service';
 import { keyboardRepository } from '../../repositories/keyboard.repository';
 import { convertDocumentsToObjects } from '@/util/convertDocumentToObject';
 

@@ -18,6 +18,8 @@ interface ProductDetailMainContentProps<T extends IProduct> {
 	price: number;
 	discountedPrice: number;
 	quantity: number;
+	maxQuantity?: number;
+	minQuantity?: number;
 	onChangeQuantity: (newQuantity: number) => void;
 	onNextQuantity: () => void;
 	onPrevQuantity: () => void;
@@ -32,6 +34,8 @@ function ProductDetailMainContent<T extends IProduct>({
 	onChangeQuantity,
 	onNextQuantity,
 	onPrevQuantity,
+	minQuantity = 1,
+	maxQuantity = 100,
 }: ProductDetailMainContentProps<T>) {
 	return (
 		<div className={styles.info}>
@@ -88,10 +92,22 @@ function ProductDetailMainContent<T extends IProduct>({
 					onNext={onNextQuantity}
 					onPrev={onPrevQuantity}
 					onInput={onChangeQuantity}
+					nextDisabled={quantity >= (maxQuantity ?? 100)}
+					prevDisabled={quantity <= (minQuantity ?? 1)}
 					className={styles.actions__quantity}
 				/>
-				<button className={clsx(styles.actions__buyNow, 'cta-button')}>Mua ngay</button>
-				<button className={clsx(styles.actions__addToCart, 'cta-button--outlined')}>Thêm vào giỏ</button>
+				<button
+					className={clsx(styles.actions__buyNow, 'cta-button', { disabled: quantity <= (minQuantity ?? 1) })}
+				>
+					Mua ngay
+				</button>
+				<button
+					className={clsx(styles.actions__addToCart, 'cta-button--outlined', {
+						disabled: quantity <= (minQuantity ?? 1),
+					})}
+				>
+					Thêm vào giỏ
+				</button>
 			</div>
 		</div>
 	);

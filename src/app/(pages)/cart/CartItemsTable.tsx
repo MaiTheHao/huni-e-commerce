@@ -1,92 +1,92 @@
-// 'use client';
-// import React from 'react';
-// import styles from './Cart.module.scss';
-// import Image from 'next/image';
-// import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-// import { faTrashCan } from '@fortawesome/free-solid-svg-icons';
-// import { ICart, Product } from '@/entities';
-// import Table from '@/components/table/Table';
+'use client';
+import React from 'react';
+import styles from './Cart.module.scss';
+import Image from 'next/image';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faTrashCan } from '@fortawesome/free-solid-svg-icons';
+import { ICartItem, IProduct } from '@/interfaces';
+import Table from '@/components/table/Table';
+import Quantity from '@/components/quantity/Quantity';
 
-// type CartItemsTableProps = {
-// 	items: Product[];
-// 	cart: ICart | null;
-// 	loading: boolean;
-// 	onRemoveItem: (productId: string) => void;
-// 	onQuantityChange: (productId: string, newQuantity: number) => void;
-// };
+type Props = {
+	items: ICartItem[];
+	products: Record<string, IProduct | null>;
+	loading: boolean;
+	onRemove: (productId: string) => void;
+	onQuantity: (productId: string, quantity: number) => void;
+};
 
-// const CartItemsTable: React.FC<CartItemsTableProps> = ({ items, cart, loading, onRemoveItem, onQuantityChange }) => {
-// 	const itemsContent = (
-// 		<ul className={styles.itemsList}>
-// 			{items.map((item, idx) => {
-// 				const itemQuantity = cart?.items.find((i) => i.productId === item.id)?.quantity || 0;
-// 				return (
-// 					<li key={item.id} className={styles.cartItem}>
-// 						<button className={styles.itemRemoveButton} onClick={() => onRemoveItem(item.id)}>
-// 							<FontAwesomeIcon icon={faTrashCan} />
-// 						</button>
-// 						<div className={styles.itemImage}>
-// 							<Image src={item.images[0]} alt={item.name} fill className={styles.productImage} />
-// 						</div>
-// 						<div className={styles.itemName}>
-// 							<span>{item.name}</span>
-// 							<span className={styles.itemMobilePrice}>
-// 								{(item.price * itemQuantity).toLocaleString('vi-VN', {
-// 									style: 'currency',
-// 									currency: 'VND',
-// 								})}
-// 							</span>
-// 						</div>
-// 						<div className={styles.itemQuantityControl}>
-// 							<button
-// 								className={styles.quantityButton}
-// 								onClick={() => onQuantityChange(item.id, itemQuantity - 1)}
-// 							>
-// 								-
-// 							</button>
-// 							<input
-// 								className={styles.quantityInput}
-// 								value={itemQuantity}
-// 								onChange={(e) => {
-// 									const value = parseInt(e.target.value, 10);
-// 									if (!isNaN(value) && value >= 0) {
-// 										onQuantityChange(item.id, value);
-// 									} else {
-// 										onQuantityChange(item.id, 0);
-// 									}
-// 								}}
-// 							/>
-// 							<button
-// 								className={styles.quantityButton}
-// 								onClick={() => onQuantityChange(item.id, itemQuantity + 1)}
-// 							>
-// 								+
-// 							</button>
-// 						</div>
-// 						<span className={styles.itemPrice}>
-// 							{(item.price * itemQuantity).toLocaleString('vi-VN', {
-// 								style: 'currency',
-// 								currency: 'VND',
-// 							})}
-// 						</span>
-// 					</li>
-// 				);
-// 			})}
-// 		</ul>
-// 	);
+function CartItemsTable({ items, products, loading, onRemove, onQuantity }: Props) {
+	return (
+		<Table
+			sections={[
+				{
+					titles: ['Danh sách sản phẩm'],
+					children:
+						!loading && items.length === 0 ? (
+							<p className='info'>Giỏ hàng trống.</p>
+						) : (
+							<ul className={styles.itemsList}>
+								{items.map((item) => {
+									const product = products[item.productId];
 
-// 	const nullItemsContent = <p className='info'>Giỏ hàng trống.</p>;
+									if (!product) {
+										return null;
+									}
 
-// 	const isNoItems = !loading && items.length === 0;
+									return (
+										<li key={item.productId} className={styles.cartItem}>
+											<button
+												className={styles.itemRemoveButton}
+												onClick={() => onRemove(item.productId)}
+											>
+												<FontAwesomeIcon icon={faTrashCan} />
+											</button>
+											<div className={styles.itemImage}>
+												{product?.images?.[0] && (
+													<Image
+														src={product.images[0]}
+														alt={product.name}
+														fill
+														className={styles.productImage}
+													/>
+												)}
+											</div>
+											<div className={styles.itemName}>
+												<span>{product.name}</span>
+												<span className={styles.itemMobilePrice}>
+													{(product.price * item.quantity).toLocaleString('vi-VN', {
+														style: 'currency',
+														currency: 'VND',
+													})}
+												</span>
+											</div>
+											<div className={styles.itemQuantityControl}>
+												<Quantity
+													value={item.quantity}
+													onNext={() => onQuantity(item.productId, item.quantity + 1)}
+													onPrev={() => onQuantity(item.productId, item.quantity - 1)}
+													onInput={(value) => onQuantity(item.productId, value)}
+													prevDisabled={item.quantity <= 1}
+												/>
+											</div>
+											<span className={styles.itemPrice}>
+												{(product.price * item.quantity).toLocaleString('vi-VN', {
+													style: 'currency',
+													currency: 'VND',
+												})}
+											</span>
+										</li>
+									);
+								})}
+							</ul>
+						),
+				},
+			]}
+			loading={loading}
+			className={styles.itemsTable}
+		/>
+	);
+}
 
-// 	const sections = [
-// 		{
-// 			titles: ['Danh sách sản phẩm'],
-// 			children: isNoItems ? nullItemsContent : itemsContent,
-// 		},
-// 	];
-
-// 	return <Table sections={sections} loading={loading} className={styles.itemsTable} />;
-// };
-
-// export default CartItemsTable;
+export default CartItemsTable;

@@ -6,7 +6,7 @@ import ProductListSkeleton from '@/components/product-list/ProductListSkeleton';
 import KeyboardsPagination from './KeyboardsPagination';
 import { IPagination, KeyboardFilterableField } from '@/interfaces';
 import { productsToProductCarts } from '@/util/productToProductCart.util';
-import { loggerService } from '@/server/services/logger.service';
+import { loggerService } from '@/services/logger.service';
 
 type KeyboardsClientTableProps = {
 	initialKeyboards: ProductCartProps[];

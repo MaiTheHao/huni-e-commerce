@@ -1,7 +1,7 @@
 import { keyboardRepository } from '@/server/repositories/keyboard.repository';
 import { toNumber } from '@/util/cast-type.util';
 import { NextRequest } from 'next/server';
-import { responseService } from '@/server/services/response.service';
+import { responseService } from '@/services/response.service';
 
 export async function GET(req: NextRequest) {
 	const { searchParams } = req.nextUrl;

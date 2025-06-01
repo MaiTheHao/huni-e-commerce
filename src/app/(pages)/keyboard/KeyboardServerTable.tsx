@@ -5,7 +5,7 @@ import { IPagination, IProductCart } from '@/interfaces';
 import { countDocumentByCategory } from '@/server/actions/count-document-by-category';
 import { getPagination } from '@/util/getPagination';
 import { productsToProductCarts } from '@/util/productToProductCart.util';
-import { loggerService } from '@/server/services/logger.service';
+import { loggerService } from '@/services/logger.service';
 
 type Props = {};
 const LIMIT = 8;

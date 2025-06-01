@@ -3,7 +3,7 @@
 import { IHeroSection } from '@/interfaces';
 import { heroSectionRepository } from '@/server/repositories/hero-section.repository';
 import { convertDocumentsToObjects } from '@/util/convertDocumentToObject';
-import { loggerService } from '@/server/services/logger.service';
+import { loggerService } from '@/services/logger.service';
 
 export async function getKeyboardHeroSection(page: number = 1, limit: number = 1000) {
 	let herosections: IHeroSection[] = [];

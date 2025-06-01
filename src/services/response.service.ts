@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
-import { HTTPStatus } from '../../../enums/HttpStatus.enum';
-import { IResponse } from '../../interfaces/response.interface';
+import { HTTPStatus } from '../../enums/HttpStatus.enum';
+import { IResponse } from '../interfaces/response.interface';
 
 class ResponseService {
 	private static instance: ResponseService;

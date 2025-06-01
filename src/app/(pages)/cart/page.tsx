@@ -3,107 +3,90 @@ import AppBody from '@/components/app-body/AppBody';
 import styles from './Cart.module.scss';
 import React, { useEffect, useState } from 'react';
 import tax from '@/data/tax.json';
+import CartItemsTable from './CartItemsTable';
+import CartPriceTable from './CartPriceTable';
+import { ICartItem, IProduct } from '@/interfaces';
 
-type Props = {};
-const VAT: number = parseInt(tax.VAT, 10) / 100;
-let isInitCart = false;
-const MAX_ITEM_QUANTITY = 10;
+const VAT = parseInt(tax.VAT, 10) / 100;
+const MAX_ITEM_QUANTITY = 999;
 const MIN_ITEM_QUANTITY = 1;
-const CART_UPDATE_DEBOUNCE = 700;
 
-function CartPage({}: Props) {
-	// const [cart, setCart] = useState<ICart | null>(null);
-	// const [products, setProducts] = useState<Product[]>([]);
-	// const [loading, setLoading] = useState(true);
+function CartPage() {
+	const [items, setItems] = useState<ICartItem[]>([]);
+	const [products, setProducts] = useState<Record<string, IProduct | null>>({});
+	const [loading, setLoading] = useState(true);
 
-	// const handleInitCart = async () => {
-	// 	try {
-	// 		setLoading(true);
+	const fetchProducts = async (cartItems: ICartItem[]) => {
+		const ids = cartItems.map((item) => item.productId);
+		const uniqueIds = Array.from(new Set(ids));
+		const fetches = uniqueIds.map(async (id) => {
+			try {
+				const res = await fetch(`/api/v1/product/${id}`);
+				if (!res.ok) return [id, null];
+				const data = await res.json();
+				return [id, data.data as IProduct];
+			} catch {
+				return [id, null];
+			}
+		});
+		const results = await Promise.all(fetches);
+		setProducts(Object.fromEntries(results));
+	};
 
-	// 		// Lấy cart
-	// 		const cartData: ICart = await getCart();
-	// 		setCart(cartData);
+	const fetchCart = async () => {
+		setLoading(true);
+		try {
+			const res = await fetch('/api/v1/cart', {
+				credentials: 'include',
+			});
+			const data = (await res.json()).data;
+			const cartItems = data.cart.items || [];
+			setItems(cartItems);
+			if (cartItems.length > 0) {
+				await fetchProducts(cartItems);
+			} else {
+				setProducts({});
+			}
+		} catch {
+			setItems([]);
+			setProducts({});
+		}
+		setLoading(false);
+	};
 
-	// 		// Promise all
-	// 		const productPromises = cartData.items.map(async (cartItem) => {
-	// 			const res = await getProductById(cartItem.productId);
-	// 			if (!res.data) {
-	// 				console.warn(`Product with ID ${cartItem.productId} not found`);
-	// 				return null;
-	// 			}
-	// 			return res.data as Product;
-	// 		});
+	const handleRemove = async (productId: string) => {
+		setLoading(true);
+		await fetch(`/api/v1/cart?productId=${productId}`, { method: 'DELETE' });
+		await fetchCart();
+	};
 
-	// 		const products = await Promise.all(productPromises);
-	// 		const validProducts = products.filter((product): product is Product => product !== null);
-	// 		setProducts(validProducts);
-	// 	} catch (err) {
-	// 		console.error('Cart fetch error:', err);
-	// 	} finally {
-	// 		setLoading(false);
-	// 	}
-	// };
+	const handleQuantity = async (productId: string, quantity: number) => {
+		if (quantity < MIN_ITEM_QUANTITY || quantity > MAX_ITEM_QUANTITY) return;
+		setItems((items) => items.map((item) => (item.productId === productId ? { ...item, quantity } : item)));
+		await fetch('/api/v1/cart', {
+			method: 'PUT',
+			headers: { 'Content-Type': 'application/json' },
+			body: JSON.stringify({ productId, quantity }),
+		});
+		await fetchCart();
+	};
 
-	// const handleRemoveItem = async (productId: string) => {
-	// 	if (!cart) return;
-	// 	await removeFromCart(productId);
-	// 	await handleInitCart();
-	// };
-
-	// const handleQuantity = async (productId: string, newQuantity: number) => {
-	// 	if (!cart) return;
-	// 	const updatedItems = cart.items.map((item) =>
-	// 		item.productId === productId ? { ...item, quantity: newQuantity } : item
-	// 	);
-	// 	setCart({ ...cart, items: updatedItems });
-	// };
-
-	// // Lấy cart và các sản phẩm trong cart
-	// useEffect(() => {
-	// 	isInitCart = true;
-	// 	handleInitCart();
-	// }, []);
-
-	// // Debounce update cart data
-	// useEffect(() => {
-	// 	if (!cart) return;
-	// 	if (isInitCart) {
-	// 		isInitCart = false;
-	// 		return;
-	// 	}
-
-	// 	if (loading) return;
-
-	// 	const updateCartData = async () => {
-	// 		try {
-	// 			setLoading(true);
-	// 			await Promise.all(cart.items.map((item) => updateCartItem(item.productId, item.price, item.quantity)));
-	// 		} catch (err) {
-	// 			console.error('Failed to update cart:', err);
-	// 		} finally {
-	// 			handleInitCart();
-	// 			setLoading(false);
-	// 		}
-	// 	};
-
-	// 	const debounceTimeout = setTimeout(updateCartData, CART_UPDATE_DEBOUNCE);
-	// 	return () => clearTimeout(debounceTimeout);
-	// }, [cart]);
+	useEffect(() => {
+		fetchCart();
+	}, []);
 
 	return (
 		<AppBody>
-			{/* <div className={styles.cart}>
+			<div className={styles.cart}>
 				<CartItemsTable
-					items={products}
-					cart={cart}
+					items={items}
+					products={products}
 					loading={loading}
-					onRemoveItem={handleRemoveItem}
-					onQuantityChange={handleQuantity}
+					onRemove={handleRemove}
+					onQuantity={handleQuantity}
 				/>
-
-				<CartPriceTable items={cart?.items ?? []} vat={VAT} loading={loading} />
-			</div> */}
-			CART
+				<CartPriceTable items={items} products={products} vat={VAT} loading={loading} />
+			</div>
 		</AppBody>
 	);
 }

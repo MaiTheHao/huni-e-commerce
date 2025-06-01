@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { loggerService } from './server/services/logger.service';
+import { loggerService } from './services/logger.service';
 
 export function middleware(request: NextRequest) {
 	const response = NextResponse.next();

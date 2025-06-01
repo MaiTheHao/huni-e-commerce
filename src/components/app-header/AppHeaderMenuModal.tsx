@@ -15,8 +15,11 @@ function AppHeaderMenuModal({ navbarRoutes }: Props) {
 	const [isOpen, setIsOpen] = useState(false);
 
 	return (
-		<div className={styles['navbar-menu']}>
-			<button className={`${styles['navbar-menu-icon']} ${styles.redirectable}`} onClick={() => setIsOpen(true)}>
+		<div className={styles.header__menu}>
+			<button
+				className={`${styles['header__menu-icon']} ${styles['header__link--redirect']}`}
+				onClick={() => setIsOpen(true)}
+			>
 				<FontAwesomeIcon icon={faBars} />
 			</button>
 			{/* Modal */}
@@ -26,12 +29,14 @@ function AppHeaderMenuModal({ navbarRoutes }: Props) {
 				setOpen={setIsOpen}
 				closeIcon={<FontAwesomeIcon icon={faCircleXmark} />}
 			>
-				<nav className={styles['navbar-menu-list']}>
+				<nav className={styles['header__menu-list']}>
 					{navbarRoutes.map((route) => (
 						<Link
 							key={route.path}
 							href={route.path}
-							className={`${styles['navbar-menu-item']} ${route.isActive ? styles.active : ''}`}
+							className={`${styles['header__menu-item']} ${
+								route.isActive ? styles['header__menu-item--active'] : ''
+							}`}
 							onClick={() => setIsOpen(false)}
 						>
 							{route.title}

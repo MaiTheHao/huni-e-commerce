@@ -1,6 +1,6 @@
 import ProductList from '@/components/product-list/ProductList';
 import { IProduct, IProductCart } from '@/interfaces';
-import { loggerService } from '@/server/services/logger.service';
+import { loggerService } from '@/services/logger.service';
 import { productsToProductCarts } from '@/util/productToProductCart.util';
 import React from 'react';
 

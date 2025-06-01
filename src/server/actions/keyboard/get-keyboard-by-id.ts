@@ -2,7 +2,7 @@
 
 import { IKeyboard } from '@/interfaces';
 import mongoose from 'mongoose';
-import { loggerService } from '../../services/logger.service';
+import { loggerService } from '../../../services/logger.service';
 import { keyboardRepository } from '../../repositories/keyboard.repository';
 import { convertDocumentToObject } from '@/util/convertDocumentToObject';
 
