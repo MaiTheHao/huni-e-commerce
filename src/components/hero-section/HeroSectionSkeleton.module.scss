@@ -1,7 +1,6 @@
 @use '../../app/vars' as *;
 
 .skeleton {
-	// Áp dụng overlay mờ cho toàn bộ skeleton
 	position: relative;
 	overflow: hidden;
 	background: linear-gradient(90deg, $gray-300 25%, $gray-100 50%, $gray-300 75%);
@@ -9,9 +8,9 @@
 	animation: skeleton-shimmer 1.2s infinite linear;
 }
 
-.skeletonName,
-.skeletonAttrs,
-.skeletonCta {
+.name,
+.attrs,
+.cta {
 	height: $spacing-16;
 	border-radius: $spacing-8;
 	background: linear-gradient(90deg, $gray-300 25%, $gray-100 50%, $gray-300 75%);
@@ -20,22 +19,22 @@
 	margin-bottom: $spacing-8;
 }
 
-.skeletonName {
+.name {
 	width: 60%;
 	height: $spacing-20;
 }
 
-.skeletonAttrs {
+.attrs {
 	width: 40%;
 }
 
-.skeletonCta {
+.cta {
 	width: 30%;
 	height: $spacing-16;
 	margin-bottom: 0;
 }
 
-.skeletonDot {
+.dot {
 	width: $spacing-32;
 	height: $spacing-4;
 	border-radius: $spacing-4;

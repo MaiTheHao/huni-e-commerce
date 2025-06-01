@@ -1,7 +1,7 @@
 @use '../../app/vars' as *;
 
-.container {
-	aspect-ratio: 16/9;
+.hero {
+	aspect-ratio: 16/7;
 	position: relative;
 	width: 100%;
 	border-radius: $spacing-16;
@@ -13,46 +13,33 @@
 	align-items: flex-end;
 	background-color: $white;
 
-	&::before {
-		content: '';
-		display: block;
-		width: 1px;
-		margin-left: -1px;
-		float: left;
-		height: 0;
-		padding-top: calc(100% / 3);
-	}
-
 	@media (max-width: $breakpoint-md) {
 		padding: $spacing-16;
-		&::before {
-			padding-top: calc(100% / 2.5);
-		}
 	}
 	@media (max-width: $breakpoint-sm) {
 		aspect-ratio: 1.2/1;
 		padding: $spacing-12;
 		border-radius: $spacing-12;
-		&::before {
-			padding-top: calc(100% / 1.5);
-		}
 	}
 	@media (max-width: $breakpoint-xs-plus) {
 		padding: $spacing-8;
 		border-radius: $spacing-8;
-		&::before {
-			padding-top: calc(100% / 1.2);
+	}
+
+	&:hover {
+		.nav {
+			opacity: 1;
 		}
 	}
 }
 
-.slider {
+.list {
 	position: absolute;
 	inset: 0 0 0 0;
 	display: flex;
 	overflow: hidden;
 
-	.sliderItem {
+	.item {
 		position: relative;
 		flex: 1 0 100%;
 	}
@@ -62,11 +49,11 @@
 	position: relative;
 }
 
-.productImage {
+.image {
 	transition: transform 0.5s ease-in-out;
 }
 
-.bottomSection {
+.bottom {
 	position: absolute;
 	bottom: $spacing-36;
 	right: $spacing-24;
@@ -111,7 +98,7 @@
 	}
 }
 
-.productName {
+.title {
 	font-size: $font-size-20;
 	font-weight: $font-weight-semibold;
 	color: $txt-white;
@@ -126,14 +113,14 @@
 		font-size: $font-size-16;
 	}
 	@media (max-width: $breakpoint-xs-plus) {
-		font-size: $font-size-14;
+		font-size: $font-size-12;
 	}
 }
 
-.productAttrs {
+.attrs {
 	font-size: $font-size-20;
 	font-weight: $font-weight-semibold;
-	color: $txt-white;
+	color: $txt-light;
 	background-color: rgba($accent-color, 0.3);
 	padding: $spacing-4 $spacing-16;
 	margin: 0;
@@ -149,11 +136,15 @@
 	}
 }
 
-.ctaButton {
+.cta {
 	color: $txt-white;
+
+	@media screen and (max-width: $breakpoint-md) {
+		font-size: $font-size-12;
+	}
 }
 
-.progressBar {
+.dots {
 	display: flex;
 	gap: $spacing-8;
 	z-index: 2;
@@ -162,7 +153,7 @@
 	}
 }
 
-.progressDot {
+.dot {
 	width: $spacing-32;
 	height: $spacing-4;
 	background-color: rgba($white, 0.5);
@@ -186,7 +177,9 @@
 	}
 }
 
-.thumbnailsNav {
+.nav {
+	opacity: 0;
+	transition: opacity 0.3s ease-in-out;
 	@media (max-width: $breakpoint-sm) {
 		display: none !important;
 	}

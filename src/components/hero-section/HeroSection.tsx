@@ -1,11 +1,9 @@
 'use client';
-import React, { useState, useEffect, useMemo, useRef } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import styles from './HeroSection.module.scss';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faChevronLeft, faChevronRight } from '@fortawesome/free-solid-svg-icons';
 import { useMobileScrollX } from '@/hooks/useMobileScrollX';
 import { IHeroSection } from '@/interfaces';
-import HeroSectionItem from './HeroSectionItem';
+import HeroSectionContent from './HeroSectionContent';
 import ThumbnailNavButton from '../thumnail-nav-button/ThumbnailNavButton';
 
 export type HeroSectionProps = {
@@ -20,13 +18,14 @@ function HeroSection({ items }: HeroSectionProps) {
 		[items]
 	);
 
-	useEffect(() => {
-		const timer = setInterval(() => {
-			handleNext();
-		}, 5000);
+	// ! Tạm thời tắt do gặp vấn đề với scroll tự động, làm mất UX
+	// useEffect(() => {
+	// 	const timer = setInterval(() => {
+	// 		handleNext();
+	// 	}, 3000);
 
-		return () => clearInterval(timer);
-	}, [current, memoizedProducts.length]);
+	// 	return () => clearInterval(timer);
+	// }, [current, memoizedProducts.length]);
 
 	const handlePrev = () => {
 		setCurrent((prev) => (prev - 1 + memoizedProducts.length) % memoizedProducts.length);
@@ -57,47 +56,27 @@ function HeroSection({ items }: HeroSectionProps) {
 
 	return (
 		<div
-			className={styles.container}
+			className={styles.hero}
 			onTouchStart={handleTouchStart}
 			onTouchMove={handleTouchMove}
 			onTouchEnd={handleTouchEndWithSwipe}
 		>
-			<ul className={styles.slider}>
-				{memoizedProducts.map((product, idx) => {
-					const isActive = idx === current;
-					return (
-						<li
-							key={product._index}
-							className={`${styles.sliderItem} ${isActive ? styles.active : ''}`}
-							ref={(el) => {
-								if (isActive && el) {
-									el.scrollIntoView({
-										behavior: 'smooth',
-										block: 'nearest',
-										inline: 'center',
-									});
-								}
-							}}
-						>
-							<HeroSectionItem
-								image={product.image}
-								name={product.name}
-								attrs={product.attrs}
-								cta={product.cta}
-								ctaHref={product.ctaHref}
-							/>
-						</li>
-					);
-				})}
-			</ul>
+			{/* Nội dung chính của Hero Section */}
+			<HeroSectionContent items={memoizedProducts} current={current} />
 
-			<ThumbnailNavButton onPrev={handlePrev} onNext={handleNext} className={styles.thumbnailsNav} />
-
-			<div className={styles.progressBar}>
+			{/* Nút điều hướng và các điểm chỉ mục */}
+			<ThumbnailNavButton
+				onPrev={handlePrev}
+				onNext={handleNext}
+				prevDisabled={current === 0}
+				nextDisabled={current === memoizedProducts.length - 1}
+				className={styles.nav}
+			/>
+			<div className={styles.dots}>
 				{memoizedProducts.map((_, idx) => (
 					<button
 						key={idx}
-						className={`${styles.progressDot} ${idx === current ? styles.active : ''}`}
+						className={`${styles.dot} ${idx === current ? styles.active : ''}`}
 						onClick={() => handleDotClick(idx)}
 						aria-label={`Chuyển đến sản phẩm ${idx + 1}`}
 					/>

@@ -19,9 +19,9 @@ async function page({}: Props) {
 
 			<section className={styles.content}>
 				<HomeItemsSection
-					title='Bàn phím'
-					subTitle='Gõ chất, đậm dấu ấn!'
-					subHref='/keyboards'
+					title='Bàn phím cơ'
+					subTitle='Chuyển trang ngay!'
+					subHref='/keyboard'
 					fetchWithPagination={getKeyboardWithPagination}
 					productType='keyboard'
 				/>

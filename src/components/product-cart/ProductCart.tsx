@@ -1,9 +1,9 @@
 'use client';
-import React, { useRef, useState, useEffect, memo, useCallback } from 'react';
+import React, { useState, memo } from 'react';
 import Link from 'next/link';
 import clsx from 'clsx';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCartShopping, faSpinner } from '@fortawesome/free-solid-svg-icons';
+import { faCartShopping } from '@fortawesome/free-solid-svg-icons';
 
 import styles from './ProductCart.module.scss';
 import useScreenSize, { BREAKPOINT_LG } from '@/hooks/useScreenSize';
@@ -11,6 +11,7 @@ import ModalBottom from '../modal-bottom/ModalBottom';
 import { IProductCart } from '@/interfaces';
 import ProductCartImage from './ProductCartImage';
 import ProductCartInfo from './ProductCartInfo';
+import Spinner from '../spinner/Spinner';
 
 export type ProductCartProps = {} & IProductCart;
 
@@ -48,7 +49,7 @@ function ProductCart({ _id, name, price, discountPercent, image, ctaHref }: Prod
 							className={clsx(styles.watchMoreButton, styles.productActionsButton)}
 							onClick={() => setIsRedirectToDetail(true)}
 						>
-							{isRedirectToDetail ? <FontAwesomeIcon icon={faSpinner} spin /> : <span>Xem chi tiết</span>}
+							{isRedirectToDetail ? <Spinner /> : <span>Xem chi tiết</span>}
 						</Link>
 					</div>
 				</ProductCartImage>
@@ -67,7 +68,7 @@ function ProductCart({ _id, name, price, discountPercent, image, ctaHref }: Prod
 							className={styles.watchMoreButtonMobile}
 							onClick={() => setIsRedirectToDetail(true)}
 						>
-							{isRedirectToDetail ? <FontAwesomeIcon icon={faSpinner} spin /> : <span>Xem chi tiết</span>}
+							{isRedirectToDetail ? <Spinner /> : <span>Xem chi tiết</span>}
 						</Link>
 					</>
 				</ModalBottom>

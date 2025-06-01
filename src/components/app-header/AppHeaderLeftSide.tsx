@@ -17,9 +17,9 @@ export default function AppHeaderLeftSide({}: Props) {
 			<AppHeaderMenuModal navbarRoutes={navbarRoutes} />
 
 			{/* Icon Section */}
-			<div role='img' aria-label='logo' className={styles.logo}>
+			<Link href={'/home'} role='img' aria-label='logo' className={styles.logo}>
 				<Image src='/svgs/huni_icon.svg' alt='logo' width={37} height={40} />
-			</div>
+			</Link>
 			{/* Navigation Section */}
 			<nav className={styles.navbar}>
 				{navbarRoutes.map((route) => (
