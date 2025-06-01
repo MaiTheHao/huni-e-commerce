@@ -19,7 +19,7 @@
 		display: flex;
 		justify-content: center;
 		align-items: center;
-		color: $error-color;
+		color: map.get($error, 'icon');
 	}
 }
 
