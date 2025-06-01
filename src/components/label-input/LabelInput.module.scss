@@ -1,4 +1,5 @@
 @use '../../app/vars' as *;
+@use 'sass:map';
 
 .label {
 	position: relative;
