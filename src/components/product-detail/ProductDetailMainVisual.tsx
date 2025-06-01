@@ -5,6 +5,7 @@ import Image from 'next/image';
 import clsx from 'clsx';
 import ThumbnailNavButton from '@/components/thumnail-nav-button/ThumbnailNavButton';
 import Loading from '../loading/Loading';
+import Spinner from '../spinner/Spinner';
 
 interface ProductDetailMainVisualProps {
 	images: string[];
@@ -39,7 +40,7 @@ function ProductDetailMainVisual({
 				<ul className={styles.main}>
 					{isFetching ? (
 						<li className={clsx(styles.img)}>
-							<Loading loadingText={'Đang tải sản phẩm'} />
+							<Spinner className={styles.spinner} />
 						</li>
 					) : (
 						images.map((image: string, index: number) => {

@@ -39,6 +39,16 @@
 					aspect-ratio: 1;
 					position: relative;
 					overflow: hidden;
+
+					.spinner {
+						position: absolute;
+						inset: 0 0 0 0;
+						display: flex;
+						align-items: center;
+						justify-content: center;
+						font-size: $font-size-32;
+						color: $primary-color;
+					}
 				}
 			}
 			$discountTag-offset-x: 5%;

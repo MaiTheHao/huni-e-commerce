@@ -1,6 +1,7 @@
 @use '../../app/vars' as *;
 
 .skeleton {
+	// Áp dụng hiệu ứng shimmer cho toàn bộ hero skeleton
 	position: relative;
 	overflow: hidden;
 	background: linear-gradient(90deg, $gray-300 25%, $gray-100 50%, $gray-300 75%);

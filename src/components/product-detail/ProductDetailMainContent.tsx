@@ -8,6 +8,7 @@ import Quantity from '../quantity/Quantity';
 import { extractType } from '@/util/cast-type.util';
 import { useCartContext } from '@/contexts/CartContext/useCartContext';
 import ModalAlert from '../modal-alert/ModalAlert';
+import Spinner from '../spinner/Spinner';
 
 const ATTR_ICON_URL = '/svgs/attr_icon.svg';
 
@@ -22,6 +23,7 @@ interface ProductDetailMainContentProps<T extends IProduct> {
 	quantity: number;
 	maxQuantity?: number;
 	minQuantity?: number;
+	isLoading?: boolean;
 	onChangeQuantity: (newQuantity: number) => void;
 }
 
@@ -34,6 +36,7 @@ function ProductDetailMainContent<T extends IProduct>({
 	onChangeQuantity,
 	minQuantity = 1,
 	maxQuantity = 100,
+	isLoading = false,
 }: ProductDetailMainContentProps<T>) {
 	const [cartStatus, setCartStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
 	const { loading, handleAddToCart } = useCartContext();
@@ -52,7 +55,7 @@ function ProductDetailMainContent<T extends IProduct>({
 	return (
 		<>
 			<div className={styles.info}>
-				<p className={styles.name}>{(product as any)?.name}</p>
+				<p className={styles.name}>{(product as any)?.name || '...'}</p>
 				<div className={clsx(styles.line, 'line')}></div>
 				<div className={styles.price}>
 					<span className={styles.originalPrice}>
@@ -74,7 +77,10 @@ function ProductDetailMainContent<T extends IProduct>({
 						const { isArray, isBoolean, isString } = extractType(value);
 
 						let displayValue: string;
-						if (isArray) {
+
+						if (isLoading) {
+							displayValue = 'Đang tải...';
+						} else if (isArray) {
 							displayValue = Array.isArray(value) && value.length > 0 ? value.join(', ') : 'Không có';
 						} else if (isBoolean) {
 							displayValue = value ? 'Có' : 'Không';
@@ -83,7 +89,7 @@ function ProductDetailMainContent<T extends IProduct>({
 						} else if (typeof value === 'number') {
 							displayValue = value.toString();
 						} else if (value === null || value === undefined) {
-							displayValue = 'Không có';
+							displayValue = '...';
 						} else {
 							displayValue = String(value);
 						}

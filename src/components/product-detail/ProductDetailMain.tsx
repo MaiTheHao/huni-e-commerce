@@ -7,7 +7,6 @@ import { IProduct } from '@/interfaces';
 import ProductDetailMainVisual from './ProductDetailMainVisual';
 import ProductDetailMainContent from './ProductDetailMainContent';
 import { ProductDetailProps } from './ProductDetail';
-
 const MAX_QUANTITY = 999;
 const MIN_QUANTITY = 0;
 
@@ -122,31 +121,34 @@ function ProductDetailMain<T extends IProduct>({ productId, attrs, fetchProductB
 	}, [productId]);
 
 	return (
-		<section className={styles.detail}>
-			<ProductDetailMainVisual
-				images={(state.product as any)?.images || []}
-				productName={(state.product as any)?.name || ''}
-				discountPercent={(state.product as any)?.discountPercent}
-				thumbnailIndex={state.thumbnailIndex}
-				isDiscounted={isDiscounted}
-				isFetching={state.isFetching}
-				onChangeThumbnail={handleChangeThumbnail}
-				onPrevThumbnail={handlePrevThumbnail}
-				onNextThumbnail={handleNextThumbnail}
-				isNextDisabled={isNextDisabled}
-				isPrevDisabled={isPrevDisabled}
-			/>
-			<ProductDetailMainContent
-				product={state.product}
-				attrs={attrs as { field: keyof IProduct; label: string }[]}
-				price={(state.product as any)?.price}
-				discountedPrice={state.discountedPrice}
-				quantity={state.quantity}
-				onChangeQuantity={handleChangeQuantity}
-				minQuantity={MIN_QUANTITY}
-				maxQuantity={MAX_QUANTITY}
-			/>
-		</section>
+		<>
+			<section className={styles.detail}>
+				<ProductDetailMainVisual
+					images={(state.product as any)?.images || []}
+					productName={(state.product as any)?.name || ''}
+					discountPercent={(state.product as any)?.discountPercent}
+					thumbnailIndex={state.thumbnailIndex}
+					isDiscounted={isDiscounted}
+					onChangeThumbnail={handleChangeThumbnail}
+					onPrevThumbnail={handlePrevThumbnail}
+					onNextThumbnail={handleNextThumbnail}
+					isFetching={state.isFetching}
+					isNextDisabled={isNextDisabled}
+					isPrevDisabled={isPrevDisabled}
+				/>
+				<ProductDetailMainContent
+					product={state.product}
+					attrs={attrs as { field: keyof IProduct; label: string }[]}
+					price={(state.product as any)?.price}
+					discountedPrice={state.discountedPrice}
+					quantity={state.quantity}
+					onChangeQuantity={handleChangeQuantity}
+					isLoading={state.isFetching}
+					minQuantity={MIN_QUANTITY}
+					maxQuantity={MAX_QUANTITY}
+				/>
+			</section>
+		</>
 	);
 }
 
