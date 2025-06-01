@@ -1,9 +1,35 @@
 @use '../../app/vars' as *;
 
+// Variables
 $block-padding-y: $spacing-16;
 $block-padding-x: $spacing-44;
 $logo-size: $unit * 10;
 
+// Container
+.container {
+	position: sticky;
+	top: 0;
+	display: flex;
+	flex-direction: column;
+	z-index: 1000;
+}
+
+// Header
+.header {
+	position: relative;
+	background-color: $white;
+	border-bottom: 1px solid $txt-tertiary;
+	padding: 0 $app-body-padding-x-mobile;
+
+	@media screen and (min-width: $breakpoint-md) {
+		padding: 0 $app-body-padding-x-tablet;
+	}
+	@media screen and (min-width: $breakpoint-xl) {
+		padding: 0 $app-body-padding-x-desktop;
+	}
+}
+
+// Header Link
 .header__link {
 	position: relative;
 	display: flex;
@@ -36,30 +62,13 @@ $logo-size: $unit * 10;
 
 .header__link--redirect {
 	cursor: pointer;
-}
-
-.header__link--redirect:hover svg {
-	color: $txt-primary;
-	transform: scale(1.1);
-}
-
-.header {
-	position: sticky;
-	top: 0;
-	z-index: 1000;
-	background-color: $white;
-	border-bottom: 1px solid $txt-tertiary;
-	padding: 0 $app-body-padding-x-mobile;
-
-	@media screen and (min-width: $breakpoint-md) {
-		padding: 0 $app-body-padding-x-tablet;
-	}
-
-	@media screen and (min-width: $breakpoint-xl) {
-		padding: 0 $app-body-padding-x-desktop;
+	&:hover svg {
+		color: $txt-primary;
+		transform: scale(1.1);
 	}
 }
 
+// Header Block
 .header__block {
 	position: relative;
 	display: flex;
@@ -68,6 +77,7 @@ $logo-size: $unit * 10;
 	padding: $block-padding-y 0;
 }
 
+// Header Left
 .header__left {
 	width: max-content;
 	display: flex;
@@ -76,6 +86,7 @@ $logo-size: $unit * 10;
 	gap: $spacing-32;
 }
 
+// Header Logo
 .header__logo {
 	position: relative;
 	aspect-ratio: 1;
@@ -88,20 +99,16 @@ $logo-size: $unit * 10;
 		transition: color 0.3s ease, transform 0.3s ease;
 	}
 
-	&:hover {
-		img {
-			color: $txt-primary;
-			transform: scale(1.1);
-		}
+	&:hover img {
+		color: $txt-primary;
+		transform: scale(1.1);
 	}
-
-	&:active {
-		img {
-			transform: scale(1);
-		}
+	&:active img {
+		transform: scale(1);
 	}
 }
 
+// Header Nav
 .header__nav {
 	width: max-content;
 	display: flex;
@@ -122,48 +129,44 @@ $logo-size: $unit * 10;
 			background-color: $txt-primary;
 		}
 	}
+	&::after {
+		background-color: $txt-tertiary;
+	}
+	&:active {
+		color: $txt-primary;
+	}
 }
 
-.header__nav-item::after {
-	background-color: $txt-tertiary;
-}
-
-.header__nav-item:active {
-	color: $txt-primary;
-}
-
+// Header Menu
 .header__menu {
 	display: none;
 }
-
 .header__menu-icon {
 	@extend .header__link;
 }
-
 .header__menu-list {
 	display: flex;
 	flex-direction: column;
 	gap: $spacing-16;
 }
-
 .header__menu-item {
 	color: $txt-tertiary;
 	border-bottom: 1px solid $txt-tertiary;
 	font-size: $font-size-16;
 	transition: color 0.3s ease, border-bottom 0.3s ease;
 	padding: $spacing-8 0;
-}
 
-.header__menu-item:hover,
-.header__menu-item:active {
-	color: $txt-primary;
-	border-bottom: 1px solid $txt-primary;
+	&:hover,
+	&:active {
+		color: $txt-primary;
+		border-bottom: 1px solid $txt-primary;
+	}
 }
-
 .header__menu-item--active {
 	color: $txt-primary;
 }
 
+// Header Right
 .header__right {
 	position: relative;
 	width: max-content;
@@ -195,7 +198,6 @@ $logo-size: $unit * 10;
 			&--active {
 				width: 20ch;
 			}
-
 			&::placeholder {
 				color: $txt-tertiary;
 			}
@@ -206,6 +208,7 @@ $logo-size: $unit * 10;
 			display: inline-flex;
 			justify-content: center;
 			align-items: center;
+
 			svg {
 				aspect-ratio: 1;
 				font-size: $font-size-16;
@@ -215,7 +218,6 @@ $logo-size: $unit * 10;
 				&:hover {
 					transform: scale(1.1);
 				}
-
 				&:active {
 					transform: scale(0.9);
 				}
@@ -228,23 +230,27 @@ $logo-size: $unit * 10;
 	}
 }
 
+// Header Search Container (Mobile)
 .header__search-container {
-	display: inline-flex;
+	position: relative;
 	display: none;
 	justify-content: center;
 	align-items: center;
 	width: 100%;
 	background-color: $accent-color;
-	padding: $spacing-4 $spacing-12;
+	padding: $spacing-8 0;
 }
 
+// Header Search (Mobile)
 .header__search {
 	display: inline-flex;
-	width: 90%;
+	width: 80%;
 	max-width: calc(0.7 * 1200px);
 	background-color: $white;
 	padding: $spacing-4 $spacing-12;
 	border-radius: 50em;
+	box-shadow: 0 0 0 1px $primary-color;
+
 	&__input {
 		flex: 1;
 		font-size: $font-size-14;
@@ -254,7 +260,6 @@ $logo-size: $unit * 10;
 		border: none;
 		outline: none;
 	}
-
 	&__button {
 		svg {
 			color: $primary-color;
@@ -262,15 +267,14 @@ $logo-size: $unit * 10;
 	}
 }
 
+// Responsive
 @media screen and (max-width: $breakpoint-md) {
 	.header__left {
 		gap: $spacing-8;
 	}
-
 	.header__nav {
 		display: none;
 	}
-
 	.header__menu {
 		display: flex;
 	}
@@ -280,7 +284,6 @@ $logo-size: $unit * 10;
 	.header__right__search-container {
 		display: none;
 	}
-
 	.header__search-container {
 		display: inline-flex;
 	}

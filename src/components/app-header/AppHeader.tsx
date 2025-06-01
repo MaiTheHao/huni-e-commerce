@@ -10,7 +10,7 @@ type AppHeaderProps = {};
 
 function AppHeader({}: AppHeaderProps) {
 	return (
-		<>
+		<div className={`app-container ${styles.container}`}>
 			<header className={`app-container ${styles.header}`}>
 				<section className={`app-block ${styles.header__block}`}>
 					<AppHeaderLeftSide />
@@ -30,7 +30,7 @@ function AppHeader({}: AppHeaderProps) {
 					</label>
 				</div>
 			</div>
-		</>
+		</div>
 	);
 }
 
