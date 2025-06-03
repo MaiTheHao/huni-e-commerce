@@ -1,6 +1,6 @@
 'use client';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { ProductCartProps } from '@/components/product-cart/ProductCart';
+import { ProductCartProps } from '@/components/product-card/ProductCard';
 import ProductList from '@/components/product-list/ProductList';
 import ProductListSkeleton from '@/components/product-list/ProductListSkeleton';
 import KeyboardsPagination from './KeyboardsPagination';

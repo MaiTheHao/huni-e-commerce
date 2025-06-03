@@ -116,14 +116,14 @@ function ProductDetailMainContent<T extends IProduct>({
 						/>
 						<button
 							className={clsx(styles.actions__buyNow, 'cta-button', {
-								disabled: quantity <= (minQuantity ?? 1),
+								disabled: quantity <= 0,
 							})}
 						>
 							Mua ngay
 						</button>
 						<button
 							className={clsx(styles.actions__addToCart, 'cta-button--outlined', {
-								disabled: quantity <= (minQuantity ?? 1) || loading,
+								disabled: quantity <= 0 || loading,
 							})}
 							onClick={handleContextAddToCart}
 						>

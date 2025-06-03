@@ -15,15 +15,14 @@
 
 	@media (max-width: $breakpoint-md) {
 		padding: $spacing-16;
+		border-radius: 0;
 	}
 	@media (max-width: $breakpoint-sm) {
 		aspect-ratio: 1.2/1;
 		padding: $spacing-12;
-		border-radius: $spacing-12;
 	}
 	@media (max-width: $breakpoint-xs-plus) {
 		padding: $spacing-8;
-		border-radius: $spacing-8;
 	}
 
 	&:hover {
@@ -177,10 +176,10 @@
 	}
 }
 
-.nav {
-	opacity: 0;
-	transition: opacity 0.3s ease-in-out;
-	@media (max-width: $breakpoint-sm) {
-		display: none !important;
-	}
-}
+// .nav {
+// 	opacity: 0;
+// 	transition: opacity 0.3s ease-in-out;
+// 	@media (max-width: $breakpoint-sm) {
+// 		display: none !important;
+// 	}
+// }

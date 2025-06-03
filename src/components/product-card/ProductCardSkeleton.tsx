@@ -1,10 +1,10 @@
 'use client';
 import React from 'react';
-import styles from './ProductCart.module.scss';
-import skeletonStyles from './ProductCartSkeleton.module.scss';
+import styles from './ProductCard.module.scss';
+import skeletonStyles from './ProductCardSkeleton.module.scss';
 import clsx from 'clsx';
 
-function ProductCartSkeleton() {
+function ProductCardSkeleton() {
 	return (
 		<article className={clsx(styles.productCart, skeletonStyles.skeleton)}>
 			{/* Image skeleton */}
@@ -44,4 +44,4 @@ function ProductCartSkeleton() {
 	);
 }
 
-export default ProductCartSkeleton;
+export default ProductCardSkeleton;

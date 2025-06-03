@@ -5,19 +5,19 @@ import clsx from 'clsx';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCartShopping, faCheck } from '@fortawesome/free-solid-svg-icons';
 
-import styles from './ProductCart.module.scss';
+import styles from './ProductCard.module.scss';
 import useScreenSize, { BREAKPOINT_LG } from '@/hooks/useScreenSize';
 import ModalBottom from '../modal-bottom/ModalBottom';
 import { IProductCart } from '@/interfaces';
-import ProductCartImage from './ProductCartImage';
-import ProductCartInfo from './ProductCartInfo';
+import ProductCartImage from './ProductCardImage';
+import ProductCartInfo from './ProductCardInfo';
 import Spinner from '../spinner/Spinner';
 import ModalAlert from '../modal-alert/ModalAlert';
 import { useCartContext } from '@/contexts/CartContext/useCartContext';
 
 export type ProductCartProps = {} & IProductCart;
 
-function ProductCart({ _id, name, price, discountPercent, image, ctaHref }: ProductCartProps) {
+function ProductCard({ _id, name, price, discountPercent, image, ctaHref }: ProductCartProps) {
 	const { handleAddToCart } = useCartContext();
 	const { width } = useScreenSize();
 	const [isActive, setIsActive] = useState(false);
@@ -103,6 +103,6 @@ function ProductCart({ _id, name, price, discountPercent, image, ctaHref }: Prod
 	);
 }
 
-export default memo(ProductCart, (prevProps: ProductCartProps, nextProps: ProductCartProps) => {
+export default memo(ProductCard, (prevProps: ProductCartProps, nextProps: ProductCartProps) => {
 	return prevProps._id === nextProps._id;
 });

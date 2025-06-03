@@ -1,6 +1,6 @@
 import React, { memo } from 'react';
 import styles from './ProductList.module.scss';
-import ProductCart, { ProductCartProps } from '../product-cart/ProductCart';
+import ProductCard, { ProductCartProps } from '../product-card/ProductCard';
 
 type Props = {
 	products: ProductCartProps[];
@@ -14,7 +14,7 @@ function ProductList({ products }: Props) {
 				(product) =>
 					product._id && (
 						<li key={product._id} className={styles.productListItem}>
-							<ProductCart {...product} />
+							<ProductCard {...product} />
 						</li>
 					)
 			)}

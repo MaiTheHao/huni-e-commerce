@@ -172,23 +172,6 @@ $card-padding: $spacing-8;
 	}
 }
 
-$discountTag-offset-x: 5%;
-.discountTag {
-	position: absolute;
-	top: $discountTag-offset-x;
-	left: calc(-46% + $discountTag-offset-x);
-	width: 100%;
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	transform: rotate(-45deg);
-	color: $txt-white;
-	font-size: $font-size-16;
-	line-height: 1.5;
-	font-weight: $font-weight-semibold;
-	background-color: $orange-color;
-}
-
 @media screen and (max-width: $breakpoint-lg) {
 	.productCart {
 		padding: $spacing-4;
@@ -221,7 +204,7 @@ $discountTag-offset-x: 5%;
 
 	.productPrice {
 		flex-direction: column;
-		gap: 0.5ch;
+		gap: 0ch;
 		align-items: center;
 
 		.discountedPrice {
@@ -231,10 +214,6 @@ $discountTag-offset-x: 5%;
 
 	.productActions {
 		display: none;
-	}
-
-	.discountTag {
-		font-size: $font-size-12;
 	}
 
 	.addToCartButtonMobile,

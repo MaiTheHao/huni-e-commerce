@@ -16,15 +16,10 @@ const fetchKeyboardById = async (id: string): Promise<IKeyboard> => {
 
 const keyboardAttrs: ProductDetailProps<IKeyboard>['attrs'] = [
 	{ field: 'brand', label: 'Thương hiệu' },
-	{ field: 'model', label: 'Model' },
-	{ field: 'series', label: 'Series' },
 	{ field: 'layout', label: 'Layout' },
 	{ field: 'switchType', label: 'Switch' },
-	{ field: 'hotswap', label: 'Hotswap' },
 	{ field: 'connectivity', label: 'Kết nối' },
 	{ field: 'caseMaterial', label: 'Vỏ' },
-	{ field: 'rgb', label: 'RGB' },
-	{ field: 'rapidTrigger', label: 'Rapid Trigger' },
 ];
 
 function KeyboardDetailPage() {

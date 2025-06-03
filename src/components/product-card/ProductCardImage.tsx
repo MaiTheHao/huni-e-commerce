@@ -1,7 +1,8 @@
 'use client';
 import React, { ReactNode, useMemo } from 'react';
-import styles from './ProductCart.module.scss';
+import styles from './ProductCard.module.scss';
 import Image from 'next/image';
+import DiscountTag from '../discount-tag/DiscountTag';
 
 interface ProductCartImageProps {
 	image?: string;
@@ -31,11 +32,7 @@ function ProductCartImage({ image, name, price, discountPercent, children }: Pro
 					priority={false}
 				/>
 			)}
-			{isDiscounted && (
-				<div className={styles.discountTag}>
-					<span>-{discountPercent}%</span>
-				</div>
-			)}
+			<DiscountTag discountPercent={discountPercent} />
 			{children}
 		</section>
 	);

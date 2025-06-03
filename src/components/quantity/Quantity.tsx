@@ -8,9 +8,10 @@ export type QuantityProps = {
 	min?: number;
 	max?: number;
 	className?: string;
+	debounceTime?: number;
 };
 
-function Quantity({ value, onChange, min = 1, max = Infinity, className = '' }: QuantityProps) {
+function Quantity({ value, onChange, min = 1, max = Infinity, className = '', debounceTime = 300 }: QuantityProps) {
 	const [curValue, setCurValue] = useState(value);
 	const debounceRef = useRef<NodeJS.Timeout | null>(null);
 
@@ -20,7 +21,7 @@ function Quantity({ value, onChange, min = 1, max = Infinity, className = '' }: 
 		}
 		debounceRef.current = setTimeout(() => {
 			callback();
-		}, 300);
+		}, debounceTime);
 	};
 
 	const handleNext = () => {

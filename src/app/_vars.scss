@@ -17,7 +17,6 @@ $gray-600: #6c757d;
 $gray-700: #495057;
 $gray-800: #343a40;
 $gray-900: #212529;
-
 $primary-color: #255f38;
 $secondary-color: #3f7d58;
 $accent-color: #194026;
@@ -89,11 +88,12 @@ $breakpoint-md: 768px; // Máy tính bảng
 $breakpoint-lg: 992px; // Laptop nhỏ
 $breakpoint-xl: 1200px; // Desktop
 $breakpoint-xxl: 1400px; // Màn hình lớn
+$app-max-width: 1440px;
 $app-body-padding-x-desktop: 24px;
 $app-body-padding-y-desktop: 56px;
 
-$app-body-padding-x-tablet: 24px;
-$app-body-padding-y-tablet: 56px;
+$app-body-padding-x-tablet: 16px;
+$app-body-padding-y-tablet: 32px;
 
 $app-body-padding-x-mobile: 8px;
-$app-body-padding-y-mobile: 32px;
+$app-body-padding-y-mobile: 16px;

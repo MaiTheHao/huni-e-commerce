@@ -26,13 +26,14 @@
 
 		.mainWrap {
 			position: relative;
+
+			border: 1px solid $txt-light;
+			border-radius: $spacing-8;
 			overflow: hidden;
 			.main {
 				position: relative;
 				display: flex;
 				overflow: hidden;
-				border: 1px solid $txt-light;
-				border-radius: $spacing-8;
 
 				.img {
 					flex: 1 0 100%;

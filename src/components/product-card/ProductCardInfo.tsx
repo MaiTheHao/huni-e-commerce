@@ -1,14 +1,14 @@
 'use client';
 import React from 'react';
-import styles from './ProductCart.module.scss';
+import styles from './ProductCard.module.scss';
 
-interface ProductCartInfoProps {
+interface ProductCardInfoProps {
 	name: string;
 	price: number;
 	discountPercent?: number;
 }
 
-const ProductCartInfo: React.FC<ProductCartInfoProps> = ({ name, price, discountPercent }) => {
+const ProductCartInfo: React.FC<ProductCardInfoProps> = ({ name, price, discountPercent }) => {
 	const discountedPrice = discountPercent ? price - (price * discountPercent) / 100 : price;
 
 	const isDiscounted =

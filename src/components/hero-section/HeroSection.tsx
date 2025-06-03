@@ -12,6 +12,8 @@ export type HeroSectionProps = {
 
 function HeroSection({ items }: HeroSectionProps) {
 	const [current, setCurrent] = useState(0);
+	const isNextDisabled = current === items.length - 1;
+	const isPrevDisabled = current === 0;
 
 	const memoizedProducts = useMemo(
 		() => items.filter((p) => p.image).map((p, idx) => ({ ...p, _index: idx })),
@@ -28,10 +30,12 @@ function HeroSection({ items }: HeroSectionProps) {
 	// }, [current, memoizedProducts.length]);
 
 	const handlePrev = () => {
+		if (isPrevDisabled) return;
 		setCurrent((prev) => (prev - 1 + memoizedProducts.length) % memoizedProducts.length);
 	};
 
 	const handleNext = () => {
+		if (isNextDisabled) return;
 		setCurrent((prev) => (prev + 1) % memoizedProducts.length);
 	};
 
@@ -68,8 +72,8 @@ function HeroSection({ items }: HeroSectionProps) {
 			<ThumbnailNavButton
 				onPrev={handlePrev}
 				onNext={handleNext}
-				prevDisabled={current === 0}
-				nextDisabled={current === memoizedProducts.length - 1}
+				prevDisabled={isPrevDisabled}
+				nextDisabled={isNextDisabled}
 				className={styles.nav}
 			/>
 			<div className={styles.dots}>

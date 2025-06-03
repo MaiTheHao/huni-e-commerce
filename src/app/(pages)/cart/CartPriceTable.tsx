@@ -43,17 +43,17 @@ const CartPriceTable: React.FC<Props> = ({ items, products, vat, loading }) => {
 						</ul>
 					),
 				},
-				{
-					title: 'Mã giảm giá',
-					children: (
-						<div className={styles.discountSection}>
-							<input type='text' placeholder='Nhập mã của bạn...' />
-							<button>
-								<span>&gt;</span>
-							</button>
-						</div>
-					),
-				},
+				// {
+				// 	title: 'Mã giảm giá',
+				// 	children: (
+				// 		<div className={styles.discountSection}>
+				// 			<input type='text' placeholder='Nhập mã của bạn...' />
+				// 			<button>
+				// 				<span>&gt;</span>
+				// 			</button>
+				// 		</div>
+				// 	),
+				// },
 			]}
 			footer={
 				<Link href='/checkout' className={clsx('cta-button')}>

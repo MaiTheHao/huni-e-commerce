@@ -6,6 +6,7 @@ import clsx from 'clsx';
 import ThumbnailNavButton from '@/components/thumnail-nav-button/ThumbnailNavButton';
 import Loading from '../loading/Loading';
 import Spinner from '../spinner/Spinner';
+import DiscountTag from '../discount-tag/DiscountTag';
 
 interface ProductDetailMainVisualProps {
 	images: string[];
@@ -26,7 +27,6 @@ function ProductDetailMainVisual({
 	productName,
 	discountPercent,
 	thumbnailIndex,
-	isDiscounted,
 	isFetching,
 	onChangeThumbnail,
 	onPrevThumbnail,
@@ -73,11 +73,7 @@ function ProductDetailMainVisual({
 						})
 					)}
 				</ul>
-				{isDiscounted ? (
-					<div className={styles.tag}>
-						<span>-{discountPercent}%</span>
-					</div>
-				) : null}
+				<DiscountTag discountPercent={discountPercent} />
 				<ThumbnailNavButton
 					className={styles.nav}
 					onPrev={onPrevThumbnail}

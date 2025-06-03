@@ -40,7 +40,7 @@
 	.app-block {
 		position: relative;
 		width: 100%;
-		max-width: 1200px;
+		max-width: $app-max-width;
 		height: max-content;
 	}
 
@@ -49,14 +49,14 @@
 	}
 
 	&:has(.app-body) {
-		padding: $app-body-padding-y-mobile $app-body-padding-x-mobile;
+		padding: $app-body-padding-y-desktop $app-body-padding-x-desktop;
 
-		@media screen and (min-width: $breakpoint-md) {
+		@media screen and (max-width: $breakpoint-xl) {
 			padding: $app-body-padding-y-tablet $app-body-padding-x-tablet;
 		}
 
-		@media screen and (min-width: $breakpoint-xl) {
-			padding: $app-body-padding-y-desktop $app-body-padding-x-desktop;
+		@media screen and (max-width: $breakpoint-md) {
+			padding: 0 0 $app-body-padding-y-mobile 0;
 		}
 	}
 }

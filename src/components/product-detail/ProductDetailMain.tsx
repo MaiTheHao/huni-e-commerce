@@ -62,7 +62,7 @@ function ProductDetailMain<T extends IProduct>({ productId, attrs, fetchProductB
 		(index: number) => {
 			dispatch({ type: 'SET_THUMBNAIL_INDEX', payload: index });
 		},
-		[state.thumbnailIndex]
+		[state.thumbnailIndex, state.product]
 	);
 
 	const handlePrevThumbnail = useCallback(() => {
@@ -104,8 +104,9 @@ function ProductDetailMain<T extends IProduct>({ productId, attrs, fetchProductB
 			return;
 		}
 
+		let data;
 		try {
-			const data = await fetchProductById(productId);
+			data = await fetchProductById(productId);
 			dispatch({ type: 'SET_PRODUCT', payload: data });
 		} catch (e) {
 			loggerService.error('Không thể lấy thông tin sản phẩm');
