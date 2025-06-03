@@ -380,3 +380,37 @@ $link-underline-offset: -0.5ch !default;
 		box-shadow: 0 2px 8px rgba($primary-color, 0.08);
 	}
 }
+
+// shimmer
+.shimmer {
+	background: linear-gradient(
+		to right,
+		rgba($black-100, 0.1) 0%,
+		rgba($black-500, 0.1) 50%,
+		rgba($black-900, 0.1) 100%
+	);
+	border-radius: 0.25rem;
+	background-size: 200% 100%;
+	animation: shimmer 1.25s infinite;
+}
+
+.shimmer--primary-color {
+	background: linear-gradient(
+		to right,
+		rgba($primary-color, 0.1) 0%,
+		rgba($primary-color, 0.2) 50%,
+		rgba($primary-color, 0.3) 100%
+	);
+	border-radius: 0.25rem;
+	background-size: 200% 100%;
+	animation: shimmer 1.25s infinite;
+}
+
+@keyframes shimmer {
+	0% {
+		background-position: 100% 0;
+	}
+	100% {
+		background-position: -100% 0;
+	}
+}

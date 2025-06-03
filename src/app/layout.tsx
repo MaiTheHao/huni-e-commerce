@@ -20,7 +20,7 @@ export const metadata: Metadata = {
 		description: 'Bán Keyboards - Keycaps - Switches. HUNI E COMMERS - Địa chỉ tin cậy cho dân chơi phím cơ.',
 		type: 'website',
 		locale: 'vi_VN',
-		url: 'https://huni-e-commerce-client.vercel.app', // Thay bằng domain thật nếu có
+		url: 'https://huni-e-commerce-client.vercel.app',
 		siteName: 'HUNI E COMMERS',
 	},
 };

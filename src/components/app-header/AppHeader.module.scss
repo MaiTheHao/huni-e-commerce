@@ -47,15 +47,17 @@ $logo-size: $unit * 10;
 	&.header__cart {
 		.header__cart__badge {
 			position: absolute;
-			top: 0;
+			top: -15%;
 			right: 0;
 			display: flex;
 			justify-content: center;
 			align-items: center;
+			padding: 0.25em;
+			color: $txt-white;
+			background-color: rgba($accent-color, 1);
+			border-radius: 1em;
 			font-size: $font-size-12;
-			color: $primary-color;
 			line-height: 1;
-			border-bottom: 1px solid $primary-color;
 		}
 	}
 }
@@ -230,7 +232,6 @@ $logo-size: $unit * 10;
 	}
 }
 
-// Header Search Container (Mobile)
 .header__search-container {
 	position: relative;
 	display: none;
@@ -241,7 +242,6 @@ $logo-size: $unit * 10;
 	padding: $spacing-8 0;
 }
 
-// Header Search (Mobile)
 .header__search {
 	display: inline-flex;
 	width: 80%;

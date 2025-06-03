@@ -7,9 +7,6 @@ import { IProduct } from '@/interfaces';
 import ProductDetailMainVisual from './ProductDetailMainVisual';
 import ProductDetailMainContent from './ProductDetailMainContent';
 import { ProductDetailProps } from './ProductDetail';
-const MAX_QUANTITY = 999;
-const MIN_QUANTITY = 0;
-
 type ProductDetailMainProps<T extends IProduct> = ProductDetailProps<T>;
 
 interface State<T> {
@@ -25,7 +22,7 @@ const initialState = {
 	thumbnailIndex: 0,
 	discountedPrice: 0,
 	quantity: 1,
-	isFetching: false,
+	isFetching: true,
 };
 
 function reducer<T>(state: State<T>, action: any): State<T> {
@@ -47,6 +44,8 @@ function reducer<T>(state: State<T>, action: any): State<T> {
 
 function ProductDetailMain<T extends IProduct>({ productId, attrs, fetchProductById }: ProductDetailMainProps<T>) {
 	const [state, dispatch] = useReducer(reducer<T>, initialState as State<T>);
+	const MIN_QUANTITY = 1;
+	const MAX_QUANTITY = state.product?.stock || 100;
 
 	const isDiscounted = useMemo(
 		() =>
@@ -106,7 +105,6 @@ function ProductDetailMain<T extends IProduct>({ productId, attrs, fetchProductB
 		}
 
 		try {
-			dispatch({ type: 'SET_IS_FETCHING', payload: true });
 			const data = await fetchProductById(productId);
 			dispatch({ type: 'SET_PRODUCT', payload: data });
 		} catch (e) {
