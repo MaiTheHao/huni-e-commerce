@@ -113,6 +113,7 @@ function ProductDetailMainContent<T extends IProduct>({
 							min={minQuantity}
 							max={maxQuantity}
 							className={styles.actions__quantity}
+							debounceTime={0}
 						/>
 						<button
 							className={clsx(styles.actions__buyNow, 'cta-button', {
