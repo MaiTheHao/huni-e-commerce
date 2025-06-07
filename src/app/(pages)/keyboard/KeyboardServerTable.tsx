@@ -4,11 +4,11 @@ import { getKeyboardWithPagination } from '@/server/actions/keyboard/get-keyboar
 import { IPagination, IProductCard } from '@/interfaces';
 import { countDocumentByCategory } from '@/server/actions/count-document-by-category';
 import { getPagination } from '@/util/getPagination';
-import { productsToProductCarts } from '@/util/productToProductCart.util';
 import { loggerService } from '@/services/logger.service';
 import { IProductFilter } from '@/interfaces/product-filter.interface';
 import { getKeyboardFilter } from '@/server/actions/product-filter/get-keyboard-filter';
 import { convertDocumentToObject } from '@/util/convertDocumentToObject';
+import { productsToProductCards } from '@/util/productToProductCard.util';
 
 type Props = {};
 const LIMIT = 12;
@@ -102,7 +102,7 @@ async function KeyboardServerTable({}: Props) {
 		const response = await getKeyboardWithPagination(1, LIMIT);
 		const total = await countDocumentByCategory('keyboard');
 		if (response.length > 0) {
-			cardItems = productsToProductCarts(response, 'keyboard');
+			cardItems = productsToProductCards(response, 'keyboard');
 			pagination = getPagination(1, LIMIT, total);
 		}
 	} catch (error) {

@@ -1,7 +1,7 @@
 import ProductList from '@/components/product/product-list/ProductList';
 import { IProduct, IProductCard } from '@/interfaces';
 import { loggerService } from '@/services/logger.service';
-import { productsToProductCarts } from '@/util/productToProductCart.util';
+import { productsToProductCards } from '@/util/productToProductCard.util';
 import React from 'react';
 
 type Props = {
@@ -13,7 +13,7 @@ async function HomeItemsSectionList({ fetchWithPagination, productType }: Props)
 	let productCartItems: IProductCard[] = [];
 	try {
 		const products = (await fetchWithPagination(1, 4)) as IProduct[];
-		productCartItems = productsToProductCarts(products, productType);
+		productCartItems = productsToProductCards(products, productType);
 	} catch (error) {
 		loggerService.error('Lỗi khi lấy danh sách sản phẩm với phân trang', error);
 	}

@@ -10,7 +10,7 @@ import {
 	ISearchFilterKeyboardsResponse,
 	KeyboardSortCriteria,
 } from '@/interfaces';
-import { productsToProductCarts } from '@/util/productToProductCart.util';
+import { productsToProductCards } from '@/util/productToProductCard.util';
 import { loggerService } from '@/services/logger.service';
 import useSearchFilterCriteriaContext from '@/contexts/SearchFilterCriteriaContext/useSearchFilterCriteriaContext';
 import AppSortFilter from '@/components/navigation/app-sort-filter/AppSortFilter';
@@ -82,7 +82,7 @@ function KeyboardsClientTable({ initialKeyboards, initialPagination, initialFilt
 
 				const { data } = await response.json();
 				const { keyboards, pagination } = data as ISearchFilterKeyboardsResponse;
-				setKeyboards(productsToProductCarts(keyboards, 'keyboard'));
+				setKeyboards(productsToProductCards(keyboards, 'keyboard'));
 				setPagination(pagination);
 			} catch (error: any) {
 				// Nếu không phải lỗi do abort thì log lỗi
