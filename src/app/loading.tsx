@@ -1,6 +1,6 @@
 'use client';
-import AppBody from '@/components/app-body/AppBody';
-import Loading from '@/components/loading/Loading';
+import AppBody from '@/components/layout/app-body/AppBody';
+import Loading from '@/components/ui/loading/Loading';
 import React from 'react';
 
 function loading({}) {

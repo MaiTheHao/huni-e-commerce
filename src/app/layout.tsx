@@ -1,8 +1,8 @@
 import type { Metadata } from 'next';
 import { Be_Vietnam_Pro } from 'next/font/google';
 import './globals.scss';
-import AppHeader from '@/components/app-header/AppHeader';
-import AppFooter from '@/components/app-footer/AppFooter';
+import AppHeader from '@/components/layout/app-header/AppHeader';
+import AppFooter from '@/components/layout/app-footer/AppFooter';
 import CartContextProvider from '@/contexts/CartContext/CartContextProvider';
 
 const beVietnamPro = Be_Vietnam_Pro({

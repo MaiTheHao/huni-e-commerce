@@ -1,0 +1,58 @@
+@use '../../../app/vars' as *;
+@use 'sass:map';
+
+.label {
+	position: relative;
+	display: flex;
+	flex-direction: column;
+	gap: $spacing-8;
+}
+
+.labelText {
+	position: relative;
+	display: flex;
+	align-items: center;
+	gap: $spacing-8;
+	font-size: $font-size-16;
+	font-weight: $font-weight-semibold;
+
+	.required {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		color: map.get($error, 'icon');
+	}
+}
+
+.baseInput {
+	font-size: $font-size-16;
+	font-weight: $font-weight-regular;
+	border-radius: $spacing-4;
+	border: 1px solid $gray-300;
+	transition: border-color 0.3s ease;
+	background-color: $white;
+	padding: $spacing-8 $spacing-16;
+	line-height: 1.4;
+
+	&::placeholder {
+		color: $txt-tertiary;
+		font-weight: $font-weight-light;
+	}
+
+	&:focus {
+		border-color: $accent-color;
+	}
+}
+
+.textarea {
+	@extend .baseInput;
+	resize: vertical;
+	min-height: 6em;
+}
+
+.input {
+	@extend .baseInput;
+	font-size: $font-size-16;
+	font-weight: $font-weight-regular;
+	color: $txt-primary;
+}

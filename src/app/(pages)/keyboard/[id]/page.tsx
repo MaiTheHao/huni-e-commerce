@@ -1,9 +1,9 @@
 'use client';
-import AppBody from '@/components/app-body/AppBody';
+import AppBody from '@/components/layout/app-body/AppBody';
 import React from 'react';
 import { useParams } from 'next/navigation';
 import { IKeyboard } from '@/interfaces';
-import ProductDetail, { ProductDetailProps } from '@/components/product-detail/ProductDetail';
+import ProductDetail, { ProductDetailProps } from '@/components/product/product-detail/ProductDetail';
 
 const fetchKeyboardById = async (id: string): Promise<IKeyboard> => {
 	const response = await fetch(`/api/v1/product/keyboard/${id}`);

@@ -1,0 +1,125 @@
+@use '../../../app/vars' as *;
+@use 'sass:color';
+
+.select {
+	position: relative;
+	display: inline-block;
+	font-size: 1em;
+
+	* {
+		text-wrap: nowrap;
+	}
+}
+
+.trigger {
+	cursor: pointer;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	gap: 0.25em;
+	font-size: 1em;
+	font-weight: $font-weight-regular;
+	color: $txt-secondary;
+	text-wrap: nowrap;
+	background-color: $white;
+	padding: 0.25em 1em;
+	border-radius: 0.25em;
+	box-shadow: 0 0 0 1px inset $accent-color;
+	transition: background-color 0.25s ease-out, color 0.25s ease-out;
+
+	&.null {
+		color: $txt-secondary;
+	}
+
+	&:hover {
+		border-color: color.adjust($gray-400, $lightness: 10%);
+		background-color: $white;
+	}
+}
+
+.chevron {
+	aspect-ratio: 1;
+	font-size: 0.75em;
+	transition: transform 0.25s ease-out, color 0.25s ease-out;
+
+	&.rotated {
+		transform: rotate(180deg);
+	}
+}
+
+.dropdown {
+	position: absolute;
+	top: 120%;
+	left: 0;
+	min-width: 100%;
+	width: max-content;
+	background-color: white;
+	border: 1px solid $gray-400;
+	border-radius: 0.25em;
+	list-style: none;
+	margin: 0;
+	max-height: $unit * 50;
+	overflow-y: auto;
+	z-index: 1000;
+	visibility: hidden;
+	opacity: 0;
+	transition: opacity 0.25s ease-out, visibility 0.25s ease-out;
+
+	&.right {
+		left: 0;
+	}
+
+	&.left {
+		right: 0;
+	}
+
+	&.open {
+		visibility: visible;
+		opacity: 1;
+	}
+}
+
+.searchItem {
+	position: sticky;
+	top: 0;
+	left: 0;
+	right: 0;
+	padding: $spacing-8;
+	background-color: $white;
+
+	input {
+		width: 100%;
+		padding: 6px;
+		border: 1px solid $gray-400;
+		border-radius: 0.25em;
+		font-size: $font-size-14;
+
+		&:focus {
+			outline: none;
+			border-color: $primary-color;
+		}
+	}
+}
+
+.item {
+	padding: $spacing-8 $spacing-16;
+	cursor: pointer;
+	font-size: $font-size-14;
+	font-weight: $font-weight-regular;
+
+	&.selected {
+		background-color: $primary-color;
+		color: $white;
+	}
+
+	&:not(.selected):hover {
+		background-color: rgba($primary-color, 0.1);
+		color: $primary-color;
+	}
+}
+
+.select.open .trigger {
+	border-color: $primary-color;
+	background-color: rgba($primary-color, 0.3);
+	color: $txt-white;
+}

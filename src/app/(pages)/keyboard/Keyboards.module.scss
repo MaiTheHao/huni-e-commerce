@@ -43,10 +43,11 @@
 			display: flex;
 			justify-content: center;
 			align-items: center;
-			padding: $spacing-8;
+			padding: 0.5em;
 			color: $primary-color;
 			border: 0.15em solid $primary-color;
 			border-radius: 50%;
+			font-size: 1em;
 
 			&:not(:disabled) {
 				cursor: pointer;
@@ -60,7 +61,7 @@
 
 			svg {
 				aspect-ratio: 1;
-				font-size: $font-size-16;
+				font-size: 1em;
 			}
 
 			transition: color 0.2s, border-color 0.2s, background-color 0.2s, transform 0.15s;
@@ -72,6 +73,10 @@
 			}
 			&:active:not(:disabled) {
 				transform: scale(0.96);
+			}
+
+			@media screen and (max-width: $breakpoint-md) {
+				font-size: 0.75em;
 			}
 		}
 

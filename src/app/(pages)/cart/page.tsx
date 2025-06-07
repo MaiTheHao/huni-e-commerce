@@ -1,5 +1,5 @@
 'use client';
-import AppBody from '@/components/app-body/AppBody';
+import AppBody from '@/components/layout/app-body/AppBody';
 import styles from './Cart.module.scss';
 import React, { useContext } from 'react';
 import tax from '@/data/tax.json';

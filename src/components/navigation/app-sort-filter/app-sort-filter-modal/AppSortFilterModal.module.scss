@@ -1,0 +1,53 @@
+@use '../../../../app/vars' as *;
+
+$option_per_row: 3;
+
+.modal__list {
+	display: flex;
+	flex-direction: column;
+	font-size: 1em;
+	gap: 1.5em;
+}
+
+.modal__item {
+	flex: 1;
+	display: flex;
+	flex-direction: column;
+	gap: 0.25em;
+	font-size: 1em;
+}
+
+.modal__label {
+	font-size: 1.15em;
+	font-weight: $font-weight-semibold;
+	color: $accent-color;
+	border-bottom: 1px solid rgba($accent-color, 0.25);
+}
+
+.modal__options {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 1ch;
+}
+
+.modal__option {
+	flex: 0 0 calc((100% - 1ch * ($option_per_row - 1)) / $option_per_row);
+	font-size: 1em;
+	padding: 0.25em 0.5em;
+	border-radius: 0.25em;
+	background-color: rgba($primary-color, 0.1);
+
+	@media screen and (max-width: $breakpoint-sm) {
+		flex: 0 0 calc((100% - 1ch * ($option_per_row - 1)) / 2);
+	}
+}
+
+.modal__actions {
+	display: flex;
+	align-items: center;
+	gap: 0.5em;
+	margin-bottom: 0.5em;
+	&__action {
+		flex: 1;
+	}
+}

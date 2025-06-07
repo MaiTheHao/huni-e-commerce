@@ -1,4 +1,4 @@
-import Table from '@/components/table/Table';
+import Table from '@/components/ui/table/Table';
 import styles from './Contact.module.scss';
 import React from 'react';
 import { information, socialLinks } from '@/consts/socials.setting';

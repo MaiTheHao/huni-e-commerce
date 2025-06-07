@@ -3,7 +3,7 @@ import { createContext } from 'react';
 import { ICartItem } from '../../interfaces/cart.interface';
 import { IProduct } from '@/interfaces';
 
-interface CartContextType {
+interface ICartContext {
 	items: ICartItem[];
 	products: Record<string, IProduct | null>;
 	setItems: (items: ICartItem[]) => void;
@@ -15,7 +15,7 @@ interface CartContextType {
 	handleAddToCart: (productId: string, quantity?: number) => Promise<void>;
 }
 
-const CartContext = createContext<CartContextType>({
+const CartContext = createContext<ICartContext>({
 	items: [],
 	products: {},
 	setItems: () => {},

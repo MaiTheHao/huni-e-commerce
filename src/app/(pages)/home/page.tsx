@@ -1,11 +1,11 @@
-import AppBody from '@/components/app-body/AppBody';
+import AppBody from '@/components/layout/app-body/AppBody';
 import styles from './Home.module.scss';
 import React, { Suspense } from 'react';
 import HomeItemsSection from './HomeItemsSection';
-import HeroSectionSkeleton from '@/components/hero-section/HeroSectionSkeleton';
 import HomeHeroSection from './HomeHeroSection';
 import { getKeyboardWithPagination } from '@/server/actions/keyboard/get-keyboards-with-pagination';
 import { heroSectionRepository } from '@/server/repositories/hero-section.repository';
+import HeroSectionSkeleton from '@/components/ui/hero-section/HeroSectionSkeleton';
 
 type Props = {};
 

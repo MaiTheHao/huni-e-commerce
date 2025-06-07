@@ -53,7 +53,7 @@
 .itemImage {
 	position: relative;
 	aspect-ratio: 1;
-	width: calc($unit * 20);
+	min-width: calc($unit * 20);
 	border-radius: $spacing-8;
 	background-color: $gray-200;
 	border: 1px solid $gray-300;
@@ -218,11 +218,6 @@
 }
 
 @media screen and (max-width: $breakpoint-sm) {
-	.itemImage {
-		aspect-ratio: 1;
-		max-width: 60px;
-	}
-
 	.itemPrice {
 		display: none;
 	}
@@ -234,9 +229,7 @@
 
 	.itemQuantityControl {
 		.itemQuantityControlInput {
-			width: max-content;
 			flex-direction: column-reverse;
-
 			button {
 				width: 100%;
 			}

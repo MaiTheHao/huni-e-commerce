@@ -1,11 +1,11 @@
 'use client';
-import Table from '@/components/table/Table';
+import Table from '@/components/ui/table/Table';
 import styles from './Contact.module.scss';
 import React, { useCallback, useEffect, useReducer } from 'react';
-import LabelInput from '@/components/label-input/LabelInput';
 import Link from 'next/link';
 import clsx from 'clsx';
-import Checkbox from '@/components/checkbox/Checkbox';
+import Checkbox from '@/components/ui/checkbox/Checkbox';
+import LabelInput from '@/components/ui/label-input/LabelInput';
 
 export type ContactFormState = {
 	name: string;
@@ -100,14 +100,18 @@ function ContactFormSection({}: Props) {
 
 								<Checkbox
 									id='policyAccept'
-									name='policyAccept'
 									checked={state.policyAccept}
-									onChange={(checked) =>
-										dispatch({ type: 'SET_FIELD', field: 'policyAccept', value: checked })
+									disabled={false}
+									onChange={() =>
+										dispatch({
+											type: 'SET_FIELD',
+											field: 'policyAccept',
+											value: !state.policyAccept,
+										})
 									}
 									label={
 										<>
-											Tôi đồng ý với{' '}
+											Tôi đồng ý với
 											<Link className={styles.privacyLink} href='/privacy-policy'>
 												Chính sách bảo mật
 											</Link>

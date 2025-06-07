@@ -1,4 +1,4 @@
-import AppBody from '@/components/app-body/AppBody';
+import AppBody from '@/components/layout/app-body/AppBody';
 import styles from './Contact.module.scss';
 import React from 'react';
 import ContactFormSection from './ContactFormSection';

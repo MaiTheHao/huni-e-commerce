@@ -1,0 +1,58 @@
+@use '../../../app/vars' as *;
+
+.appSortFilter {
+	position: relative;
+	display: inline-flex;
+	flex-wrap: wrap;
+	gap: 0.5em;
+	font-size: 1em;
+
+	&--default {
+		position: relative;
+
+		.appSortFilter__list {
+			display: flex;
+			flex-wrap: wrap;
+			gap: 0.5em;
+		}
+	}
+
+	&__main-actions {
+		position: relative;
+		display: inline-flex;
+		font-size: 1em;
+		gap: 0.5em;
+
+		&__item {
+			cursor: pointer;
+			background-color: $black-800 !important;
+			padding: 0.25em 1em;
+			border-radius: 0.25em;
+			box-shadow: 0 0 0 0 !important;
+			color: $white !important;
+			transition: background-color 0.25s ease-out, color 0.25s ease-out;
+		}
+
+		&__filter {
+			aspect-ratio: 1;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			height: 2em;
+			padding: 0;
+
+			svg {
+				aspect-ratio: 1 !important;
+			}
+
+			&:hover {
+				background-color: $black-800 !important;
+			}
+
+			&.active {
+				background-color: $accent-color !important;
+				color: $white !important;
+			}
+		}
+	}
+}

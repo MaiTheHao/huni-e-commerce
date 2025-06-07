@@ -5,8 +5,9 @@ import Image from 'next/image';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrashCan } from '@fortawesome/free-solid-svg-icons';
 import { ICartItem, IProduct } from '@/interfaces';
-import Table from '@/components/table/Table';
-import Quantity from '@/components/quantity/Quantity';
+import Table from '@/components/ui/table/Table';
+import Quantity from '@/components/ui/quantity/Quantity';
+import { toLocalePrice } from '@/util/toLocalePrice.util';
 
 type Props = {
 	items: ICartItem[];
@@ -55,10 +56,7 @@ function CartItemsTable({ items, products, loading, onRemove, onQuantity }: Prop
 											<div className={styles.itemName}>
 												<span>{product.name}</span>
 												<span className={styles.itemMobilePrice}>
-													{(product.price * item.quantity).toLocaleString('vi-VN', {
-														style: 'currency',
-														currency: 'VND',
-													})}
+													{toLocalePrice(product.price * item.quantity)}
 												</span>
 											</div>
 											<div className={styles.itemQuantityControl}>
@@ -68,13 +66,11 @@ function CartItemsTable({ items, products, loading, onRemove, onQuantity }: Prop
 													min={1}
 													max={product.stock}
 													className={styles.itemQuantityControlInput}
+													debounceTime={500}
 												/>
 											</div>
 											<span className={styles.itemPrice}>
-												{(product.price * item.quantity).toLocaleString('vi-VN', {
-													style: 'currency',
-													currency: 'VND',
-												})}
+												{toLocalePrice(product.price * item.quantity)}
 											</span>
 										</li>
 									);

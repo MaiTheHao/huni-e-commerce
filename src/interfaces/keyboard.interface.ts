@@ -1,6 +1,7 @@
 import mongoose from 'mongoose';
-import { IProduct } from './product.interface';
+import { IProduct, PRODUCT_SORTABLE_FIELDS, ProductSearchCriteria } from './product.interface';
 import { PRODUCT_SEARCHABLE_FIELDS, PRODUCT_FILTERABLE_FIELDS } from './product.interface';
+import { TFilterCriteria, TSortCriteria, TSearchCriteria } from './filter-sort-criteria.interface';
 
 export interface IKeyboard extends IProduct {
 	caseMaterial: string;
@@ -27,7 +28,10 @@ export const KEYBOARD_SWITCH_TYPES = ['Linear', 'Tactile', 'Clicky', 'Optical', 
 export type IKeyboardSwitchType = (typeof KEYBOARD_SWITCH_TYPES)[number];
 
 export const KEYBOARD_SEARCHABLE_FIELDS = [...PRODUCT_SEARCHABLE_FIELDS, 'model', 'collab', 'series', 'switchType'];
-export type KeyboardSearchableField = (typeof KEYBOARD_SEARCHABLE_FIELDS)[number];
+export type KeyboardSearchableFields = (typeof KEYBOARD_SEARCHABLE_FIELDS)[number];
+
+export const KEYBOARD_SORTABLE_FIELDS = [...PRODUCT_SORTABLE_FIELDS, 'layout'] as const;
+export type KeyboardSortableFields = (typeof KEYBOARD_SORTABLE_FIELDS)[number];
 
 export const KEYBOARD_FILTERABLE_FIELDS = [
 	...PRODUCT_FILTERABLE_FIELDS,
@@ -40,5 +44,10 @@ export const KEYBOARD_FILTERABLE_FIELDS = [
 	'switchType',
 	'rapidTrigger',
 	'rgb',
-];
-export type KeyboardFilterableField = (typeof KEYBOARD_FILTERABLE_FIELDS)[number];
+] as const;
+export type KeyboardFilterableFields = (typeof KEYBOARD_FILTERABLE_FIELDS)[number];
+
+// CRITERIA TYPES
+export type KeyboardFilterCriteria = TFilterCriteria<KeyboardFilterableFields>;
+export type KeyboardSortCriteria = TSortCriteria<KeyboardSortableFields>;
+export type KeyboardSearchCriteria = TSearchCriteria & ProductSearchCriteria;

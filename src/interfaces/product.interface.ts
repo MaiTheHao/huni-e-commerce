@@ -1,3 +1,5 @@
+import { TFilterCriteria, TSortCriteria, TSearchCriteria } from './filter-sort-criteria.interface';
+
 export interface IProduct {
 	_id: string;
 	name: string;
@@ -13,8 +15,12 @@ export interface IProduct {
 	updatedAt: Date;
 }
 
-// Định nghĩa các trường dưới dạng tuple const assertion
-export const PRODUCT_SEARCHABLE_FIELDS = ['name', 'description', 'tags'];
+export const PRODUCT_SEARCHABLE_FIELDS = ['name', 'description', 'tags'] as const;
+export type ProductSearchableFields = (typeof PRODUCT_SEARCHABLE_FIELDS)[number];
+
+export const PRODUCT_SORTABLE_FIELDS = ['name', 'price', 'discountPercent'] as const;
+export type ProductSortableFields = (typeof PRODUCT_SORTABLE_FIELDS)[number];
+
 export const PRODUCT_FILTERABLE_FIELDS = [
 	'price',
 	'discountPercent',
@@ -24,7 +30,10 @@ export const PRODUCT_FILTERABLE_FIELDS = [
 	'brand',
 	'createdAt',
 	'updatedAt',
-];
+] as const;
+export type ProductFilterableFields = (typeof PRODUCT_FILTERABLE_FIELDS)[number];
 
-export type ProductSearchableField = (typeof PRODUCT_SEARCHABLE_FIELDS)[number];
-export type ProductFilterableField = (typeof PRODUCT_FILTERABLE_FIELDS)[number];
+// CRITERIA TYPES
+export type ProductFilterCriteria = TFilterCriteria<ProductFilterableFields>;
+export type ProductSortCriteria = TSortCriteria<ProductSortableFields>;
+export type ProductSearchCriteria = TSearchCriteria;

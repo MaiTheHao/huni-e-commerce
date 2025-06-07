@@ -1,0 +1,321 @@
+@use '../../../app/vars' as *;
+
+// Variables
+$block-padding-y: $spacing-16;
+$block-padding-x: $spacing-44;
+$logo-size: $unit * 10;
+
+// Container
+.app-header {
+	position: sticky;
+	top: 0;
+	display: flex;
+	flex-direction: column;
+	z-index: 1000;
+}
+
+// Header
+.app-header__main {
+	position: relative;
+	background-color: $white;
+	border-bottom: 1px solid $txt-tertiary;
+	padding: 0 $app-body-padding-x-mobile;
+
+	@media screen and (min-width: $breakpoint-md) {
+		padding: 0 $app-body-padding-x-tablet;
+	}
+	@media screen and (min-width: $breakpoint-xl) {
+		padding: 0 $app-body-padding-x-desktop;
+	}
+}
+
+// Header Block
+.app-header__content {
+	position: relative;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding: $block-padding-y 0;
+}
+
+// Header Left Side
+.app-header__left-side {
+	width: max-content;
+	display: flex;
+	justify-content: flex-start;
+	align-items: center;
+	gap: $spacing-32;
+}
+
+// Header Logo
+.app-header__logo {
+	position: relative;
+	aspect-ratio: 1;
+	display: flex;
+	width: $logo-size;
+	justify-content: center;
+	align-items: center;
+
+	img {
+		transition: color 0.3s ease, transform 0.3s ease;
+	}
+
+	&:hover img {
+		color: $txt-primary;
+		transform: scale(1.1);
+	}
+	&:active img {
+		transform: scale(1);
+	}
+}
+
+// Header Navigation
+.app-header__nav {
+	width: max-content;
+	display: flex;
+	justify-content: flex-start;
+	align-items: center;
+	gap: $spacing-32;
+}
+
+.app-header__nav-item {
+	position: relative;
+	color: $txt-secondary;
+	font-size: $font-size-16;
+	font-weight: $font-weight-regular;
+
+	&[class*='link-underline--active'] {
+		color: $txt-primary;
+		&::after {
+			background-color: $txt-primary;
+		}
+	}
+	&::after {
+		background-color: $txt-tertiary;
+	}
+	&:active {
+		color: $txt-primary;
+	}
+}
+
+// Header Menu (Mobile)
+.app-header__menu {
+	display: none;
+}
+
+.app-header__menu-btn {
+	position: relative;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	padding: $spacing-12;
+	cursor: pointer;
+
+	svg {
+		aspect-ratio: 1;
+		width: $font-size-16;
+		color: $txt-secondary;
+		transition: color 0.3s ease, transform 0.3s ease;
+	}
+
+	&:hover svg {
+		color: $txt-primary;
+		transform: scale(1.1);
+	}
+}
+
+.app-header__menu-modal {
+	max-width: 80% !important;
+}
+
+.app-header__menu-logo {
+	aspect-ratio: 240/82;
+	position: relative;
+	height: 100%;
+}
+
+.app-header__menu-list {
+	display: flex;
+	flex-direction: column;
+	gap: $spacing-4;
+}
+
+.app-header__menu-item {
+	color: $txt-tertiary;
+	font-size: $font-size-16;
+	transition: color 0.3s ease;
+	padding: $spacing-8 0;
+
+	&:hover,
+	&:active {
+		color: $txt-primary;
+	}
+
+	&--active {
+		color: $txt-primary;
+	}
+}
+
+// Header Right Side
+.app-header__right-side {
+	position: relative;
+	width: max-content;
+	display: flex;
+	justify-content: flex-end;
+	align-items: center;
+}
+
+// Header Actions (Cart, Profile, etc.)
+.app-header__action {
+	position: relative;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	padding: $spacing-12;
+
+	svg {
+		aspect-ratio: 1;
+		width: $font-size-16;
+		color: $txt-secondary;
+		transition: color 0.3s ease, transform 0.3s ease;
+	}
+
+	&--clickable {
+		cursor: pointer;
+		&:hover svg {
+			color: $txt-primary;
+			transform: scale(1.1);
+		}
+	}
+}
+
+.app-header__cart-badge {
+	position: absolute;
+	top: -15%;
+	right: 0;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	padding: 0.25em;
+	color: $txt-white;
+	background-color: rgba($accent-color, 1);
+	border-radius: 1em;
+	font-size: $font-size-12;
+	line-height: 1;
+}
+
+// Header Search (Desktop)
+.app-header__search-wrapper {
+	display: inline-flex;
+	padding: $spacing-4 0;
+}
+
+.app-header__search {
+	display: inline-flex;
+	align-items: center;
+	gap: 1ch;
+	padding: $spacing-8 $spacing-12;
+	border-radius: 50em;
+	transition: background-color 0.3s ease;
+
+	&--expanded {
+		background-color: rgba($black-100, 1);
+	}
+}
+
+.app-header__search-input {
+	font-size: $font-size-14;
+	line-height: 16px;
+	width: 0;
+	color: $txt-secondary;
+	background-color: transparent;
+	transition: width 0.3s ease;
+
+	&--active {
+		width: 20ch;
+	}
+
+	&::placeholder {
+		color: $txt-tertiary;
+	}
+}
+
+.app-header__search-btn {
+	cursor: pointer;
+	display: inline-flex;
+	justify-content: center;
+	align-items: center;
+
+	svg {
+		aspect-ratio: 1;
+		font-size: $font-size-16;
+		color: $primary-color;
+		transition: color 0.3s ease, transform 0.3s ease;
+
+		&:hover {
+			transform: scale(1.1);
+		}
+		&:active {
+			transform: scale(0.9);
+		}
+	}
+}
+
+// Global Search Bar (Mobile)
+.app-header__global-search {
+	position: relative;
+	display: none;
+	justify-content: center;
+	align-items: center;
+	width: 100%;
+	background-color: $accent-color;
+	padding: $spacing-8 0;
+}
+
+.app-header__global-search-form {
+	display: inline-flex;
+	width: 80%;
+	max-width: calc(0.7 * 1200px);
+	background-color: $white;
+	padding: $spacing-4 $spacing-12;
+	border-radius: 50em;
+	box-shadow: 0 0 0 1px $primary-color;
+}
+
+.app-header__global-search-input {
+	flex: 1;
+	font-size: $font-size-14;
+	width: 20ch;
+	background-color: transparent;
+	color: $txt-secondary;
+	border: none;
+	outline: none;
+}
+
+.app-header__global-search-btn {
+	svg {
+		color: $primary-color;
+	}
+}
+
+// Responsive
+@media screen and (max-width: $breakpoint-md) {
+	.app-header__left-side {
+		gap: $spacing-8;
+	}
+	.app-header__nav {
+		display: none;
+	}
+	.app-header__menu {
+		display: flex;
+	}
+}
+
+@media screen and (max-width: $breakpoint-sm) {
+	.app-header__search-wrapper {
+		display: none;
+	}
+	.app-header__global-search {
+		display: inline-flex;
+	}
+}

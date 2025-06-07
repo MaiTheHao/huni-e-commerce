@@ -1,0 +1,425 @@
+{
+	"project_info": {
+		"name": "AppSortFilter Component Refactor",
+		"version": "2.0.0",
+		"estimated_total_time": "5-6 ngày làm việc",
+		"complexity": "HIGH",
+		"risk_level": "MEDIUM-HIGH",
+		"breaking_changes": false
+	},
+	"tasks": [
+		{
+			"id": "TASK_001",
+			"title": "Chuẩn hóa State Management cho PriceRangeSlider",
+			"priority": "CRITICAL",
+			"status": "PENDING",
+			"estimated_time": "4-6 hours",
+			"description": "PriceRangeSlider hiện tại có vấn đề về việc quản lý state không sync với parent component, gây ra UX không consistent",
+			"issues": [
+				"useState local không sync với props từ parent",
+				"onChange callback không được gọi đúng timing",
+				"Missing initial value từ filterCriteria context",
+				"Component không support controlled/uncontrolled mode properly"
+			],
+			"requirements": [
+				"Thêm useEffect để sync internal state với external props",
+				"Thêm prop 'value' để control component từ bên ngoài",
+				"Thêm prop 'defaultValue' cho uncontrolled mode",
+				"Sửa logic onChange để emit đúng format data",
+				"Thêm validation cho range values",
+				"Support keyboard navigation cho accessibility"
+			],
+			"files_to_modify": ["PriceRangeSlider.tsx", "PriceRangeSlider.module.scss"],
+			"dependencies": [],
+			"implementation_steps": [
+				"1. Backup existing component và create test cases",
+				"2. Thêm props interface: value?, defaultValue?, onChange, onChangeComplete",
+				"3. Implement controlled/uncontrolled logic với useEffect",
+				"4. Thêm validation cho min/max range values",
+				"5. Sửa handleChange để debounce và emit proper format",
+				"6. Thêm keyboard support (Arrow keys, Enter, Escape)",
+				"7. Unit test cho mọi scenarios",
+				"8. Manual test với FilterSelect integration"
+			],
+			"testing_strategy": [
+				"Unit tests cho controlled/uncontrolled modes",
+				"Integration test với FilterSelect",
+				"Accessibility testing với screen reader",
+				"Performance test với rapid value changes"
+			],
+			"rollback_plan": "Backup original component, có thể revert trong 5 phút",
+			"success_criteria": [
+				"Component sync perfect với parent state",
+				"Zero console errors/warnings",
+				"Pass tất cả unit tests",
+				"WCAG 2.1 AA compliance"
+			]
+		},
+		{
+			"id": "TASK_002",
+			"title": "Refactor FilterSelect Data Flow và State",
+			"priority": "CRITICAL",
+			"status": "PENDING",
+			"estimated_time": "6-8 hours",
+			"description": "FilterSelect có logic xử lý data rất phức tạp, mixing nhiều data types gây khó maintain và debug",
+			"issues": [
+				"Logic xử lý values[] và range[] trong cùng 1 component gây confusion",
+				"useEffect dependency không chính xác, có potential infinite loops",
+				"handleSubmit emit data không consistent format",
+				"State không được reset properly khi context changes",
+				"Type safety kém, missing proper interfaces"
+			],
+			"requirements": [
+				"Tách riêng logic xử lý cho checkbox vs range fields",
+				"Chuẩn hóa data format khi emit lên parent",
+				"Fix useEffect dependencies và add proper cleanup",
+				"Implement proper state reset mechanism",
+				"Improve type safety với proper TypeScript interfaces",
+				"Add field validation trước khi submit"
+			],
+			"files_to_modify": ["FilterSelect.tsx", "FilterSelect.module.scss"],
+			"dependencies": ["TASK_001"],
+			"implementation_steps": [
+				"1. Analyze current data flow và create state diagram",
+				"2. Tạo separate custom hooks: useCheckboxFilter, useRangeFilter",
+				"3. Refactor main component để sử dụng custom hooks",
+				"4. Implement validateFieldData() và sanitizeInput()",
+				"5. Fix useEffect dependencies với useCallback optimization",
+				"6. Add resetToDefault() method với proper cleanup",
+				"7. Update TypeScript interfaces và add strict typing",
+				"8. Comprehensive testing cho mọi field types",
+				"9. Performance testing với large datasets"
+			],
+			"testing_strategy": [
+				"Unit tests cho từng custom hook riêng biệt",
+				"Integration tests với mock filterCriteria data",
+				"Edge case testing (empty data, invalid formats)",
+				"Performance benchmarking với 1000+ options"
+			],
+			"rollback_plan": "Maintain old logic trong comments, progressive migration",
+			"success_criteria": [
+				"Clean separation between checkbox và range logic",
+				"Zero memory leaks trong useEffect",
+				"Consistent data format across tất cả field types",
+				"Improved TypeScript coverage > 90%"
+			]
+		},
+		{
+			"id": "TASK_003",
+			"title": "Optimize AppSortFilter Performance và Data Flow",
+			"priority": "HIGH",
+			"status": "PENDING",
+			"estimated_time": "4-5 hours",
+			"description": "AppSortFilter có unnecessary re-renders và data transformation logic quá phức tạp",
+			"issues": [
+				"useMemo dependencies gây re-compute không cần thiết",
+				"handleFilterSelectSubmit có quá nhiều responsibilities",
+				"Missing proper error handling cho malformed data",
+				"filterCriteria mapping không optimize cho performance"
+			],
+			"requirements": [
+				"Optimize useMemo/useCallback usage",
+				"Tách business logic ra separate utility functions",
+				"Implement proper error boundaries",
+				"Add data validation layer",
+				"Improve component composition"
+			],
+			"files_to_modify": ["AppSortFilter.tsx", "utils/filterUtils.ts"],
+			"dependencies": ["TASK_002"],
+			"implementation_steps": [
+				"1. Profile component với React DevTools",
+				"2. Tạo utility functions: transformCriteria, validateData, etc.",
+				"3. Implement memoization strategy cho expensive operations",
+				"4. Add error boundary với fallback UI",
+				"5. Refactor event handlers với proper useCallback",
+				"6. Add data layer validation",
+				"7. Performance testing và optimization",
+				"8. Code splitting nếu bundle size quá lớn"
+			],
+			"testing_strategy": [
+				"Performance benchmarking trước và sau optimization",
+				"Memory leak testing với continuous interactions",
+				"Error boundary testing với invalid data injection"
+			],
+			"rollback_plan": "Feature flags để switch between old/new logic",
+			"success_criteria": [
+				"50% reduction trong unnecessary re-renders",
+				"Proper error handling cho mọi edge cases",
+				"Bundle size không tăng > 5%"
+			]
+		},
+		{
+			"id": "TASK_004",
+			"title": "Fix AppSortFilterModal State Synchronization",
+			"priority": "HIGH",
+			"status": "PENDING",
+			"estimated_time": "3-4 hours",
+			"description": "Modal có race conditions và sync issues với global filter context",
+			"issues": [
+				"localFilterCriteria không sync kịp với context updates",
+				"Missing loading states khi submit changes",
+				"No validation trước khi apply filters",
+				"Poor UX khi có conflicting states"
+			],
+			"requirements": [
+				"Implement proper state sync mechanism",
+				"Add loading/submitting states",
+				"Add pre-submit validation",
+				"Improve error handling và user feedback",
+				"Add confirmation dialog cho destructive actions"
+			],
+			"files_to_modify": ["AppSortFilterModal.tsx", "AppSortFilterModal.module.scss"],
+			"dependencies": ["TASK_003"],
+			"implementation_steps": [
+				"1. Implement useModal custom hook cho state management",
+				"2. Add proper sync logic với debounced updates",
+				"3. Implement validation layer với user-friendly messages",
+				"4. Add loading spinners và disabled states",
+				"5. Implement confirmation dialogs",
+				"6. Add proper error handling với retry mechanism",
+				"7. Accessibility improvements cho modal"
+			],
+			"testing_strategy": [
+				"Modal interaction testing (open/close/submit cycles)",
+				"State sync testing với rapid context changes",
+				"Accessibility testing với keyboard navigation"
+			],
+			"rollback_plan": "Maintain current modal logic as fallback",
+			"success_criteria": [
+				"Perfect state sync với zero race conditions",
+				"Proper loading states cho mọi actions",
+				"WCAG 2.1 compliance cho modal interactions"
+			]
+		},
+		{
+			"id": "TASK_005",
+			"title": "SCSS Architecture và Design System Integration",
+			"priority": "MEDIUM",
+			"status": "PENDING",
+			"estimated_time": "4-5 hours",
+			"description": "Chuẩn hóa SCSS structure và integrate với design system",
+			"issues": [
+				"Inconsistent naming conventions",
+				"Missing responsive design patterns",
+				"No design tokens integration",
+				"Poor CSS organization và reusability"
+			],
+			"requirements": [
+				"Implement BEM naming convention consistently",
+				"Add design tokens và CSS custom properties",
+				"Create responsive design mixins",
+				"Optimize CSS bundle size",
+				"Add dark mode support"
+			],
+			"files_to_modify": [
+				"AppSortFilter.module.scss",
+				"AppSortFilterModal.module.scss",
+				"FilterSelect.module.scss",
+				"PriceRangeSlider.module.scss",
+				"styles/design-tokens.scss",
+				"styles/mixins.scss"
+			],
+			"dependencies": ["TASK_004"],
+			"implementation_steps": [
+				"1. Audit current SCSS và create style guide",
+				"2. Create design tokens file với colors, spacing, typography",
+				"3. Implement BEM naming convention",
+				"4. Create responsive mixins và utility classes",
+				"5. Add dark mode CSS custom properties",
+				"6. Optimize CSS với PurgeCSS integration",
+				"7. Add CSS-in-JS fallback cho dynamic styles"
+			],
+			"testing_strategy": [
+				"Visual regression testing",
+				"Cross-browser compatibility testing",
+				"Dark mode testing",
+				"Mobile responsiveness testing"
+			],
+			"rollback_plan": "CSS variables cho easy theme switching",
+			"success_criteria": [
+				"Consistent visual design across all components",
+				"CSS bundle size reduction 20%",
+				"Perfect responsive behavior",
+				"Dark mode support"
+			]
+		},
+		{
+			"id": "TASK_006",
+			"title": "Testing Infrastructure và Quality Assurance",
+			"priority": "HIGH",
+			"status": "PENDING",
+			"estimated_time": "6-8 hours",
+			"description": "Implement comprehensive testing strategy cho toàn bộ component suite",
+			"issues": [
+				"Missing unit tests cho core functionality",
+				"No integration testing strategy",
+				"Missing accessibility testing",
+				"No performance benchmarking"
+			],
+			"requirements": [
+				"Implement unit tests với >90% coverage",
+				"Add integration tests với React Testing Library",
+				"Add accessibility testing với jest-axe",
+				"Implement visual regression testing",
+				"Add performance benchmarking"
+			],
+			"files_to_modify": [
+				"__tests__/PriceRangeSlider.test.tsx",
+				"__tests__/FilterSelect.test.tsx",
+				"__tests__/AppSortFilter.test.tsx",
+				"__tests__/AppSortFilterModal.test.tsx",
+				"__tests__/integration/SortFilterFlow.test.tsx",
+				"__tests__/performance/ComponentPerf.test.tsx"
+			],
+			"dependencies": ["TASK_005"],
+			"implementation_steps": [
+				"1. Setup testing infrastructure (Jest, RTL, jest-axe)",
+				"2. Write unit tests cho mọi components",
+				"3. Create integration test suite",
+				"4. Add accessibility testing automation",
+				"5. Implement visual regression testing với Chromatic",
+				"6. Setup performance benchmarking với @testing-library/performance",
+				"7. Add E2E tests cho critical user flows",
+				"8. Setup CI/CD integration với test automation"
+			],
+			"testing_strategy": [
+				"TDD approach cho new features",
+				"Regression testing cho bug fixes",
+				"Performance monitoring trong CI/CD",
+				"Accessibility auditing trong mọi PR"
+			],
+			"rollback_plan": "Comprehensive test coverage cho safe refactoring",
+			"success_criteria": [
+				"Unit test coverage >90%",
+				"Zero accessibility violations",
+				"Performance regression detection",
+				"Automated testing trong CI/CD"
+			]
+		},
+		{
+			"id": "TASK_007",
+			"title": "Documentation và Developer Experience",
+			"priority": "MEDIUM",
+			"status": "PENDING",
+			"estimated_time": "3-4 hours",
+			"description": "Improve developer experience với comprehensive documentation",
+			"issues": [
+				"Missing component documentation",
+				"No usage examples",
+				"Poor TypeScript intellisense",
+				"Missing migration guide"
+			],
+			"requirements": [
+				"Create comprehensive component docs",
+				"Add Storybook stories",
+				"Improve TypeScript definitions",
+				"Create migration guide",
+				"Add architectural decision records (ADRs)"
+			],
+			"files_to_modify": [
+				"README.md",
+				"docs/ComponentAPI.md",
+				"docs/MigrationGuide.md",
+				"stories/AppSortFilter.stories.tsx",
+				"types/index.ts"
+			],
+			"dependencies": ["TASK_006"],
+			"implementation_steps": [
+				"1. Create component API documentation",
+				"2. Write Storybook stories với controls",
+				"3. Improve TypeScript definitions với JSDoc",
+				"4. Create migration guide từ v1 -> v2",
+				"5. Document architectural decisions",
+				"6. Add code examples và best practices",
+				"7. Setup automated docs deployment"
+			],
+			"testing_strategy": [
+				"Documentation accuracy validation",
+				"Example code compilation testing",
+				"Storybook accessibility testing"
+			],
+			"rollback_plan": "Version-controlled documentation",
+			"success_criteria": [
+				"Complete API documentation",
+				"Interactive Storybook examples",
+				"Easy migration path documented",
+				"Improved developer onboarding"
+			]
+		}
+	],
+	"implementation_phases": {
+		"Phase 1 - Core Stability": {
+			"tasks": ["TASK_001", "TASK_002"],
+			"duration": "2-3 days",
+			"goal": "Fix critical state management issues",
+			"success_metrics": ["Zero state sync bugs", "Proper TypeScript coverage"]
+		},
+		"Phase 2 - Performance & UX": {
+			"tasks": ["TASK_003", "TASK_004"],
+			"duration": "1-2 days",
+			"goal": "Optimize performance và improve UX",
+			"success_metrics": ["50% render optimization", "Better error handling"]
+		},
+		"Phase 3 - Polish & Quality": {
+			"tasks": ["TASK_005", "TASK_006", "TASK_007"],
+			"duration": "2-3 days",
+			"goal": "Polish UI và ensure quality",
+			"success_metrics": ["Design consistency", ">90% test coverage", "Complete docs"]
+		}
+	},
+	"risk_assessment": {
+		"high_risks": [
+			{
+				"risk": "Breaking changes trong FilterSelect refactor",
+				"probability": "MEDIUM",
+				"impact": "HIGH",
+				"mitigation": "Progressive migration với feature flags"
+			},
+			{
+				"risk": "Performance regression sau optimization",
+				"probability": "LOW",
+				"impact": "MEDIUM",
+				"mitigation": "Comprehensive performance testing"
+			}
+		],
+		"medium_risks": [
+			{
+				"risk": "SCSS refactor gây visual regressions",
+				"probability": "MEDIUM",
+				"impact": "MEDIUM",
+				"mitigation": "Visual regression testing với Chromatic"
+			}
+		]
+	},
+	"success_metrics": {
+		"performance": {
+			"target_bundle_size": "<= current + 5%",
+			"target_render_time": "< 16ms cho 60fps",
+			"target_memory_usage": "No memory leaks detected"
+		},
+		"quality": {
+			"test_coverage": "> 90%",
+			"accessibility_score": "WCAG 2.1 AA compliance",
+			"typescript_coverage": "> 95%"
+		},
+		"user_experience": {
+			"zero_state_sync_bugs": true,
+			"consistent_loading_states": true,
+			"proper_error_handling": true
+		}
+	},
+	"team_assignments": {
+		"lead_developer": "Review architecture decisions",
+		"frontend_developer": "Implement tasks 1-4",
+		"ui_developer": "Handle task 5 (SCSS)",
+		"qa_engineer": "Focus on task 6 (Testing)",
+		"tech_writer": "Handle task 7 (Documentation)"
+	},
+	"notes": [
+		"Mỗi task PHẢI có comprehensive unit tests trước khi merge",
+		"Breaking changes cần approval từ lead developer",
+		"Performance regression là blocking issue",
+		"Accessibility compliance là mandatory",
+		"Code review required cho mọi changes > 50 lines"
+	]
+}

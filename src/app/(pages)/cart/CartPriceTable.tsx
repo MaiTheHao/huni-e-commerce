@@ -3,7 +3,7 @@ import React from 'react';
 import styles from './Cart.module.scss';
 import clsx from 'clsx';
 import { ICartItem, IProduct } from '@/interfaces';
-import Table from '@/components/table/Table';
+import Table from '@/components/ui/table/Table';
 import Link from 'next/link';
 
 interface Props {

@@ -1,0 +1,268 @@
+@import '../../../app/vars';
+
+.wrapper {
+	position: relative;
+	display: inline-block;
+}
+
+.tooltip {
+	position: absolute;
+	z-index: 1000;
+	padding: $spacing-8 $spacing-12;
+	background-color: $black-500;
+	color: $txt-white;
+	border-radius: $spacing-4;
+	font-size: $font-size-12;
+	font-weight: $font-weight-regular;
+	line-height: 1.4;
+	white-space: nowrap;
+	opacity: 0;
+	visibility: hidden;
+	transform: scale(0.95);
+	transition: all 0.2s ease-in-out;
+	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+	pointer-events: none;
+
+	&[aria-hidden='false'] {
+		opacity: 1;
+		visibility: visible;
+		transform: scale(1);
+	}
+
+	// Kích thước tooltip
+	&--small {
+		padding: $spacing-4 $spacing-8;
+		font-size: $font-size-12;
+		max-width: 150px;
+	}
+
+	&--medium {
+		padding: $spacing-8 $spacing-12;
+		font-size: $font-size-14;
+		max-width: 200px;
+	}
+
+	&--large {
+		padding: $spacing-12 $spacing-16;
+		font-size: $font-size-14;
+		max-width: 300px;
+		white-space: normal;
+	}
+
+	// Vị trí tooltip
+	&--top {
+		bottom: 100%;
+		left: 50%;
+		transform: translateX(-50%) translateY(-$spacing-8) scale(0.95);
+		margin-bottom: $spacing-4;
+
+		&[aria-hidden='false'] {
+			transform: translateX(-50%) translateY(-$spacing-8) scale(1);
+		}
+
+		&.tooltip--with-arrow .tooltip__arrow {
+			top: 100%;
+			left: 50%;
+			transform: translateX(-50%);
+			border-top-color: $black-700;
+			border-left-color: transparent;
+			border-right-color: transparent;
+			border-bottom-color: transparent;
+		}
+	}
+
+	&--bottom {
+		top: 100%;
+		left: 50%;
+		transform: translateX(-50%) translateY($spacing-8) scale(0.95);
+		margin-top: $spacing-4;
+
+		&[aria-hidden='false'] {
+			transform: translateX(-50%) translateY($spacing-8) scale(1);
+		}
+
+		&.tooltip--with-arrow .tooltip__arrow {
+			bottom: 100%;
+			left: 50%;
+			transform: translateX(-50%);
+			border-bottom-color: $black-700;
+			border-left-color: transparent;
+			border-right-color: transparent;
+			border-top-color: transparent;
+		}
+	}
+
+	&--left {
+		right: 100%;
+		top: 50%;
+		transform: translateY(-50%) translateX(-$spacing-8) scale(0.95);
+		margin-right: $spacing-4;
+
+		&[aria-hidden='false'] {
+			transform: translateY(-50%) translateX(-$spacing-8) scale(1);
+		}
+
+		&.tooltip--with-arrow .tooltip__arrow {
+			left: 100%;
+			top: 50%;
+			transform: translateY(-50%);
+			border-left-color: $black-700;
+			border-top-color: transparent;
+			border-bottom-color: transparent;
+			border-right-color: transparent;
+		}
+	}
+
+	&--right {
+		left: 100%;
+		top: 50%;
+		transform: translateY(-50%) translateX($spacing-8) scale(0.95);
+		margin-left: $spacing-4;
+
+		&[aria-hidden='false'] {
+			transform: translateY(-50%) translateX($spacing-8) scale(1);
+		}
+
+		&.tooltip--with-arrow .tooltip__arrow {
+			right: 100%;
+			top: 50%;
+			transform: translateY(-50%);
+			border-right-color: $black-700;
+			border-top-color: transparent;
+			border-bottom-color: transparent;
+			border-left-color: transparent;
+		}
+	}
+
+	// Nội dung tooltip
+	&__content {
+		display: block;
+		word-wrap: break-word;
+	}
+
+	// Mũi tên chỉ hướng
+	&__arrow {
+		position: absolute;
+		width: 0;
+		height: 0;
+		border: $spacing-4 solid transparent;
+	}
+
+	// Responsive
+	@media (max-width: $breakpoint-md) {
+		&--large {
+			max-width: 250px;
+			font-size: $font-size-12;
+		}
+	}
+
+	@media (max-width: $breakpoint-sm) {
+		font-size: $font-size-12;
+		padding: $spacing-6 $spacing-8;
+
+		&--medium {
+			max-width: 180px;
+		}
+
+		&--large {
+			max-width: 200px;
+			padding: $spacing-8 $spacing-12;
+		}
+
+		&__arrow {
+			border-width: 3px;
+		}
+	}
+}
+
+// Biến thể màu sắc
+.tooltip {
+	// Dark theme (mặc định)
+	&--dark {
+		background-color: $black-700;
+		color: $txt-white;
+
+		&.tooltip--with-arrow {
+			.tooltip__arrow {
+				&[class*='border-top-color'] {
+					border-top-color: $black-700;
+				}
+				&[class*='border-bottom-color'] {
+					border-bottom-color: $black-700;
+				}
+				&[class*='border-left-color'] {
+					border-left-color: $black-700;
+				}
+				&[class*='border-right-color'] {
+					border-right-color: $black-700;
+				}
+			}
+		}
+	}
+
+	// Light theme
+	&--light {
+		background-color: $white;
+		color: $txt-primary;
+		border: 1px solid $black-200;
+		box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+
+		.tooltip__arrow {
+			&[style*='border-top-color'] {
+				border-top-color: $white;
+			}
+			&[style*='border-bottom-color'] {
+				border-bottom-color: $white;
+			}
+			&[style*='border-left-color'] {
+				border-left-color: $white;
+			}
+			&[style*='border-right-color'] {
+				border-right-color: $white;
+			}
+		}
+	}
+
+	// Success theme
+	&--success {
+		background-color: map.get($success, bg);
+		color: map.get($success, text);
+		border: 1px solid map.get($success, icon);
+	}
+
+	// Warning theme
+	&--warning {
+		background-color: map.get($warning, bg);
+		color: map.get($warning, text);
+		border: 1px solid map.get($warning, icon);
+	}
+
+	// Error theme
+	&--error {
+		background-color: map.get($error, bg);
+		color: map.get($error, text);
+		border: 1px solid map.get($error, icon);
+	}
+
+	// Info theme
+	&--info {
+		background-color: map.get($info, bg);
+		color: map.get($info, text);
+		border: 1px solid map.get($info, icon);
+	}
+}
+
+// Animation enhancements
+.tooltip {
+	&--animate-fade {
+		transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
+	}
+
+	&--animate-scale {
+		transition: all 0.2s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+	}
+
+	&--animate-slide {
+		transition: all 0.25s ease-out;
+	}
+}

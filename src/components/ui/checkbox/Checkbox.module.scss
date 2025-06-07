@@ -1,0 +1,59 @@
+@use '../../../app/vars' as *;
+
+.checkbox {
+	user-select: none;
+	font-size: 1em;
+	font-weight: $font-weight-regular;
+	color: $txt-secondary;
+	cursor: pointer;
+	display: flex;
+	align-items: center;
+	gap: 0.5em;
+
+	&__input {
+		appearance: none;
+		position: absolute;
+		opacity: 0;
+		pointer-events: none;
+		width: 0;
+		height: 0;
+	}
+
+	&__box {
+		position: relative;
+		width: 1em;
+		height: 1em;
+		border-radius: 50%;
+		border: 1px solid $accent-color;
+		background-color: $white;
+		cursor: pointer;
+		transition: background-color 0.3s, border-color 0.3s;
+		overflow: hidden;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+	}
+
+	&__title {
+		text-wrap: nowrap;
+	}
+
+	&__checked {
+		position: relative;
+		aspect-ratio: 1;
+		width: 0.5em;
+		border-radius: 0.5em;
+		background-color: $accent-color;
+	}
+
+	&--disabled {
+		opacity: 0.6;
+		cursor: not-allowed;
+	}
+
+	&:hover:not(.checkbox--disabled) {
+		.checkbox__title {
+			color: $txt-primary;
+		}
+	}
+}

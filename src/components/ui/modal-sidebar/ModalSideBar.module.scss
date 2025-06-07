@@ -1,0 +1,134 @@
+@use '../../../app/vars' as *;
+
+$modal-bg-color: rgba($black-300, 0.8);
+$modal-z-index: 1000;
+$modal-animation-timing: 0.35s !default;
+
+.sideBarModal {
+	position: fixed;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	background-color: $modal-bg-color;
+	z-index: $modal-z-index;
+	opacity: 1;
+	transition: opacity $modal-animation-timing ease;
+	animation: fadeIn $modal-animation-timing ease-in-out;
+	overflow-y: auto;
+
+	& {
+		scrollbar-width: none; /* Firefox */
+		-ms-overflow-style: none; /* IE and Edge */
+	}
+	&::-webkit-scrollbar {
+		display: none; /* Chrome, Safari, Opera */
+	}
+
+	&.slideOut {
+		opacity: 0;
+		pointer-events: none;
+
+		.sideBarModalContent {
+			transform: translate(-100%);
+		}
+	}
+
+	.sideBarModalContent {
+		position: relative;
+		top: 0;
+		left: 0;
+		width: 100%;
+		min-height: max-content;
+		height: 100vh;
+		max-width: 600px;
+		display: flex;
+		flex-direction: column;
+		background-color: $white;
+		animation: slideIn $modal-animation-timing ease;
+		transition: transform $modal-animation-timing ease;
+
+		.sideBarModalHeader {
+			position: relative;
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+			background: $accent-color;
+			padding: $spacing-16;
+
+			h2 {
+				color: $white;
+				font-size: $font-size-24;
+				font-weight: $font-weight-bold;
+			}
+
+			.closeButton {
+				cursor: pointer;
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				border-radius: 50%;
+
+				svg {
+					aspect-ratio: 1;
+					width: $font-size-24;
+					height: $font-size-24;
+					color: $white;
+					transition: transform $modal-animation-timing ease;
+				}
+
+				&:hover {
+					svg {
+						transform: scale(1.1);
+					}
+				}
+			}
+		}
+
+		.sideBarModalBody {
+			position: relative;
+			min-height: max-content;
+			height: 100%;
+			padding: $spacing-24;
+
+			@media (max-width: $breakpoint-md) {
+				padding: $spacing-16;
+			}
+			@media (max-width: $breakpoint-xs-plus) {
+				padding: $spacing-12;
+			}
+		}
+
+		.sideBarModalFooterStickyFooter {
+			position: sticky;
+			inset: 0 auto 0 0;
+			padding: 0 $spacing-24;
+
+			@media (max-width: $breakpoint-md) {
+				padding: 0 $spacing-16;
+			}
+			@media (max-width: $breakpoint-xs-plus) {
+				padding: 0 $spacing-12;
+			}
+		}
+	}
+}
+
+// Global animations
+@keyframes fadeIn {
+	0% {
+		opacity: 0;
+	}
+	100% {
+		opacity: 1;
+	}
+}
+
+@keyframes slideIn {
+	0% {
+		transform: translateX(-150%);
+	}
+	100% {
+		transform: translateX(0);
+	}
+}

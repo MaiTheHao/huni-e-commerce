@@ -14,4 +14,7 @@ export * from './repository.interface';
 
 // UI Components
 export * from './route.interface';
-export * from './product-cart.interface';
+export * from './product-card.interface';
+
+// API REQ & RES
+export * from './api/search-filter-keyboards.interface';

@@ -30,32 +30,32 @@ class ResponseService {
 
 	error(message = 'Error', statusCode = HTTPStatus.BAD_REQUEST, error?: any) {
 		const response: IResponse = { message, error };
-		return NextResponse.json(response, { status: statusCode });
+		return NextResponse.json(response, { status: statusCode, statusText: message });
 	}
 
 	badRequest(message = 'Bad request', error?: any) {
 		const response: IResponse = { message, error };
-		return NextResponse.json(response, { status: HTTPStatus.BAD_REQUEST });
+		return NextResponse.json(response, { status: HTTPStatus.BAD_REQUEST, statusText: message });
 	}
 
 	unauthorized(message = 'Unauthorized', error?: any) {
 		const response: IResponse = { message, error };
-		return NextResponse.json(response, { status: HTTPStatus.UNAUTHORIZED });
+		return NextResponse.json(response, { status: HTTPStatus.UNAUTHORIZED, statusText: message });
 	}
 
 	notFound(message = 'Not found', error?: any) {
 		const response: IResponse = { message, error };
-		return NextResponse.json(response, { status: HTTPStatus.NOT_FOUND });
+		return NextResponse.json(response, { status: HTTPStatus.NOT_FOUND, statusText: message });
 	}
 
 	duplicated(message = 'Duplicated', error?: any) {
 		const response: IResponse = { message, error };
-		return NextResponse.json(response, { status: HTTPStatus.CONFLICT });
+		return NextResponse.json(response, { status: HTTPStatus.CONFLICT, statusText: message });
 	}
 
 	alreadyChecked(message = 'Already checked', error?: any) {
 		const response: IResponse = { message, error };
-		return NextResponse.json(response, { status: HTTPStatus.BAD_REQUEST });
+		return NextResponse.json(response, { status: HTTPStatus.BAD_REQUEST, statusText: message });
 	}
 }
 

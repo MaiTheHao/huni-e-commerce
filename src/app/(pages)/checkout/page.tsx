@@ -204,7 +204,7 @@
 // 										id='payment-cod'
 // 										checked={state.paymentMethod === 'cod'}
 // 										onChange={() => handleChangePaymentMethod('cod')}
-// 										unDiscard
+// 										preventUncheck
 // 										className={styles.paymentMethod}
 // 									/>
 // 									<Checkbox
@@ -213,7 +213,7 @@
 // 										id='payment-store'
 // 										checked={state.paymentMethod === 'store'}
 // 										onChange={() => handleChangePaymentMethod('store')}
-// 										unDiscard
+// 										preventUncheck
 // 										className={styles.paymentMethod}
 // 									/>
 // 									<Checkbox
@@ -222,7 +222,7 @@
 // 										id='payment-bank'
 // 										checked={state.paymentMethod === 'bank'}
 // 										onChange={() => handleChangePaymentMethod('bank')}
-// 										unDiscard
+// 										preventUncheck
 // 										className={styles.paymentMethod}
 // 									/>
 // 								</div>

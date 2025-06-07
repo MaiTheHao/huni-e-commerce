@@ -1,0 +1,51 @@
+@use '../../../app/vars' as *;
+
+.rangeSlider {
+	width: 100%;
+	height: max-content;
+	user-select: none;
+}
+
+.rangeSlider__track {
+	position: relative;
+	height: $spacing-6;
+	background: $gray-200;
+	border-radius: $spacing-4;
+}
+
+.rangeSlider__track__hightlight {
+	position: absolute;
+	height: 100%;
+	background: $accent-color;
+	border-radius: $spacing-4;
+}
+
+.rangeSlider__track__thumb {
+	position: absolute;
+	top: 50%;
+	transform: translate(-50%, -50%);
+	width: $spacing-16;
+	height: $spacing-16;
+	background: $white;
+	border: 2px solid $accent-color;
+	border-radius: 50%;
+	cursor: pointer;
+	box-shadow: 0 2px 8px rgba($black-900, 0.1);
+	transition: border-color 0.2s ease, transform 0.2s ease;
+	z-index: 2;
+
+	&:hover {
+		border-color: $primary-color;
+		transform: translate(-50%, -50%) scale(1.1);
+	}
+
+	&:active {
+		border-color: $secondary-color;
+		transform: translate(-50%, -50%) scale(0.95);
+	}
+
+	&:focus {
+		outline: 2px solid rgba($accent-color, 0.3);
+		outline-offset: 2px;
+	}
+}

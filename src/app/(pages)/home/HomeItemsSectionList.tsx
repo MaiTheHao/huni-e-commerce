@@ -1,5 +1,5 @@
-import ProductList from '@/components/product-list/ProductList';
-import { IProduct, IProductCart } from '@/interfaces';
+import ProductList from '@/components/product/product-list/ProductList';
+import { IProduct, IProductCard } from '@/interfaces';
 import { loggerService } from '@/services/logger.service';
 import { productsToProductCarts } from '@/util/productToProductCart.util';
 import React from 'react';
@@ -10,7 +10,7 @@ type Props = {
 };
 
 async function HomeItemsSectionList({ fetchWithPagination, productType }: Props) {
-	let productCartItems: IProductCart[] = [];
+	let productCartItems: IProductCard[] = [];
 	try {
 		const products = (await fetchWithPagination(1, 4)) as IProduct[];
 		productCartItems = productsToProductCarts(products, productType);

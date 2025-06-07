@@ -1,8 +1,8 @@
 import React from 'react';
 import { getKeyboardHeroSection } from '@/server/actions/herosection/get-keyboard-herosection';
-import HeroSection from '@/components/hero-section/HeroSection';
 import { IHeroSection, IKeyboard } from '@/interfaces';
-import HeroSectionSkeleton from '@/components/hero-section/HeroSectionSkeleton';
+import HeroSectionSkeleton from '@/components/ui/hero-section/HeroSectionSkeleton';
+import HeroSection from '@/components/ui/hero-section/HeroSection';
 
 type Props = {};
 

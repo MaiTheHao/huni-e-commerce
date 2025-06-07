@@ -1,0 +1,71 @@
+@use '../../../app/vars' as *;
+
+.quantity {
+	display: inline-flex;
+	align-items: center;
+	background: $white;
+	box-shadow: 0 0 0 1px inset $gray-300;
+	border-radius: $spacing-4;
+	padding: $spacing-4;
+	gap: $spacing-8;
+	min-width: 96px;
+
+	@media (max-width: $breakpoint-sm) {
+		padding: $spacing-4 $spacing-4;
+		min-width: 72px;
+		gap: $spacing-4;
+	}
+}
+
+.quantity__button {
+	width: $font-size-24;
+	height: $font-size-24;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	background: transparent;
+	border-radius: $spacing-4;
+	color: $txt-accent;
+	font-size: $font-size-18;
+	font-weight: $font-weight-semibold;
+	cursor: pointer;
+	transition: background 0.15s, border 0.15s, color 0.15s;
+
+	&:hover:not(:disabled) {
+		background: $primary-color;
+		color: $txt-white;
+		border-color: $primary-color;
+	}
+
+	&:active:not(:disabled) {
+		background: $secondary-color;
+		border-color: $secondary-color;
+	}
+
+	&:disabled {
+		background: $gray-200;
+		color: $gray-400;
+		border-color: $gray-200;
+		cursor: not-allowed;
+		opacity: 0.7;
+	}
+
+	@media (max-width: $breakpoint-sm) {
+		width: 28px;
+		height: 28px;
+		font-size: $font-size-16;
+	}
+}
+
+.quantity__value {
+	width: 4ch;
+	text-align: center;
+	font-size: $font-size-16;
+	font-weight: $font-weight-semibold;
+	color: $txt-accent;
+
+	@media (max-width: $breakpoint-sm) {
+		font-size: $font-size-14;
+		min-width: 18px;
+	}
+}

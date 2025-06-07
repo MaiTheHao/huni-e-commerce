@@ -34,21 +34,25 @@ $success: (
 	bg: #e6f9f0,
 	icon: #27ae60,
 	text: #145c32,
+	border: #d4f0e6,
 );
 $info: (
 	bg: #eaf6fb,
 	icon: #2980b9,
 	text: #17496b,
+	border: #d0e8f2,
 );
 $warning: (
 	bg: #fff8e1,
 	icon: #f1c40f,
 	text: #7d6608,
+	border: #f9f3d8,
 );
 $error: (
 	bg: #fdecea,
 	icon: #e74c3c,
 	text: #922b21,
+	border: #f8d7da,
 );
 
 $unit: 0.25rem;
@@ -88,7 +92,7 @@ $breakpoint-md: 768px; // Máy tính bảng
 $breakpoint-lg: 992px; // Laptop nhỏ
 $breakpoint-xl: 1200px; // Desktop
 $breakpoint-xxl: 1400px; // Màn hình lớn
-$app-max-width: 1440px;
+$app-max-width: 1200px;
 $app-body-padding-x-desktop: 24px;
 $app-body-padding-y-desktop: 56px;
 

@@ -1,0 +1,14 @@
+@use '../../../app/vars' as *;
+
+.info {
+	.name {
+		min-width: 10ch;
+		min-height: 1.5em;
+	}
+	.price {
+		.discountedPrice {
+			min-width: 8ch;
+			min-height: 1em;
+		}
+	}
+}

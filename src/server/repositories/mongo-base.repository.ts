@@ -7,18 +7,21 @@ import {
 } from '@/interfaces';
 import { Model, Document, FilterQuery, Types } from 'mongoose';
 import { connectToDatabase, disconnectFromDatabase } from '../database/connection';
-import { extractType } from '@/util/cast-type.util';
 import { getPagination } from '@/util/getPagination';
+import { generateFilterQuery } from '@/util/query/generateFilterQuery.util';
+import { generateSearchQuery } from '@/util/query/generateSearchQuery.util';
+import { TSortCriteria } from '@/interfaces/filter-sort-criteria.interface';
+import { generateSortPipeline } from '@/util/query/generateSortPipeline.util';
 
 export class MongoBaseRepository<T, D extends Document> implements IMongoRepository<T, D> {
 	protected readonly model: Model<D>;
-	protected searchableFields = PRODUCT_SEARCHABLE_FIELDS;
-	protected filterableFields = PRODUCT_FILTERABLE_FIELDS;
+	protected searchableFields = [...PRODUCT_SEARCHABLE_FIELDS] as string[];
+	protected filterableFields = [...PRODUCT_FILTERABLE_FIELDS] as string[];
 
-	constructor(model: Model<D>, searchableFields?: string[], filterableFields?: string[]) {
+	constructor(model: Model<D>, searchableFields?: any, filterableFields?: any) {
 		this.model = model;
-		if (searchableFields) this.searchableFields = searchableFields;
-		if (filterableFields) this.filterableFields = filterableFields;
+		if (searchableFields) this.searchableFields = [...searchableFields] as string[];
+		if (filterableFields) this.filterableFields = [...filterableFields] as string[];
 	}
 
 	async create(record: Partial<Omit<T, '_id' | 'createdAt' | 'updatedAt'>>): Promise<D> {
@@ -49,7 +52,10 @@ export class MongoBaseRepository<T, D extends Document> implements IMongoReposit
 
 	async findAll(filter?: FilterQuery<D>): Promise<D[]> {
 		await this.ensureConnected();
-		return this.model.find(filter || {}).exec();
+		return this.model
+			.find(filter || {})
+			.sort({ _id: -1 })
+			.exec();
 	}
 
 	async findOne(filter: FilterQuery<D>): Promise<D | null> {
@@ -64,6 +70,7 @@ export class MongoBaseRepository<T, D extends Document> implements IMongoReposit
 		const data = total
 			? await this.model
 					.find(filter || {})
+					.sort({ _id: -1 })
 					.skip(skip)
 					.limit(limit)
 					.exec()
@@ -80,7 +87,7 @@ export class MongoBaseRepository<T, D extends Document> implements IMongoReposit
 		const skip = (page - 1) * limit;
 
 		// Xây dựng điều kiện tìm kiếm
-		const query = this.generateSearchQuery(keyword);
+		const query = generateSearchQuery<D>(keyword, this.searchableFields);
 		const total = await this.model.countDocuments(query).exec();
 		const data = total ? await this.model.find(query).skip(skip).limit(limit).exec() : [];
 
@@ -90,17 +97,27 @@ export class MongoBaseRepository<T, D extends Document> implements IMongoReposit
 		};
 	}
 
-	async filter(criteria: FilterQuery<D>, page: number, limit: number, sort?: any): Promise<PaginatedResult<D[]>> {
+	async filter(
+		criteria: Record<string, any> = {},
+		page: number,
+		limit: number,
+		sort?: TSortCriteria
+	): Promise<PaginatedResult<D[]>> {
 		await this.ensureConnected();
 		const skip = (page - 1) * limit;
 
 		// Xây dựng điều kiện lọc
-		const filterableCriteria = this.generateFilterQuery(criteria);
+		const filterableCriteria = generateFilterQuery<D>(criteria, this.filterableFields);
 		const total = await this.model.countDocuments(filterableCriteria).exec();
 
 		// Thực hiện truy vấn với điều kiện lọc
-		let query = this.model.find(filterableCriteria).skip(skip).limit(limit);
-		if (sort) query = query.sort(sort);
+		const query = this.model.aggregate([
+			{ $match: filterableCriteria },
+			...generateSortPipeline(sort),
+			{ $skip: skip },
+			{ $limit: limit },
+		]);
+
 		const data = total ? await query.exec() : [];
 		return {
 			data,
@@ -113,17 +130,17 @@ export class MongoBaseRepository<T, D extends Document> implements IMongoReposit
 		criteria: Record<string, any> = {},
 		page: number,
 		limit: number,
-		sort?: any
+		sort?: TSortCriteria
 	): Promise<{ data: D[]; pagination: IPagination }> {
 		await this.ensureConnected();
 		const skip = (page - 1) * limit;
 
 		// Xây dựng điều kiện tìm kiếm và lọc
-		const searchCondition = this.generateSearchQuery(keyword);
-		const filterableCriteria: FilterQuery<D> = this.generateFilterQuery(criteria);
+		const searchCondition = generateSearchQuery<D>(keyword, this.searchableFields);
+		const filterableCriteria: FilterQuery<D> = generateFilterQuery<D>(criteria, this.filterableFields);
 
 		// Kết hợp điều kiện tìm kiếm và lọc
-		const finalQuery = { ...filterableCriteria, ...searchCondition };
+		const finalQuery = { $and: [searchCondition, filterableCriteria] };
 
 		// Đếm tổng số tài liệu phù hợp với điều kiện và kiểm tra số lượng
 		const total = await this.model.countDocuments(finalQuery);
@@ -135,9 +152,14 @@ export class MongoBaseRepository<T, D extends Document> implements IMongoReposit
 		}
 
 		// Thực hiện truy vấn với điều kiện đã kết hợp
-		let query = this.model.find(finalQuery).skip(skip).limit(limit);
-		if (sort) query = query.sort(sort);
-		const data = await query.exec();
+		const query = this.model.aggregate([
+			{ $match: filterableCriteria },
+			...generateSortPipeline(sort),
+			{ $skip: skip },
+			{ $limit: limit },
+		]);
+
+		const data = total ? await query.exec() : [];
 		const pagination = getPagination(page, limit, total);
 
 		return {
@@ -149,30 +171,6 @@ export class MongoBaseRepository<T, D extends Document> implements IMongoReposit
 	async count(filter?: FilterQuery<D>): Promise<number> {
 		await this.ensureConnected();
 		return this.model.countDocuments(filter || {}).exec();
-	}
-
-	protected generateSearchQuery(keyword: string): FilterQuery<D> {
-		if (!keyword || keyword.trim() === '') {
-			return {};
-		}
-
-		return {
-			$or: this.searchableFields.map((field) => ({
-				[field]: { $regex: keyword.trim(), $options: 'i' },
-			})) as FilterQuery<D>[],
-		} as FilterQuery<D>;
-	}
-
-	protected generateFilterQuery(criteria: Record<string, any>): FilterQuery<D> {
-		const filterableCriteria: Record<string, any> = {};
-		for (const key of Object.keys(criteria)) {
-			if ((this.filterableFields as readonly string[]).includes(key)) {
-				const value = criteria[key];
-				const { isArray } = extractType(value);
-				filterableCriteria[key] = isArray ? { $all: value } : value;
-			}
-		}
-		return filterableCriteria as FilterQuery<D>;
 	}
 
 	protected isUpdated(record: Partial<T>): Partial<T> & { updatedAt: Date } {

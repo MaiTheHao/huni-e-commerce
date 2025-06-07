@@ -1,9 +1,7 @@
-import React from 'react';
-
 export interface AppRoute {
 	path: string;
 	title: string;
-	icon?: string | React.ReactNode;
+	icon?: any;
 }
 
 export type AppRouteWithActive = AppRoute & { isActive: boolean };

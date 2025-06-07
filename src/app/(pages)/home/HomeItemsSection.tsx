@@ -2,7 +2,7 @@ import Link from 'next/link';
 import styles from './Home.module.scss';
 import React, { Suspense } from 'react';
 import HomeItemsSectionList from './HomeItemsSectionList';
-import ProductListSkeleton from '@/components/product-list/ProductListSkeleton';
+import ProductListSkeleton from '@/components/product/product-list/ProductListSkeleton';
 
 export type HeroItemsSectionProps = {
 	title: string;

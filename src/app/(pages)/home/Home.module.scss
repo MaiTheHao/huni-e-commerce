@@ -14,9 +14,6 @@
 	width: 100%;
 	flex-direction: column;
 	gap: $spacing-24;
-	@media screen and (max-width: $breakpoint-md) {
-		padding: 0 $app-body-padding-x-mobile;
-	}
 }
 
 .itemSectionHeader {

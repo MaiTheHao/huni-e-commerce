@@ -1,4 +1,4 @@
-import HeroSection from '@/components/hero-section/HeroSection';
+import HeroSection from '@/components/ui/hero-section/HeroSection';
 import { getKeyboardHeroSection } from '@/server/actions/herosection/get-keyboard-herosection';
 import React from 'react';
 

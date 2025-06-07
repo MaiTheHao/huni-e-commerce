@@ -1,0 +1,17 @@
+@use '../../../../app/vars' as *;
+
+.priceRangeSlider {
+	position: relative;
+	display: flex;
+	flex-direction: column;
+	gap: 1em;
+	padding: 0 0.5em;
+
+	&__label {
+		text-wrap: nowrap;
+		&__price {
+			color: $secondary-color;
+			font-weight: $font-weight-semibold;
+		}
+	}
+}

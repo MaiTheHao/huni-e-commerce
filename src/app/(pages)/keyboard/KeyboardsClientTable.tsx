@@ -1,79 +1,105 @@
 'use client';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { ProductCartProps } from '@/components/product-card/ProductCard';
-import ProductList from '@/components/product-list/ProductList';
-import ProductListSkeleton from '@/components/product-list/ProductListSkeleton';
+import { ProductCartProps } from '@/components/product/product-card/ProductCard';
+import ProductList from '@/components/product/product-list/ProductList';
+import ProductListSkeleton from '@/components/product/product-list/ProductListSkeleton';
 import KeyboardsPagination from './KeyboardsPagination';
-import { IPagination, KeyboardFilterableField } from '@/interfaces';
+import {
+	IPagination,
+	ISearchFilterKeyboardRequest,
+	ISearchFilterKeyboardsResponse,
+	KeyboardSortCriteria,
+} from '@/interfaces';
 import { productsToProductCarts } from '@/util/productToProductCart.util';
 import { loggerService } from '@/services/logger.service';
+import useSearchFilterCriteriaContext from '@/contexts/SearchFilterCriteriaContext/useSearchFilterCriteriaContext';
+import AppSortFilter from '@/components/navigation/app-sort-filter/AppSortFilter';
+import { IProductFilter } from '@/interfaces/product-filter.interface';
 
 type KeyboardsClientTableProps = {
 	initialKeyboards: ProductCartProps[];
 	initialPagination: IPagination;
+	initialFilter: IProductFilter;
 };
 
-function KeyboardsClientTable({ initialKeyboards, initialPagination }: KeyboardsClientTableProps) {
+async function fetchKeyboardsApi(
+	page: number,
+	limit: number,
+	filterCriteria: ISearchFilterKeyboardRequest['criteria'],
+	sortCriteria: KeyboardSortCriteria,
+	signal: AbortSignal
+) {
+	const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/product/keyboard/search-filter`, {
+		method: 'POST',
+		headers: { 'Content-Type': 'application/json' },
+		body: JSON.stringify({
+			page,
+			limit,
+			keyword: '',
+			criteria: filterCriteria,
+			sort: sortCriteria,
+		} as ISearchFilterKeyboardRequest),
+		signal,
+	});
+	return response;
+}
+
+function KeyboardsClientTable({ initialKeyboards, initialPagination, initialFilter }: KeyboardsClientTableProps) {
 	const [keyboards, setKeyboards] = useState<ProductCartProps[]>(initialKeyboards);
 	const [pagination, setPagination] = useState<IPagination>(initialPagination);
 	const [isLoading, setIsLoading] = useState<boolean>(false);
+	const { filterCriteria, sortCriteria } = useSearchFilterCriteriaContext();
 	const abortControllerRef = useRef<AbortController | null>(null);
+	const isFirstRender = useRef<boolean>(true);
 
-	const fetchKeyboards = useCallback(async (page: number, limit: number) => {
-		if (abortControllerRef.current) {
-			abortControllerRef.current.abort();
-		}
-		const abortController = new AbortController();
-		abortControllerRef.current = abortController;
-		setIsLoading(true);
-
-		try {
-			if (abortController.signal.aborted) return;
-
-			// Gọi API để lấy danh sách bàn phím
-			const body: {
-				page: number;
-				limit: number;
-				keyword: string;
-				criteria: Record<string, any>;
-			} = {
-				page,
-				limit,
-				keyword: '',
-				criteria: {},
-			};
-
-			const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/product/keyboard/search-filter`, {
-				method: 'POST',
-				headers: {
-					'Content-Type': 'application/json',
-				},
-				body: JSON.stringify(body),
-				signal: abortController.signal,
-			});
-
-			if (abortController.signal.aborted) return;
-
-			if (!response || response.status !== 200) {
-				loggerService.error('Lỗi khi lấy danh sách bàn phím:', response.statusText);
-				return;
+	// Hàm lấy danh sách bàn phím từ API dựa trên filter/sort/page
+	const fetchKeyboards = useCallback(
+		async (page: number, limit: number) => {
+			// Hủy request trước nếu có
+			if (abortControllerRef.current) {
+				abortControllerRef.current.abort();
 			}
+			const abortController = new AbortController();
+			abortControllerRef.current = abortController;
+			setIsLoading(true);
 
-			const data = await response.json();
-			const { keyboards, pagination } = data.data;
-			setKeyboards(productsToProductCarts(keyboards, 'keyboard'));
-			setPagination(pagination);
-		} catch (error: any) {
-			if (error.name !== 'AbortError' && !abortController.signal.aborted) {
-				loggerService.error('Lỗi khi lấy danh sách bàn phím:', error);
-			}
-		} finally {
-			if (!abortController.signal.aborted) {
-				setIsLoading(false);
-			}
-		}
-	}, []);
+			try {
+				if (abortController.signal.aborted) return;
+				const response = await fetchKeyboardsApi(
+					page,
+					limit,
+					filterCriteria,
+					sortCriteria,
+					abortController.signal
+				);
 
+				if (abortController.signal.aborted) return;
+
+				if (!response.ok) {
+					loggerService.error('Lỗi khi lấy danh sách bàn phím: ', response.statusText);
+					return;
+				}
+
+				const { data } = await response.json();
+				const { keyboards, pagination } = data as ISearchFilterKeyboardsResponse;
+				setKeyboards(productsToProductCarts(keyboards, 'keyboard'));
+				setPagination(pagination);
+			} catch (error: any) {
+				// Nếu không phải lỗi do abort thì log lỗi
+				if (error.name !== 'AbortError' && !abortController.signal.aborted) {
+					loggerService.error('Lỗi khi lấy danh sách bàn phím:', error);
+				}
+			} finally {
+				// Chỉ set loading khi request chưa bị abort
+				if (!abortController.signal.aborted) {
+					setIsLoading(false);
+				}
+			}
+		},
+		[filterCriteria, sortCriteria]
+	);
+
+	// Xử lý khi chuyển trang
 	const handlePageChange = useCallback(
 		(page: number) => {
 			fetchKeyboards(page, pagination.limit);
@@ -81,15 +107,30 @@ function KeyboardsClientTable({ initialKeyboards, initialPagination }: Keyboards
 		[fetchKeyboards, pagination.limit]
 	);
 
+	// Lấy dữ liệu lần đầu nếu không có dữ liệu khởi tạo
 	useEffect(() => {
 		if (initialKeyboards.length === 0 || initialPagination.total === 0) {
 			fetchKeyboards(1, initialPagination.limit);
 		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
+
+	// Lấy lại dữ liệu khi filter/sort thay đổi (bỏ qua lần render đầu)
+	useEffect(() => {
+		if (isFirstRender.current) {
+			isFirstRender.current = false;
+			return;
+		}
+		fetchKeyboards(1, pagination.limit);
+	}, [filterCriteria, sortCriteria]);
 
 	return (
 		<>
+			{/* Bộ lọc và sắp xếp */}
+			<AppSortFilter initialFilter={initialFilter} />
+			{/* Hiển thị skeleton khi loading, ngược lại hiển thị danh sách sản phẩm */}
 			{isLoading ? <ProductListSkeleton count={pagination.limit} /> : <ProductList products={keyboards} />}
+			{/* Phân trang */}
 			<KeyboardsPagination
 				page={pagination.page}
 				limit={pagination.limit}
