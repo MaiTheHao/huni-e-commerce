@@ -6,9 +6,7 @@ import clsx from 'clsx';
 import AppHeaderMenuModal from './AppHeaderMenuModal';
 import { useNavbarRoutes } from '@/hooks/useNavbarRoutes';
 
-type Props = {};
-
-export default function AppHeaderLeftSide({}: Props) {
+export default function AppHeaderLeftSide() {
 	const navbarRoutes = useNavbarRoutes();
 
 	return (

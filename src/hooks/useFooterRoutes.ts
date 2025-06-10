@@ -1,7 +1,7 @@
 'use client';
 import { usePathname } from 'next/navigation';
 import { FOOTER_ROUTES_GROUPED } from '@/consts/routes.setting';
-import { AppRouteWithActive } from '@/interfaces/route.interface';
+import { AppRouteWithActive } from '@/interfaces';
 import { useMemo } from 'react';
 
 /**

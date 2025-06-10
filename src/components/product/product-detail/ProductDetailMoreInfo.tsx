@@ -55,7 +55,7 @@ function ProductDetailMoreInfo({ productId }: ProductDetailMoreInfoProps) {
 	};
 
 	return (
-		<section className={styles.moreInfo}>
+		<section className={`${styles.moreInfo} mobile-not-border-radius`}>
 			<ul className={styles.moreInfo__pages}>
 				{pages.map((page) => (
 					<li

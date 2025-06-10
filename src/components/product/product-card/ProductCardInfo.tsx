@@ -1,7 +1,7 @@
 'use client';
 import React from 'react';
 import styles from './ProductCard.module.scss';
-import { toLocalePrice } from '@/util/toLocalePrice.util';
+import { toLocalePrice } from '@/util/price.util';
 
 interface ProductCardInfoProps {
 	name: string;

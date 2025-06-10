@@ -5,6 +5,7 @@ import { useMobileScrollX } from '@/hooks/useMobileScrollX';
 import { IHeroSection } from '@/interfaces';
 import HeroSectionContent from './HeroSectionContent';
 import ThumbnailNavButton from '@/components/navigation/thumnail-nav-button/ThumbnailNavButton';
+import clsx from 'clsx';
 
 export type HeroSectionProps = {
 	items: IHeroSection[];
@@ -21,21 +22,21 @@ function HeroSection({ items }: HeroSectionProps) {
 	);
 
 	// ! Tạm thời tắt do gặp vấn đề với scroll tự động, làm mất UX
-	// useEffect(() => {
-	// 	const timer = setInterval(() => {
-	// 		handleNext();
-	// 	}, 3000);
+	useEffect(() => {
+		const timer = setInterval(() => {
+			handleNext();
+		}, 3000);
 
-	// 	return () => clearInterval(timer);
-	// }, [current, memoizedProducts.length]);
+		return () => clearInterval(timer);
+	}, [current, memoizedProducts.length]);
 
 	const handlePrev = () => {
-		if (isPrevDisabled) return;
+		// if (isPrevDisabled) return;
 		setCurrent((prev) => (prev - 1 + memoizedProducts.length) % memoizedProducts.length);
 	};
 
 	const handleNext = () => {
-		if (isNextDisabled) return;
+		// if (isNextDisabled) return;
 		setCurrent((prev) => (prev + 1) % memoizedProducts.length);
 	};
 
@@ -60,7 +61,7 @@ function HeroSection({ items }: HeroSectionProps) {
 
 	return (
 		<div
-			className={styles.hero}
+			className={clsx(styles.hero, 'mobile-not-border-radius')}
 			onTouchStart={handleTouchStart}
 			onTouchMove={handleTouchMove}
 			onTouchEnd={handleTouchEndWithSwipe}
@@ -72,8 +73,8 @@ function HeroSection({ items }: HeroSectionProps) {
 			<ThumbnailNavButton
 				onPrev={handlePrev}
 				onNext={handleNext}
-				prevDisabled={isPrevDisabled}
-				nextDisabled={isNextDisabled}
+				// prevDisabled={isPrevDisabled}
+				// nextDisabled={isNextDisabled}
 				className={styles.nav}
 			/>
 			<div className={styles.dots}>

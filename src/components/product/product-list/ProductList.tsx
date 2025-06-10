@@ -10,7 +10,7 @@ type Props = {
 function ProductList({ products }: Props) {
 	if (!products || products.length === 0) return null;
 	return (
-		<ul className={clsx(styles.productList, 'not-fill-width-mobile')}>
+		<ul className={clsx(styles.productList, 'mobile-not-fill-width')}>
 			{products.map(
 				(product) =>
 					product._id && (

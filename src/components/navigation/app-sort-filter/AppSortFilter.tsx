@@ -4,12 +4,11 @@ import FilterSelect from './filter-select/FilterSelect';
 import styles from './AppSortFilter.module.scss';
 import clsx from 'clsx';
 import useSearchFilterCriteriaContext from '@/contexts/SearchFilterCriteriaContext/useSearchFilterCriteriaContext';
-import { TFilterCriteria } from '@/interfaces/filter-sort-criteria.interface';
-import { toArray, toNumber } from '@/util/cast-type.util';
+import { TFilterCriteria, IProductFilter } from '@/interfaces';
+import { toArray, toNumber } from '@/util/convert';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFilter } from '@fortawesome/free-solid-svg-icons';
 import Select from '@/components/ui/select/Select';
-import { IProductFilter } from '@/interfaces/product-filter.interface';
 import AppSortFilterModal from './app-sort-filter-modal/AppSortFilterModal';
 
 type FilterCriteria = {
@@ -90,15 +89,9 @@ function AppSortFilter({ initialFilter }: AppSortFilterProps) {
 
 	return (
 		<>
-			<section className={clsx(styles.appSortFilter, styles['appSortFilter--default'], 'not-fill-width-mobile')}>
+			<section className={clsx(styles.appSortFilter, styles['appSortFilter--default'], 'mobile-not-fill-width')}>
 				<div className={styles['appSortFilter__main-actions']}>
-					<button
-						className={clsx(
-							styles['appSortFilter__main-actions__filter'],
-							styles['appSortFilter__main-actions__item']
-						)}
-						onClick={() => setIsModalOpen(!isModalOpen)}
-					>
+					<button className={clsx(styles['appSortFilter__main-actions__filter'], styles['appSortFilter__main-actions__item'])} onClick={() => setIsModalOpen(!isModalOpen)}>
 						<FontAwesomeIcon icon={faFilter} />
 					</button>
 
@@ -140,12 +133,7 @@ function AppSortFilter({ initialFilter }: AppSortFilterProps) {
 					{initialFilter.fields
 						.filter((f) => f.filterable)
 						.map((field) => (
-							<FilterSelect
-								key={`AppSortFilter__${field.fieldName}`}
-								field={field}
-								filterCriteria={filterCriteria}
-								onSubmit={handleFilterSelectSubmit}
-							/>
+							<FilterSelect key={`AppSortFilter__${field.fieldName}`} field={field} filterCriteria={filterCriteria} onSubmit={handleFilterSelectSubmit} />
 						))}
 				</ul>
 			</section>

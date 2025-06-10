@@ -1,5 +1,5 @@
 import path from 'path';
-import { AppRoute } from '../interfaces/route.interface';
+import { AppRoute } from '../interfaces';
 import { faHeadphones, faHouse, faKeyboard } from '@fortawesome/free-solid-svg-icons';
 
 export const ROUTES: { [key: string]: AppRoute } = {

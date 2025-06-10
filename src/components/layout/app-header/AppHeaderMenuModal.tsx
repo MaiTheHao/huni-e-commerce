@@ -5,7 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBars, faCircleXmark } from '@fortawesome/free-solid-svg-icons';
 import Link from 'next/link';
 import ModalSidebar from '../../ui/modal-sidebar/ModalSideBar';
-import { AppRouteWithActive } from '@/interfaces/route.interface';
+import { AppRouteWithActive } from '@/interfaces';
 import clsx from 'clsx';
 import Image from 'next/image';
 

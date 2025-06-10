@@ -7,11 +7,11 @@ import {
 } from '@/interfaces';
 import { Model, Document, FilterQuery, Types } from 'mongoose';
 import { connectToDatabase, disconnectFromDatabase } from '../database/connection';
-import { getPagination } from '@/util/getPagination';
-import { generateFilterQuery } from '@/util/query/generateFilterQuery.util';
-import { generateSearchQuery } from '@/util/query/generateSearchQuery.util';
-import { TSortCriteria } from '@/interfaces/filter-sort-criteria.interface';
-import { generateSortPipeline } from '@/util/query/generateSortPipeline.util';
+import { getPagination } from '@/util/page.util';
+import { generateFilterQuery } from '@/util/query/generate-filter-query.util';
+import { generateSearchQuery } from '@/util/query/generate-search-query.util';
+import { generateSortPipeline } from '@/util/query/generate-sort-pipeline.util';
+import { TSortCriteria } from '@/interfaces';
 
 export class MongoBaseRepository<T, D extends Document> implements IMongoRepository<T, D> {
 	protected readonly model: Model<D>;

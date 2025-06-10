@@ -1,5 +1,5 @@
 import { NextRequest } from 'next/server';
-import { keyboardRepository } from '@/server/repositories/keyboard.repository';
+import { keyboardRepository } from '@/server/repositories';
 import { responseService } from '@/services/response.service';
 
 export async function GET(req: NextRequest) {

@@ -1,6 +1,6 @@
 import { IPagination, PaginatedResult } from '@/interfaces';
 import { PRODUCT_REPOSITORIES } from '@/server/repositories';
-import { convertDocumentsToObjects } from './convertDocumentToObject';
+import { convertDocumentsToObjects } from './convert';
 
 export async function aggregateProductRepositories<T>(
 	action: (repo: any) => Promise<{ data: any[]; pagination?: IPagination }>,

@@ -1,6 +1,6 @@
 import { NextRequest } from 'next/server';
 import { responseService } from '@/services/response.service';
-import { productDetailMarkdownRepository } from '@/server/repositories/product-detail-markdown.repository';
+import { productDetailMarkdownRepository } from '@/server/repositories';
 
 export async function GET(req: NextRequest) {
 	const productId = req.nextUrl.pathname.split('/').pop();

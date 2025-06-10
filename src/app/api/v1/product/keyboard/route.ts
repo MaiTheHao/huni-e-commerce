@@ -1,5 +1,5 @@
-import { keyboardRepository } from '@/server/repositories/keyboard.repository';
-import { toNumber } from '@/util/cast-type.util';
+import { keyboardRepository } from '@/server/repositories';
+import { toNumber } from '@/util/convert';
 import { NextRequest } from 'next/server';
 import { responseService } from '@/services/response.service';
 

@@ -3,9 +3,8 @@ import React, { useState, useCallback, useEffect } from 'react';
 import ModalSideBar from '@/components/ui/modal-sidebar/ModalSideBar';
 import Checkbox from '@/components/ui/checkbox/Checkbox';
 import styles from './AppSortFilterModal.module.scss';
-import { IProductFilter } from '@/interfaces/product-filter.interface';
+import { IProductFilter, TFilterCriteria } from '@/interfaces';
 import useSearchFilterCriteriaContext from '@/contexts/SearchFilterCriteriaContext/useSearchFilterCriteriaContext';
-import { TFilterCriteria } from '@/interfaces/filter-sort-criteria.interface';
 import clsx from 'clsx';
 import PriceRangeSlider from '../price-range-slider/PriceRangeSlider';
 
@@ -23,11 +22,7 @@ type FieldType = {
 	options: any[];
 };
 
-const AppSortFilterModal: React.FC<AppSortFilterModalProps> = ({
-	initialFilter,
-	isOpen = false,
-	setOpen = () => {},
-}) => {
+const AppSortFilterModal: React.FC<AppSortFilterModalProps> = ({ initialFilter, isOpen = false, setOpen = () => {} }) => {
 	const { filterCriteria, setFilterCriteria } = useSearchFilterCriteriaContext();
 	const [localFilterCriteria, setLocalFilterCriteria] = useState<TFilterCriteria>({});
 
@@ -75,10 +70,7 @@ const AppSortFilterModal: React.FC<AppSortFilterModalProps> = ({
 							<Checkbox
 								id={`${fieldName}_${value}`}
 								label={label}
-								checked={
-									Array.isArray(localFilterCriteria[fieldName]) &&
-									(localFilterCriteria[fieldName] as unknown[]).includes(value)
-								}
+								checked={Array.isArray(localFilterCriteria[fieldName]) && (localFilterCriteria[fieldName] as unknown[]).includes(value)}
 								onChange={() => handleValuesChange(fieldName, value)}
 							/>
 						</li>
@@ -89,17 +81,10 @@ const AppSortFilterModal: React.FC<AppSortFilterModalProps> = ({
 	};
 
 	const renderRangeField = (field: FieldType) => {
-		const { fieldName, label, options } = field;
+		const { fieldName, options } = field;
 		const currentRange = filterCriteria[fieldName] as { min: number; max: number } | undefined;
 		const [min, max] = options as [number, number];
-		return (
-			<PriceRangeSlider
-				min={min}
-				max={max}
-				currentRange={[currentRange?.min ?? min, currentRange?.max ?? max]}
-				onChange={(value) => handleRangeChange(fieldName, value)}
-			/>
-		);
+		return <PriceRangeSlider min={min} max={max} currentRange={[currentRange?.min ?? min, currentRange?.max ?? max]} onChange={(value) => handleRangeChange(fieldName, value)} />;
 	};
 
 	const renderField = (field: FieldType) => {
@@ -126,24 +111,10 @@ const AppSortFilterModal: React.FC<AppSortFilterModalProps> = ({
 			contentClassName={styles.modal__content}
 			stickyFooter={
 				<div className={styles.modal__actions}>
-					<button
-						onClick={handleReset}
-						className={clsx(
-							styles['modal__actions__action'],
-							styles['modal__actions__action--cancel'],
-							'cta-button--outlined'
-						)}
-					>
+					<button onClick={handleReset} className={clsx(styles['modal__actions__action'], styles['modal__actions__action--cancel'], 'cta-button--outlined')}>
 						Hủy
 					</button>
-					<button
-						onClick={handleSubmit}
-						className={clsx(
-							styles['modal__actions__action'],
-							styles['modal__actions__action--submit'],
-							'cta-button'
-						)}
-					>
+					<button onClick={handleSubmit} className={clsx(styles['modal__actions__action'], styles['modal__actions__action--submit'], 'cta-button')}>
 						Xem kết quả
 					</button>
 				</div>
@@ -158,11 +129,7 @@ const areEqual = (
 	prevProps: { initialFilter: IProductFilter; isOpen?: boolean; setOpen?: (isOpen: boolean) => void },
 	nextProps: { initialFilter: IProductFilter; isOpen?: boolean; setOpen?: (isOpen: boolean) => void }
 ) => {
-	return (
-		prevProps.isOpen === nextProps.isOpen &&
-		JSON.stringify(prevProps.initialFilter) === JSON.stringify(nextProps.initialFilter) &&
-		prevProps.setOpen === nextProps.setOpen
-	);
+	return prevProps.isOpen === nextProps.isOpen && JSON.stringify(prevProps.initialFilter) === JSON.stringify(nextProps.initialFilter) && prevProps.setOpen === nextProps.setOpen;
 };
 
 export default React.memo(AppSortFilterModal, areEqual);

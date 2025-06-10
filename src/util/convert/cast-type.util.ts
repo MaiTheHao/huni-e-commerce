@@ -1,9 +1,17 @@
+import mongoose from 'mongoose';
+
 export function toNumber(value: unknown, defaultValue: number = 0): number {
 	const num = Number(value);
 	return isNaN(num) ? defaultValue : num;
 }
 
 export function toString(value: unknown, defaultValue: string = ''): string {
+	if (typeof value === 'string') return value;
+	if (value instanceof mongoose.Types.ObjectId) return value.toString();
+	if (value && typeof value === 'object' && '_id' in value) {
+		const objId = value as { _id: mongoose.Types.ObjectId };
+		return objId._id.toString();
+	}
 	return value != null ? String(value) : defaultValue;
 }
 
@@ -29,7 +37,6 @@ export function toDate(value: unknown, defaultValue: Date = new Date(0)): Date {
 	return isNaN(date.getTime()) ? defaultValue : date;
 }
 
-// extract the type of the value
 export function extractType(value: unknown): {
 	isArray: boolean;
 	isObject: boolean;

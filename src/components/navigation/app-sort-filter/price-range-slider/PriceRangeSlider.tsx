@@ -1,7 +1,7 @@
 'use client';
 import React, { useState } from 'react';
 import styles from './PriceRangeSlider.module.scss';
-import { toLocalePrice } from '@/util/toLocalePrice.util';
+import { toLocalePrice } from '@/util/price.util';
 import RangeSlider from '@/components/ui/range-slider/RangeSlider';
 
 type PriceRangeSliderProps = {

@@ -1,4 +1,4 @@
-import { IProductFilter } from '@/interfaces/product-filter.interface';
+import { IProductFilter } from '@/interfaces';
 import mongoose from 'mongoose';
 
 export const ProductFilterSchema = new mongoose.Schema<Omit<IProductFilter, '_id'>>({

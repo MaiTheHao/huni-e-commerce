@@ -1,7 +1,7 @@
-import { IProductDetailMarkdown } from '@/interfaces';
+import { IProductDetailMarkdownBase } from '@/interfaces';
 import mongoose from 'mongoose';
 
-export const ProductDetailMarkdownSchema = new mongoose.Schema<Omit<IProductDetailMarkdown, '_id'>>({
+export const ProductDetailMarkdownSchema = new mongoose.Schema<IProductDetailMarkdownBase>({
 	productId: { type: mongoose.Schema.Types.ObjectId, required: true, index: true },
 	description: { type: String, required: true },
 	specifications: { type: String, required: true },
@@ -9,5 +9,4 @@ export const ProductDetailMarkdownSchema = new mongoose.Schema<Omit<IProductDeta
 	updatedAt: { type: Date, default: Date.now },
 });
 
-export const ProductDetailMarkdownModel =
-	mongoose.models.ProductDetailMarkdown || mongoose.model('ProductDetailMarkdown', ProductDetailMarkdownSchema);
+export const ProductDetailMarkdownModel = mongoose.models.ProductDetailMarkdown || mongoose.model('ProductDetailMarkdown', ProductDetailMarkdownSchema);

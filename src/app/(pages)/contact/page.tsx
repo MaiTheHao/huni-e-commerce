@@ -5,16 +5,12 @@ import ContactFormSection from './ContactFormSection';
 import ContactInfoSection from './ContactInfoSection';
 import Image from 'next/image';
 
-type Props = {};
-
-function page({}: Props) {
+function ContactPage() {
 	return (
 		<AppBody>
 			<section className={styles.contactHeader}>
 				<h1 className={styles.contactHeaderItem}>Liên hệ ngay với chúng tôi</h1>
-				<p className={styles.contactHeaderItem}>
-					Đừng ngần ngại liên hệ nếu bạn cần tư vấn, hỗ trợ kỹ thuật hoặc có bất kỳ thắc mắc nào.
-				</p>
+				<p className={styles.contactHeaderItem}>Đừng ngần ngại liên hệ nếu bạn cần tư vấn, hỗ trợ kỹ thuật hoặc có bất kỳ thắc mắc nào.</p>
 			</section>
 			<section className={styles.contactBody}>
 				<ContactFormSection />
@@ -27,4 +23,4 @@ function page({}: Props) {
 	);
 }
 
-export default page;
+export default ContactPage;

@@ -1,7 +1,6 @@
 'use client';
+import { ICartItem, IProduct } from '@/interfaces';
 import { createContext } from 'react';
-import { ICartItem } from '../../interfaces/cart.interface';
-import { IProduct } from '@/interfaces';
 
 interface ICartContext {
 	items: ICartItem[];

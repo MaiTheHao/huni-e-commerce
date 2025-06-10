@@ -1,7 +1,6 @@
 import mongoose from 'mongoose';
 
-export interface IProductFilter {
-	_id: string;
+export interface IProductFilterBase {
 	productType: string;
 	fields: {
 		fieldName: string;
@@ -22,4 +21,8 @@ export interface IProductFilter {
 	updatedAt: Date;
 }
 
-export interface IProductFilterDocument extends mongoose.Document<mongoose.Types.ObjectId> {}
+export interface IProductFilter extends IProductFilterBase {
+	_id: string;
+}
+
+export interface IProductFilterDocument extends IProductFilterBase, mongoose.Document<mongoose.Types.ObjectId> {}

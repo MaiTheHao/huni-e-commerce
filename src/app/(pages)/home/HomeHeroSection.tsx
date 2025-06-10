@@ -1,12 +1,10 @@
 import React from 'react';
-import { getKeyboardHeroSection } from '@/server/actions/herosection/get-keyboard-herosection';
-import { IHeroSection, IKeyboard } from '@/interfaces';
+import { getKeyboardHeroSection } from '@/server/actions';
+import { IHeroSection } from '@/interfaces';
 import HeroSectionSkeleton from '@/components/ui/hero-section/HeroSectionSkeleton';
 import HeroSection from '@/components/ui/hero-section/HeroSection';
 
-type Props = {};
-
-async function HomeHeroSection({}: Props) {
+async function HomeHeroSection() {
 	let keyboardHeroSections: IHeroSection[] = [];
 	try {
 		keyboardHeroSections = await getKeyboardHeroSection(1, 4);

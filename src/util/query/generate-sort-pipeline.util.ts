@@ -1,4 +1,4 @@
-import { TSortCriteria } from '@/interfaces/filter-sort-criteria.interface';
+import { TSortCriteria } from '@/interfaces';
 
 export function generateSortPipeline(criteria: TSortCriteria | unknown): any[] {
 	const sortPipeline: any[] = [];

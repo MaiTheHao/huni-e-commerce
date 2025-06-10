@@ -3,7 +3,7 @@ import React, { useState, memo } from 'react';
 import Link from 'next/link';
 import clsx from 'clsx';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCartShopping, faCheck } from '@fortawesome/free-solid-svg-icons';
+import { faCartShopping } from '@fortawesome/free-solid-svg-icons';
 
 import styles from './ProductCard.module.scss';
 import useScreenSize, { BREAKPOINT_LG } from '@/hooks/useScreenSize';
@@ -14,6 +14,7 @@ import ProductCartInfo from './ProductCardInfo';
 import Spinner from '../../ui/spinner/Spinner';
 import ModalAlert from '../../ui/modal-alert/ModalAlert';
 import { useCartContext } from '@/contexts/CartContext/useCartContext';
+import { toString } from '@/util/convert';
 
 export type ProductCartProps = {} & IProductCard;
 
@@ -28,7 +29,7 @@ function ProductCard({ _id, name, price, discountPercent, image, ctaHref }: Prod
 	const handleContextAddToCart = async () => {
 		try {
 			setCartStatus('loading');
-			await handleAddToCart(_id);
+			await handleAddToCart(toString(_id));
 			setCartStatus('success');
 		} catch (error) {
 			setCartStatus('error');
@@ -54,17 +55,10 @@ function ProductCard({ _id, name, price, discountPercent, image, ctaHref }: Prod
 							[styles.touched]: isActive && (isRedirectToDetail || cartStatus === 'loading'),
 						})}
 					>
-						<button
-							className={clsx(styles.addToCartButton, styles.productActionsButton)}
-							onClick={handleContextAddToCart}
-						>
+						<button className={clsx(styles.addToCartButton, styles.productActionsButton)} onClick={handleContextAddToCart}>
 							{cartStatus === 'loading' ? <Spinner /> : <FontAwesomeIcon icon={faCartShopping} />}
 						</button>
-						<Link
-							href={ctaHref}
-							className={clsx(styles.watchMoreButton, styles.productActionsButton)}
-							onClick={() => setIsRedirectToDetail(true)}
-						>
+						<Link href={ctaHref} className={clsx(styles.watchMoreButton, styles.productActionsButton)} onClick={() => setIsRedirectToDetail(true)}>
 							{isRedirectToDetail ? <Spinner /> : <span>Xem chi tiết</span>}
 						</Link>
 					</div>
@@ -79,30 +73,18 @@ function ProductCard({ _id, name, price, discountPercent, image, ctaHref }: Prod
 							{cartStatus === 'loading' ? <Spinner /> : <FontAwesomeIcon icon={faCartShopping} />}
 							Thêm vào giỏ
 						</button>
-						<Link
-							href={ctaHref}
-							className={styles.watchMoreButtonMobile}
-							onClick={() => setIsRedirectToDetail(true)}
-						>
+						<Link href={ctaHref} className={styles.watchMoreButtonMobile} onClick={() => setIsRedirectToDetail(true)}>
 							{isRedirectToDetail ? <Spinner /> : <span>Xem chi tiết</span>}
 						</Link>
 					</>
 				</ModalBottom>
 			)}
 
-			{cartStatus === 'success' && (
-				<ModalAlert
-					title='Thành công'
-					message='Sản phẩm đã được thêm vào giỏ hàng.'
-					type='success'
-					timeout={3000}
-					onClose={() => setCartStatus('idle')}
-				/>
-			)}
+			{cartStatus === 'success' && <ModalAlert title='Thành công' message='Sản phẩm đã được thêm vào giỏ hàng.' type='success' timeout={3000} onClose={() => setCartStatus('idle')} />}
 		</>
 	);
 }
 
 export default memo(ProductCard, (prevProps: ProductCartProps, nextProps: ProductCartProps) => {
-	return prevProps._id === nextProps._id;
+	return toString(prevProps._id) === toString(nextProps._id);
 });

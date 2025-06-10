@@ -1,5 +1,5 @@
 'use client';
-import React, { useEffect, useMemo, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import styles from './FilterSelect.module.scss';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronDown } from '@fortawesome/free-solid-svg-icons';
@@ -7,9 +7,7 @@ import clsx from 'clsx';
 import PriceRangeSlider from '../price-range-slider/PriceRangeSlider';
 import { calcOptimalPosition } from '@/util/calcOptimalPosition';
 import Checkbox from '@/components/ui/checkbox/Checkbox';
-import type { IProductFilter } from '@/interfaces/product-filter.interface';
-import useSearchFilterCriteriaContext from '@/contexts/SearchFilterCriteriaContext/useSearchFilterCriteriaContext';
-import { TFilterCriteria } from '@/interfaces/filter-sort-criteria.interface';
+import type { IProductFilter, TFilterCriteria } from '@/interfaces';
 
 export type FilterSelectProps = {
 	field: IProductFilter['fields'][number];
@@ -24,23 +22,17 @@ function FilterSelect({ field, filterCriteria = {}, onSubmit }: FilterSelectProp
 	useEffect(() => {
 		if (field.type === 'range' || field.type === 'boolean') return;
 		setValues((prev) => [...new Set([...prev, ...((filterCriteria[field.fieldName] as Array<any>) || [])])]);
-	}, [filterCriteria]);
+	}, [filterCriteria, field.fieldName, field.type]);
 
 	const [optimalHorizontalPosition, setOptimalHorizontalPosition] = useState<'left' | 'right'>('right');
-	const [range, setRange] = useState<[number, number]>(
-		field.type === 'range' && Array.isArray(field.options)
-			? [field.options[0] as number, field.options[1] as number]
-			: [0, 0]
-	);
+	const [range, setRange] = useState<[number, number]>(field.type === 'range' && Array.isArray(field.options) ? [field.options[0] as number, field.options[1] as number] : [0, 0]);
 	const filterSelectRef = useRef<HTMLDivElement>(null);
 	const filterSelectModalRef = useRef<HTMLDivElement>(null);
 
 	const hasOption = Array.isArray(field.options) && typeof field.options[0] === 'object';
 	const hasRange = field.type === 'range' && Array.isArray(field.options) && typeof field.options[0] === 'number';
 
-	const isFiltered =
-		Array.isArray(filterCriteria[field.fieldName]) &&
-		(filterCriteria[field.fieldName] as Array<string | number>).length > 0;
+	const isFiltered = Array.isArray(filterCriteria[field.fieldName]) && (filterCriteria[field.fieldName] as Array<string | number>).length > 0;
 
 	const handleValues = (value: string | number) => {
 		setValues((prev) => (prev.includes(value) ? prev.filter((v) => v !== value) : [...prev, value]));
@@ -53,9 +45,7 @@ function FilterSelect({ field, filterCriteria = {}, onSubmit }: FilterSelectProp
 	const handleOpen = () => {
 		if (!isOpen) {
 			setIsOpen(true);
-			setOptimalHorizontalPosition(
-				calcOptimalPosition(filterSelectRef, filterSelectModalRef, 'right', 0.2) as 'left' | 'right'
-			);
+			setOptimalHorizontalPosition(calcOptimalPosition(filterSelectRef, filterSelectModalRef, 'right', 0.2) as 'left' | 'right');
 		} else {
 			setIsOpen(false);
 		}
@@ -79,16 +69,8 @@ function FilterSelect({ field, filterCriteria = {}, onSubmit }: FilterSelectProp
 		return (
 			<ul className={styles.filterSelector__wrapper__options}>
 				{options.map((option) => (
-					<li
-						key={`${field.fieldName}:${option.value}`}
-						className={styles.filterSelector__wrapper__options__item}
-					>
-						<Checkbox
-							id={`${field.fieldName}:${option.value}`}
-							label={option.label}
-							checked={values.includes(option.value)}
-							onChange={() => handleValues(option.value)}
-						/>
+					<li key={`${field.fieldName}:${option.value}`} className={styles.filterSelector__wrapper__options__item}>
+						<Checkbox id={`${field.fieldName}:${option.value}`} label={option.label} checked={values.includes(option.value)} onChange={() => handleValues(option.value)} />
 					</li>
 				))}
 			</ul>
@@ -100,12 +82,7 @@ function FilterSelect({ field, filterCriteria = {}, onSubmit }: FilterSelectProp
 		const [min, max] = field.options as [number, number];
 		return (
 			<div className={styles.filterSelector__wrapper__range}>
-				<PriceRangeSlider
-					min={min}
-					max={max}
-					debounceTime={0}
-					onChange={([min, max]) => handleRange([min, max])}
-				/>
+				<PriceRangeSlider min={min} max={max} debounceTime={0} onChange={([min, max]) => handleRange([min, max])} />
 			</div>
 		);
 	};
@@ -149,17 +126,11 @@ function FilterSelect({ field, filterCriteria = {}, onSubmit }: FilterSelectProp
 				{renderRange()}
 				<div className={styles.filterSelector__actions}>
 					{(!hasRange || (hasRange && hasOption)) && (
-						<button
-							className={clsx(styles.filterSelector__actions__button, styles.cancel)}
-							onClick={() => handleCancel()}
-						>
+						<button className={clsx(styles.filterSelector__actions__button, styles.cancel)} onClick={() => handleCancel()}>
 							Hủy
 						</button>
 					)}
-					<button
-						className={clsx(styles.filterSelector__actions__button, styles.submit)}
-						onClick={() => handleSubmit()}
-					>
+					<button className={clsx(styles.filterSelector__actions__button, styles.submit)} onClick={() => handleSubmit()}>
 						Lọc
 					</button>
 				</div>

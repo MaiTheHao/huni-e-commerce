@@ -9,23 +9,17 @@ import CartContext from '@/contexts/CartContext/CartContext';
 
 const VAT = parseInt(tax.VAT, 10) / 100;
 
-function page() {
+function CartPage() {
 	const { items, products, loading, handleRemove, handleQuantity } = useContext(CartContext);
 
 	return (
 		<AppBody>
 			<div className={styles.cart}>
-				<CartItemsTable
-					items={items}
-					products={products}
-					loading={loading}
-					onRemove={handleRemove}
-					onQuantity={handleQuantity}
-				/>
+				<CartItemsTable items={items} products={products} loading={loading} onRemove={handleRemove} onQuantity={handleQuantity} />
 				<CartPriceTable items={items} products={products} vat={VAT} loading={loading} />
 			</div>
 		</AppBody>
 	);
 }
 
-export default page;
+export default CartPage;

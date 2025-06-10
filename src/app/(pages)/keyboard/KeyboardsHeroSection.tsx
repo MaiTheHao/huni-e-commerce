@@ -1,5 +1,5 @@
 import HeroSection from '@/components/ui/hero-section/HeroSection';
-import { getKeyboardHeroSection } from '@/server/actions/herosection/get-keyboard-herosection';
+import { getKeyboardHeroSection } from '@/server/actions';
 import React from 'react';
 
 type Props = {};

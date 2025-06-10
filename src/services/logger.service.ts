@@ -20,6 +20,7 @@ const COLORS = {
 };
 
 class Logger {
+	private readonly logable: boolean = true;
 	private static instance: Logger;
 
 	private constructor() {}
@@ -32,6 +33,7 @@ class Logger {
 	}
 
 	private log(level: LogLevel, message: string, ...optionalParams: any[]) {
+		if (!this.logable) return;
 		const color = COLORS[level] || '';
 		const reset = COLORS.RESET;
 		const now = new Date();

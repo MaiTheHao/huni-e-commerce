@@ -1,20 +1,18 @@
 'use server';
-import { IProductFilterDocument } from '@/interfaces/product-filter.interface';
-import { productFilterRepository } from '@/server/repositories/product-filter.repository';
+import { IProductFilter } from '@/interfaces';
+import { productFilterRepository } from '@/server/repositories';
 import { loggerService } from '@/services/logger.service';
+import { convertDocumentToObject } from '@/util/convert';
 
-export async function getKeyboardFilter(): Promise<IProductFilterDocument | null> {
-	loggerService.info('Đang lấy bộ lọc bàn phím từ repository');
+export async function getKeyboardFilter(): Promise<IProductFilter | null> {
+	let data: IProductFilter | null = null;
 	try {
-		const data = await productFilterRepository.findByProductType('keyboard');
-		if (data) {
-			loggerService.success('Lấy bộ lọc bàn phím thành công');
-		} else {
-			loggerService.warning('Không tìm thấy bộ lọc bàn phím');
-		}
-		return data;
+		const response = await productFilterRepository.findByProductType('keyboard');
+		if (response) data = convertDocumentToObject(response);
 	} catch (error) {
 		loggerService.error('Lỗi khi lấy bộ lọc bàn phím', error);
 		return null;
+	} finally {
+		return data;
 	}
 }

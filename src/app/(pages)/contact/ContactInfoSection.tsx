@@ -6,9 +6,7 @@ import Image from 'next/image';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import clsx from 'clsx';
 
-type Props = {};
-
-function ContactInfoSection({}: Props) {
+function ContactInfoSection() {
 	return (
 		<Table
 			sections={[
@@ -32,13 +30,7 @@ function ContactInfoSection({}: Props) {
 							<ul className={styles.socialLinksList} aria-label='Liên kết mạng xã hội'>
 								{socialLinks.map((link) => (
 									<li key={link.name} className={styles.socialLinkItem}>
-										<a
-											href={link.href}
-											target='_blank'
-											rel='noopener noreferrer'
-											aria-label={link.name}
-											className={clsx(styles.socialLink)}
-										>
+										<a href={link.href} target='_blank' rel='noopener noreferrer' aria-label={link.name} className={clsx(styles.socialLink)}>
 											<FontAwesomeIcon icon={link.icon} />
 										</a>
 									</li>

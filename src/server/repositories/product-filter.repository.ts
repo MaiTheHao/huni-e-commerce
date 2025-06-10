@@ -1,7 +1,6 @@
 import { MongoBaseRepository } from './mongo-base.repository';
-import { IProductFilter, IProductFilterDocument } from '@/interfaces/product-filter.interface';
+import { IProductFilter, IProductFilterDocument } from '@/interfaces';
 import { ProductFilterModel } from '../database/schemas/product-filter.schema';
-import { PaginatedResult } from '@/interfaces';
 
 class ProductFilterRepository extends MongoBaseRepository<IProductFilter, IProductFilterDocument> {
 	private static instance: ProductFilterRepository;

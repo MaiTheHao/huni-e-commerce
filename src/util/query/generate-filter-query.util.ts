@@ -1,5 +1,5 @@
 import { FilterQuery } from 'mongoose';
-import { extractType } from '../cast-type.util';
+import { extractType } from '../convert/cast-type.util';
 
 function buildRangeQuery(value: any) {
 	if (value && typeof value === 'object' && ('min' in value || 'max' in value)) {

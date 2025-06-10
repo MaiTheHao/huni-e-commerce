@@ -243,8 +243,8 @@ import React from 'react';
 
 type Props = {};
 
-function page({}: Props) {
-	return <div>page</div>;
+function CheckoutPage({}: Props) {
+	return <div>CheckoutPage</div>;
 }
 
-export default page;
+export default CheckoutPage;

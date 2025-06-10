@@ -2,6 +2,7 @@
 
 # dependencies
 /tasks
+/docs
 /node_modules
 /.pnp
 .pnp.*

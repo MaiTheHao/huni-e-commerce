@@ -4,17 +4,12 @@ import { ProductCartProps } from '@/components/product/product-card/ProductCard'
 import ProductList from '@/components/product/product-list/ProductList';
 import ProductListSkeleton from '@/components/product/product-list/ProductListSkeleton';
 import KeyboardsPagination from './KeyboardsPagination';
-import {
-	IPagination,
-	ISearchFilterKeyboardRequest,
-	ISearchFilterKeyboardsResponse,
-	KeyboardSortCriteria,
-} from '@/interfaces';
-import { productsToProductCards } from '@/util/productToProductCard.util';
+import { IPagination, ISearchFilterKeyboardRequest, ISearchFilterKeyboardsResponse, KeyboardSortCriteria } from '@/interfaces';
+import { convertProductsToCards } from '@/util/convert';
 import { loggerService } from '@/services/logger.service';
 import useSearchFilterCriteriaContext from '@/contexts/SearchFilterCriteriaContext/useSearchFilterCriteriaContext';
 import AppSortFilter from '@/components/navigation/app-sort-filter/AppSortFilter';
-import { IProductFilter } from '@/interfaces/product-filter.interface';
+import { IProductFilter } from '@/interfaces';
 
 type KeyboardsClientTableProps = {
 	initialKeyboards: ProductCartProps[];
@@ -22,13 +17,7 @@ type KeyboardsClientTableProps = {
 	initialFilter: IProductFilter;
 };
 
-async function fetchKeyboardsApi(
-	page: number,
-	limit: number,
-	filterCriteria: ISearchFilterKeyboardRequest['criteria'],
-	sortCriteria: KeyboardSortCriteria,
-	signal: AbortSignal
-) {
+async function fetchKeyboardsApi(page: number, limit: number, filterCriteria: ISearchFilterKeyboardRequest['criteria'], sortCriteria: KeyboardSortCriteria, signal: AbortSignal) {
 	const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/product/keyboard/search-filter`, {
 		method: 'POST',
 		headers: { 'Content-Type': 'application/json' },
@@ -65,13 +54,7 @@ function KeyboardsClientTable({ initialKeyboards, initialPagination, initialFilt
 
 			try {
 				if (abortController.signal.aborted) return;
-				const response = await fetchKeyboardsApi(
-					page,
-					limit,
-					filterCriteria,
-					sortCriteria,
-					abortController.signal
-				);
+				const response = await fetchKeyboardsApi(page, limit, filterCriteria, sortCriteria, abortController.signal);
 
 				if (abortController.signal.aborted) return;
 
@@ -82,7 +65,7 @@ function KeyboardsClientTable({ initialKeyboards, initialPagination, initialFilt
 
 				const { data } = await response.json();
 				const { keyboards, pagination } = data as ISearchFilterKeyboardsResponse;
-				setKeyboards(productsToProductCards(keyboards, 'keyboard'));
+				setKeyboards(convertProductsToCards(keyboards, 'keyboard'));
 				setPagination(pagination);
 			} catch (error: any) {
 				// Nếu không phải lỗi do abort thì log lỗi
@@ -131,13 +114,7 @@ function KeyboardsClientTable({ initialKeyboards, initialPagination, initialFilt
 			{/* Hiển thị skeleton khi loading, ngược lại hiển thị danh sách sản phẩm */}
 			{isLoading ? <ProductListSkeleton count={pagination.limit} /> : <ProductList products={keyboards} />}
 			{/* Phân trang */}
-			<KeyboardsPagination
-				page={pagination.page}
-				limit={pagination.limit}
-				total={pagination.total}
-				totalPages={pagination.totalPages}
-				onPageChange={handlePageChange}
-			/>
+			<KeyboardsPagination page={pagination.page} limit={pagination.limit} total={pagination.total} totalPages={pagination.totalPages} onPageChange={handlePageChange} />
 		</>
 	);
 }

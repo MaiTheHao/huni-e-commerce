@@ -4,9 +4,7 @@ import AppFooterInfomation from './AppFooterInfomation';
 import AppFooterDirection from './AppFooterDirection';
 import AppFooterSocials from './AppFooterSocials';
 
-type AppFooterProps = {};
-
-function AppFooter({}: AppFooterProps) {
+function AppFooter() {
 	return (
 		<footer className={`app-container ${styles.container}`}>
 			<section className={`app-block ${styles.main}`}>

@@ -1,6 +1,6 @@
 import { IProduct, PaginatedResult, IPagination } from '@/interfaces';
 import { PRODUCT_REPOSITORIES } from '@/server/repositories';
-import { convertDocumentsToObjects } from '@/util/convertDocumentToObject';
+import { convertDocumentsToObjects } from '@/util/convert';
 
 class ProductCRUDService {
 	private static instance: ProductCRUDService;

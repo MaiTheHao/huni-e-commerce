@@ -5,11 +5,11 @@ import Image from 'next/image';
 import clsx from 'clsx';
 import { IProduct } from '@/interfaces';
 import Quantity from '../../ui/quantity/Quantity';
-import { extractType } from '@/util/cast-type.util';
+import { extractType, toString } from '@/util/convert';
 import { useCartContext } from '@/contexts/CartContext/useCartContext';
 import ModalAlert from '../../ui/modal-alert/ModalAlert';
 import ProductDetailMainContentSkeleton from './ProductDetailMainSkeleton';
-import { toLocalePrice } from '@/util/toLocalePrice.util';
+import { toLocalePrice } from '@/util/price.util';
 
 const ATTR_ICON_URL = '/svgs/attr_icon.svg';
 
@@ -74,12 +74,7 @@ function ProductDetailMainContent<T extends IProduct>({
 }: ProductDetailMainContentProps<T>) {
 	const [cartStatus, setCartStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
 	const { loading, handleAddToCart } = useCartContext();
-	const isDiscounted = Boolean(
-		product?.discountPercent &&
-			product.discountPercent > 0 &&
-			product.discountPercent <= 100 &&
-			discountedPrice !== price
-	);
+	const isDiscounted = Boolean(product?.discountPercent && product.discountPercent > 0 && product.discountPercent <= 100 && discountedPrice !== price);
 
 	const handleContextAddToCart = async () => {
 		if (!product) return;
@@ -107,14 +102,7 @@ function ProductDetailMainContent<T extends IProduct>({
 
 					<ul className={styles.features}>{renderProductAttributes(product, attrs)}</ul>
 					<div className={styles.actions}>
-						<Quantity
-							value={quantity}
-							onChange={onChangeQuantity}
-							min={minQuantity}
-							max={maxQuantity}
-							className={styles.actions__quantity}
-							debounceTime={0}
-						/>
+						<Quantity value={quantity} onChange={onChangeQuantity} min={minQuantity} max={maxQuantity} className={styles.actions__quantity} debounceTime={0} />
 						<button
 							className={clsx(styles.actions__buyNow, 'cta-button', {
 								disabled: quantity <= 0,
@@ -134,22 +122,8 @@ function ProductDetailMainContent<T extends IProduct>({
 				</div>
 			)}
 
-			{cartStatus === 'success' && (
-				<ModalAlert
-					title='Thành công'
-					message='Sản phẩm đã được thêm vào giỏ hàng.'
-					onClose={() => setCartStatus('idle')}
-					timeout={3000}
-				/>
-			)}
-			{cartStatus === 'error' && (
-				<ModalAlert
-					title='Lỗi'
-					message='Không thể thêm sản phẩm vào giỏ hàng.'
-					onClose={() => setCartStatus('idle')}
-					timeout={3000}
-				/>
-			)}
+			{cartStatus === 'success' && <ModalAlert title='Thành công' message='Sản phẩm đã được thêm vào giỏ hàng.' onClose={() => setCartStatus('idle')} timeout={3000} />}
+			{cartStatus === 'error' && <ModalAlert title='Lỗi' message='Không thể thêm sản phẩm vào giỏ hàng.' onClose={() => setCartStatus('idle')} timeout={3000} />}
 		</>
 	);
 }

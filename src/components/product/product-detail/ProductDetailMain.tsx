@@ -1,7 +1,7 @@
 'use client';
 import React, { useEffect, useReducer, useMemo, useCallback } from 'react';
 import styles from './ProductDetail.module.scss';
-import { calcDiscountPrice } from '@/util/calcDiscountPrice';
+import { calcDiscountPrice } from '@/util/price.util';
 import { loggerService } from '@/services/logger.service';
 import { IProduct } from '@/interfaces';
 import ProductDetailMainVisual from './ProductDetailMainVisual';
@@ -55,7 +55,7 @@ function ProductDetailMain<T extends IProduct>({ productId, attrs, fetchProductB
 					(state.product as any).discountPercent <= 100 &&
 					state.discountedPrice !== (state.product as any)?.price
 			),
-		[(state.product as any)?.discountPercent, state.discountedPrice, (state.product as any)?.price]
+		[state.product?._id, state.product?.discountPercent, state.discountedPrice]
 	);
 
 	const handleChangeThumbnail = useCallback(
@@ -66,9 +66,7 @@ function ProductDetailMain<T extends IProduct>({ productId, attrs, fetchProductB
 	);
 
 	const handlePrevThumbnail = useCallback(() => {
-		const newIndex =
-			(state.thumbnailIndex - 1 + ((state.product as any)?.images.length || 0)) %
-			((state.product as any)?.images.length || 1);
+		const newIndex = (state.thumbnailIndex - 1 + ((state.product as any)?.images.length || 0)) % ((state.product as any)?.images.length || 1);
 		handleChangeThumbnail(newIndex);
 	}, [handleChangeThumbnail]);
 
@@ -87,16 +85,11 @@ function ProductDetailMain<T extends IProduct>({ productId, attrs, fetchProductB
 	};
 
 	const isNextDisabled = useMemo(
-		() =>
-			(state.product as any)?.images.length === 0 ||
-			state.thumbnailIndex >= ((state.product as any)?.images.length || 1) - 1,
+		() => (state.product as any)?.images.length === 0 || state.thumbnailIndex >= ((state.product as any)?.images.length || 1) - 1,
 		[(state.product as any)?.images.length, state.thumbnailIndex]
 	);
 
-	const isPrevDisabled = useMemo(
-		() => (state.product as any)?.images.length === 0 || state.thumbnailIndex <= 0,
-		[(state.product as any)?.images.length, state.thumbnailIndex]
-	);
+	const isPrevDisabled = useMemo(() => (state.product as any)?.images.length === 0 || state.thumbnailIndex <= 0, [(state.product as any)?.images.length, state.thumbnailIndex]);
 
 	const fetchProduct = async () => {
 		if (!productId) {
@@ -121,7 +114,7 @@ function ProductDetailMain<T extends IProduct>({ productId, attrs, fetchProductB
 
 	return (
 		<>
-			<section className={styles.detail}>
+			<section className={`${styles.detail} mobile-not-border-radius`}>
 				<ProductDetailMainVisual
 					images={(state.product as any)?.images || []}
 					productName={(state.product as any)?.name || ''}

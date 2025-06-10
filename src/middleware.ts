@@ -1,17 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { loggerService } from './services/logger.service';
 
 export function middleware(request: NextRequest) {
 	const response = NextResponse.next();
-	const { pathname, search } = request.nextUrl;
-	const method = request.method;
-
-	// Log the request details
-	loggerService.debug('MIDDLEWARE TRIGGER: ', {
-		'Đường dẫn': pathname,
-		'Tìm kiếm': search,
-		'Phương thức': method,
-	});
+	const { pathname } = request.nextUrl;
 
 	// Set the headers for CORS
 	let origin: string | string[] = process.env.ALLOWED_ORIGINS || '*';
@@ -23,7 +14,6 @@ export function middleware(request: NextRequest) {
 
 	// Chuyển hướng sang home nếu đường dẫn là '/'
 	if (pathname === '/') {
-		loggerService.debug('Chuyển hướng đến trang chủ');
 		return NextResponse.redirect(new URL('/home', request.url));
 	}
 

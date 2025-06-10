@@ -1,7 +1,7 @@
 'use client';
 import Table from '@/components/ui/table/Table';
 import styles from './Contact.module.scss';
-import React, { useCallback, useEffect, useReducer } from 'react';
+import React, { useCallback, useReducer } from 'react';
 import Link from 'next/link';
 import clsx from 'clsx';
 import Checkbox from '@/components/ui/checkbox/Checkbox';
@@ -36,9 +36,7 @@ function reducer(state: ContactFormState, action: Action): ContactFormState {
 	}
 }
 
-type Props = {};
-
-function ContactFormSection({}: Props) {
+function ContactFormSection() {
 	const [state, dispatch] = useReducer(reducer, initialState);
 
 	const handleChange = useCallback(
@@ -62,41 +60,10 @@ function ContactFormSection({}: Props) {
 					children: (
 						<>
 							<form onSubmit={handleSubmit} className={styles.contactForm}>
-								<LabelInput
-									placeholder='Nhập họ tên của bạn'
-									label='Tên của bạn'
-									name='name'
-									required
-									value={state.name}
-									onChange={handleChange('name')}
-								/>
-								<LabelInput
-									placeholder='example@gmail.com'
-									label='Email của bạn'
-									name='email'
-									type='email'
-									required
-									value={state.email}
-									onChange={handleChange('email')}
-								/>
-								<LabelInput
-									placeholder='0987654321'
-									label='Số điện thoại'
-									name='phone'
-									type='text'
-									required
-									value={state.phone}
-									onChange={handleChange('phone')}
-								/>
-								<LabelInput
-									placeholder='Nội dung tin nhắn'
-									label='Tin nhắn của bạn'
-									name='message'
-									type='textarea'
-									required
-									value={state.message}
-									onChange={handleChange('message')}
-								/>
+								<LabelInput placeholder='Nhập họ tên của bạn' label='Tên của bạn' name='name' required value={state.name} onChange={handleChange('name')} />
+								<LabelInput placeholder='example@gmail.com' label='Email của bạn' name='email' type='email' required value={state.email} onChange={handleChange('email')} />
+								<LabelInput placeholder='0987654321' label='Số điện thoại' name='phone' type='text' required value={state.phone} onChange={handleChange('phone')} />
+								<LabelInput placeholder='Nội dung tin nhắn' label='Tin nhắn của bạn' name='message' type='textarea' required value={state.message} onChange={handleChange('message')} />
 
 								<Checkbox
 									id='policyAccept'

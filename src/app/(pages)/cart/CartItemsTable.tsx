@@ -7,7 +7,7 @@ import { faTrashCan } from '@fortawesome/free-solid-svg-icons';
 import { ICartItem, IProduct } from '@/interfaces';
 import Table from '@/components/ui/table/Table';
 import Quantity from '@/components/ui/quantity/Quantity';
-import { toLocalePrice } from '@/util/toLocalePrice.util';
+import { toLocalePrice } from '@/util/price.util';
 
 type Props = {
 	items: ICartItem[];

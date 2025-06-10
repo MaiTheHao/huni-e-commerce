@@ -1,7 +1,7 @@
 'use client';
 import React, { useState, ReactNode, useEffect, useCallback, useMemo } from 'react';
 import CartContext from './CartContext';
-import { ICartItem } from '../../interfaces/cart.interface';
+import { ICartItem } from '../../interfaces';
 import { IProduct } from '@/interfaces';
 
 interface CartContextProviderProps {
@@ -11,7 +11,6 @@ interface CartContextProviderProps {
 const MAX_ITEM_QUANTITY = 999;
 const MIN_ITEM_QUANTITY = 1;
 
-// Pure function moved outside component
 function isItemsEqual(a: ICartItem[], b: ICartItem[]) {
 	if (a.length !== b.length) return false;
 	return a.every((item, index) => item.productId === b[index].productId && item.quantity === b[index].quantity);

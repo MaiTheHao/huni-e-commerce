@@ -5,25 +5,16 @@
 	position: relative;
 	width: 100%;
 	max-height: 80vh;
-	border-radius: $spacing-16;
-	padding: $spacing-24;
-	overflow: hidden;
 	display: flex;
 	flex-direction: column;
 	justify-content: flex-end;
 	align-items: flex-end;
 	background-color: $white;
+	border-radius: $spacing-16;
+	overflow: hidden;
 
-	@media (max-width: $breakpoint-md) {
-		padding: $spacing-16;
-		border-radius: 0;
-	}
 	@media (max-width: $breakpoint-sm) {
 		aspect-ratio: 1.2/1;
-		padding: $spacing-12;
-	}
-	@media (max-width: $breakpoint-xs-plus) {
-		padding: $spacing-8;
 	}
 
 	&:hover {
@@ -34,14 +25,15 @@
 }
 
 .list {
-	position: absolute;
-	inset: 0 0 0 0;
+	aspect-ratio: inherit;
+	position: relative;
+	width: 100%;
 	display: flex;
 	overflow: hidden;
 
 	.item {
-		position: relative;
 		flex: 1 0 100%;
+		position: relative;
 	}
 }
 
@@ -102,7 +94,7 @@
 	font-size: $font-size-20;
 	font-weight: $font-weight-semibold;
 	color: $txt-white;
-	background-color: rgba($accent-color, 0.3);
+	background-color: rgba($black-700, 0.3);
 	padding: $spacing-4 $spacing-16;
 	margin: 0;
 	text-shadow: 0 1px 3px rgba($black-900, 0.3);
@@ -121,7 +113,7 @@
 	font-size: $font-size-20;
 	font-weight: $font-weight-semibold;
 	color: $txt-light;
-	background-color: rgba($accent-color, 0.3);
+	background-color: rgba($black-700, 0.3);
 	padding: $spacing-4 $spacing-16;
 	margin: 0;
 	text-shadow: 0 1px 3px rgba($black-900, 0.3);
@@ -145,10 +137,20 @@
 }
 
 .dots {
+	position: absolute;
+	bottom: $spacing-16;
+	right: $spacing-24;
 	display: flex;
 	gap: $spacing-8;
 	z-index: 2;
+	@media (max-width: $breakpoint-md) {
+		bottom: $spacing-12;
+		right: $spacing-16;
+		gap: $spacing-6;
+	}
 	@media (max-width: $breakpoint-sm) {
+		bottom: $spacing-8;
+		right: $spacing-12;
 		gap: $spacing-4;
 	}
 }

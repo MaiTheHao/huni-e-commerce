@@ -1,7 +1,7 @@
 'use client';
 import React, { useState, ReactNode, useMemo } from 'react';
 import SearchFilterCriteriaContext from './SearchFilterCriteriaContext';
-import { TFilterCriteria, TSortCriteria, TSearchCriteria } from '@/interfaces/filter-sort-criteria.interface';
+import { TFilterCriteria, TSortCriteria, TSearchCriteria } from '@/interfaces';
 
 type Props = {
 	children: ReactNode;

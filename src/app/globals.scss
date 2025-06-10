@@ -416,8 +416,14 @@ $link-underline-offset: -0.5ch !default;
 }
 
 // Other
-.not-fill-width-mobile {
+.mobile-not-fill-width {
 	@media screen and (max-width: $breakpoint-md) {
-		padding: 0 $spacing-4;
+		padding: 0 $spacing-4 !important;
+	}
+}
+
+.mobile-not-border-radius {
+	@media screen and (max-width: $breakpoint-md) {
+		border-radius: 0 !important;
 	}
 }

@@ -1,4 +1,3 @@
-import { Model, FilterQuery, Types } from 'mongoose';
 import { MongoBaseRepository } from './mongo-base.repository';
 import { IHeroSection, IHeroSectionDocument, PaginatedResult } from '@/interfaces';
 import { HeroSectionModel } from '../database/schemas/hero-section.schema';
@@ -17,11 +16,7 @@ class HeroSectionRepository extends MongoBaseRepository<IHeroSection, IHeroSecti
 		return HeroSectionRepository.instance;
 	}
 
-	async findByCategory(
-		category: string,
-		page: number = 1,
-		limit: number = 1000
-	): Promise<PaginatedResult<IHeroSectionDocument[]>> {
+	async findByCategory(category: string, page: number = 1, limit: number = 1000): Promise<PaginatedResult<IHeroSectionDocument[]>> {
 		return await this.findWithPagination(page, limit, { category: { $regex: category, $options: 'i' } });
 	}
 }

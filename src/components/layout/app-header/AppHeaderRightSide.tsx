@@ -6,9 +6,8 @@ import Link from 'next/link';
 import { useState } from 'react';
 import clsx from 'clsx';
 import { useCartContext } from '@/contexts/CartContext/useCartContext';
-type Props = {};
 
-export default function AppHeaderRightSide({}: Props) {
+export default function AppHeaderRightSide() {
 	const [isSearchOpen, setIsSearchOpen] = useState(false);
 	const { items } = useCartContext();
 	const totalQuantity = items.reduce((total, item) => total + item.quantity, 0);
@@ -39,19 +38,11 @@ export default function AppHeaderRightSide({}: Props) {
 				</div>
 			</div>
 
-			<Link
-				href='/cart'
-				aria-label='Shopping Cart'
-				className={`${styles['app-header__action']} ${styles['app-header__action--clickable']}`}
-			>
+			<Link href='/cart' aria-label='Shopping Cart' className={`${styles['app-header__action']} ${styles['app-header__action--clickable']}`}>
 				<FontAwesomeIcon icon={faCartShopping} />
 				{totalQuantity > 0 && <span className={styles['app-header__cart-badge']}>{totalQuantity}</span>}
 			</Link>
-			<Link
-				href='/profile'
-				aria-label='Profile'
-				className={`${styles['app-header__action']} ${styles['app-header__action--clickable']}`}
-			>
+			<Link href='/profile' aria-label='Profile' className={`${styles['app-header__action']} ${styles['app-header__action--clickable']}`}>
 				<FontAwesomeIcon icon={faUser} />
 			</Link>
 		</div>

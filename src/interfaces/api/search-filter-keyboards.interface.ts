@@ -1,5 +1,5 @@
-import { IKeyboard, KeyboardFilterCriteria, KeyboardSearchCriteria, KeyboardSortCriteria } from '../keyboard.interface';
-import { IPagination } from '../pagination.interface';
+import { IKeyboard, KeyboardFilterCriteria, KeyboardSearchCriteria, KeyboardSortCriteria } from '../entity';
+import { IPagination } from '../ui';
 
 export interface ISearchFilterKeyboardRequest {
 	page: number;

@@ -1,4 +1,4 @@
-import { Cart, CartItem } from '@/interfaces/cart.interface';
+import { Cart, CartItem } from '@/interfaces';
 import { getJsonCookie, setJsonCookie, deleteCookie } from '../util/cookie';
 import { responseService } from './response.service';
 
@@ -9,7 +9,7 @@ class CartService {
 
 	private constructor() {}
 
-	static getInstance() {
+	static getInstance(): CartService {
 		if (!CartService.instance) {
 			CartService.instance = new CartService();
 		}
@@ -19,7 +19,7 @@ class CartService {
 	async getCart(): Promise<Cart> {
 		try {
 			const cart = await getJsonCookie<Cart>(CART_COOKIE_NAME);
-			return cart || { items: [] };
+			return cart ?? { items: [] };
 		} catch (error) {
 			responseService.error('Lỗi khi lấy giỏ hàng', undefined, error);
 			return { items: [] };
@@ -29,9 +29,9 @@ class CartService {
 	async addItem(item: CartItem): Promise<void> {
 		try {
 			const cart = await this.getCart();
-			const idx = cart.items.findIndex((i: CartItem) => i.productId === item.productId);
-			if (idx > -1) {
-				cart.items[idx].quantity += item.quantity;
+			const existingItem = cart.items.find((i) => i.productId === item.productId);
+			if (existingItem) {
+				existingItem.quantity += item.quantity;
 			} else {
 				cart.items.push(item);
 			}
@@ -44,11 +44,11 @@ class CartService {
 	async updateItem(productId: string, quantity: number): Promise<void> {
 		try {
 			const cart = await this.getCart();
-			const idx = cart.items.findIndex((i: CartItem) => i.productId === productId);
-			if (idx > -1) {
-				cart.items[idx].quantity = quantity;
-				if (cart.items[idx].quantity <= 0) {
-					cart.items.splice(idx, 1);
+			const item = cart.items.find((i) => i.productId === productId);
+			if (item) {
+				item.quantity = quantity;
+				if (item.quantity <= 0) {
+					cart.items = cart.items.filter((i) => i.productId !== productId);
 				}
 				await setJsonCookie(CART_COOKIE_NAME, cart);
 			}
@@ -60,7 +60,7 @@ class CartService {
 	async removeItem(productId: string): Promise<void> {
 		try {
 			const cart = await this.getCart();
-			cart.items = cart.items.filter((i: CartItem) => i.productId !== productId);
+			cart.items = cart.items.filter((i) => i.productId !== productId);
 			await setJsonCookie(CART_COOKIE_NAME, cart);
 		} catch (error) {
 			responseService.error('Lỗi khi xóa sản phẩm khỏi giỏ hàng', undefined, error);

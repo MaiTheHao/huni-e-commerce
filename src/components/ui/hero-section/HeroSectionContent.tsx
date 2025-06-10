@@ -13,6 +13,7 @@ export type HeroSectionContentProps = {
 	current: number;
 };
 
+// TODO: FIX BUG AUTO SCROLL
 function HeroSectionContent({ items, current }: HeroSectionContentProps) {
 	const [isRedirecting, setIsRedirecting] = useState(false);
 
@@ -32,7 +33,7 @@ function HeroSectionContent({ items, current }: HeroSectionContentProps) {
 								el.scrollIntoView({
 									behavior: 'smooth',
 									block: 'nearest',
-									inline: 'center',
+									inline: 'start',
 								});
 							}
 						}}

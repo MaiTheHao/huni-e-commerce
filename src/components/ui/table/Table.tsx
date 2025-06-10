@@ -18,7 +18,7 @@ interface TableProps {
 
 const Table: React.FC<TableProps> = ({ sections, loading = false, className, footer }) => {
 	return (
-		<section className={clsx(styles.table, className)}>
+		<section className={clsx(styles.table, className, 'mobile-not-border-radius')}>
 			{sections.map((section, index) => (
 				<div key={index} className={styles.tableSection}>
 					{/* Render header nếu có title hoặc titles */}

@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 
-export interface IUser {
+export interface IUserBase {
 	email: string;
 	phone: string;
 	password: string;
@@ -13,4 +13,8 @@ export interface IUser {
 	updatedAt: Date;
 }
 
-export interface IUserDocument extends IUser, mongoose.Document<mongoose.Types.ObjectId> {}
+export interface IUser extends IUserBase {
+	_id: string;
+}
+
+export interface IUserDocument extends IUserBase, mongoose.Document<mongoose.Types.ObjectId> {}

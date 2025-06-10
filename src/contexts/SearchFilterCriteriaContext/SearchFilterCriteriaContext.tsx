@@ -1,6 +1,6 @@
 'use client';
 import { createContext } from 'react';
-import { TFilterCriteria, TSortCriteria, TSearchCriteria } from '@/interfaces/filter-sort-criteria.interface';
+import { TFilterCriteria, TSortCriteria, TSearchCriteria } from '@/interfaces';
 
 interface ISearchFilterCriteriaContext {
 	searchKeyword: TSearchCriteria;

@@ -9,7 +9,7 @@ type KeyboardsPaginationProps = IPagination & {
 	onPageChange: (page: number) => void;
 };
 
-function KeyboardsPagination({ page, limit, total, totalPages, onPageChange }: KeyboardsPaginationProps) {
+function KeyboardsPagination({ page, total, totalPages, onPageChange }: KeyboardsPaginationProps) {
 	const handlePageChange = (newPage: number) => {
 		if (newPage !== page && newPage > 0 && newPage <= totalPages) {
 			onPageChange(newPage);
@@ -18,12 +18,7 @@ function KeyboardsPagination({ page, limit, total, totalPages, onPageChange }: K
 
 	const renderPageButton = (p: number) => (
 		<li key={p}>
-			<button
-				className={`${styles.PaginationItem} ${p === page ? styles.active : ''}`}
-				aria-current={p === page ? 'page' : undefined}
-				onClick={() => handlePageChange(p)}
-				disabled={p === page}
-			>
+			<button className={`${styles.PaginationItem} ${p === page ? styles.active : ''}`} aria-current={p === page ? 'page' : undefined} onClick={() => handlePageChange(p)} disabled={p === page}>
 				{p}
 			</button>
 		</li>
@@ -47,12 +42,7 @@ function KeyboardsPagination({ page, limit, total, totalPages, onPageChange }: K
 			</div>
 			<ul className={styles.PaginationList}>
 				<li>
-					<button
-						disabled={page === 1}
-						aria-label='Trang trước'
-						className={styles.PaginationButton}
-						onClick={() => handlePageChange(page - 1)}
-					>
+					<button disabled={page === 1} aria-label='Trang trước' className={styles.PaginationButton} onClick={() => handlePageChange(page - 1)}>
 						<FontAwesomeIcon icon={faAngleLeft} />
 					</button>
 				</li>
@@ -77,12 +67,7 @@ function KeyboardsPagination({ page, limit, total, totalPages, onPageChange }: K
 				)}
 
 				<li>
-					<button
-						disabled={page === totalPages}
-						aria-label='Trang sau'
-						className={styles.PaginationButton}
-						onClick={() => handlePageChange(page + 1)}
-					>
+					<button disabled={page === totalPages} aria-label='Trang sau' className={styles.PaginationButton} onClick={() => handlePageChange(page + 1)}>
 						<FontAwesomeIcon icon={faAngleRight} />
 					</button>
 				</li>
