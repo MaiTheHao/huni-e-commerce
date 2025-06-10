@@ -29,7 +29,8 @@
 	position: relative;
 	width: 100%;
 	display: flex;
-	overflow: hidden;
+	transition: transform 0.7s cubic-bezier(0.77, 0, 0.175, 1);
+	will-change: transform;
 
 	.item {
 		flex: 1 0 100%;

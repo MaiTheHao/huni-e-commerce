@@ -10,33 +10,31 @@ import Spinner from '../spinner/Spinner';
 
 export type HeroSectionContentProps = {
 	items: IHeroSection[];
-	current: number;
+	idx: number;
 };
 
-// TODO: FIX BUG AUTO SCROLL
-function HeroSectionContent({ items, current }: HeroSectionContentProps) {
+function HeroSectionContent({ items, idx }: HeroSectionContentProps) {
 	const [isRedirecting, setIsRedirecting] = useState(false);
 
 	return (
-		<ul className={styles.list}>
-			{items.map((product, idx) => {
-				const isActive = idx === current;
+		<ul className={styles.list} style={{ transform: `translateX(-${idx * 100}%)` }}>
+			{items.map((product) => {
 				const attrs = product.attrs?.slice(0, 3);
 				const hasContent = product.name || (attrs && attrs.length > 0) || (product.cta && product.ctaHref);
 
 				return (
 					<li
 						key={product._id}
-						className={`${styles.item} ${isActive ? styles.active : ''}`}
-						ref={(el) => {
-							if (isActive && el) {
-								el.scrollIntoView({
-									behavior: 'smooth',
-									block: 'nearest',
-									inline: 'start',
-								});
-							}
-						}}
+						className={`${styles.item}`}
+						// ref={(el) => {
+						// 	if (isActive && el) {
+						// 		el.scrollIntoView({
+						// 			behavior: 'smooth',
+						// 			block: 'nearest',
+						// 			inline: 'start',
+						// 		});
+						// 	}
+						// }}
 					>
 						{product.image && (
 							<Image
@@ -57,11 +55,7 @@ function HeroSectionContent({ items, current }: HeroSectionContentProps) {
 									{product.name && <h3 className={styles.title}>{product.name}</h3>}
 									{attrs && attrs.length > 0 && <p className={styles.attrs}>{attrs.join(' | ')}</p>}
 									{product.cta && product.ctaHref && (
-										<Link
-											className={clsx('cta-button', styles.cta)}
-											href={product.ctaHref}
-											onClick={() => setIsRedirecting(true)}
-										>
+										<Link className={clsx('cta-button', styles.cta)} href={product.ctaHref} onClick={() => setIsRedirecting(true)}>
 											{isRedirecting ? <Spinner /> : <span>{product.cta}</span>}
 										</Link>
 									)}

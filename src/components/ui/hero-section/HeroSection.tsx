@@ -12,36 +12,30 @@ export type HeroSectionProps = {
 };
 
 function HeroSection({ items }: HeroSectionProps) {
-	const [current, setCurrent] = useState(0);
-	const isNextDisabled = current === items.length - 1;
-	const isPrevDisabled = current === 0;
+	const [idx, setIdx] = useState(0);
 
-	const memoizedProducts = useMemo(
-		() => items.filter((p) => p.image).map((p, idx) => ({ ...p, _index: idx })),
-		[items]
-	);
+	const memoizedProducts = useMemo(() => items.filter((p) => p.image).map((p, idx) => ({ ...p, _index: idx })), [items]);
 
-	// ! Tạm thời tắt do gặp vấn đề với scroll tự động, làm mất UX
 	useEffect(() => {
 		const timer = setInterval(() => {
 			handleNext();
 		}, 3000);
 
 		return () => clearInterval(timer);
-	}, [current, memoizedProducts.length]);
+	}, [idx, memoizedProducts.length]);
 
 	const handlePrev = () => {
 		// if (isPrevDisabled) return;
-		setCurrent((prev) => (prev - 1 + memoizedProducts.length) % memoizedProducts.length);
+		setIdx((prev) => (prev - 1 + memoizedProducts.length) % memoizedProducts.length);
 	};
 
 	const handleNext = () => {
 		// if (isNextDisabled) return;
-		setCurrent((prev) => (prev + 1) % memoizedProducts.length);
+		setIdx((prev) => (prev + 1) % memoizedProducts.length);
 	};
 
 	const handleDotClick = (index: number) => {
-		setCurrent(index);
+		setIdx(index);
 	};
 
 	const { handleTouchStart, handleTouchMove, handleTouchEnd, direction, distance, reset } = useMobileScrollX();
@@ -60,14 +54,9 @@ function HeroSection({ items }: HeroSectionProps) {
 	if (!memoizedProducts || memoizedProducts.length === 0) return null;
 
 	return (
-		<div
-			className={clsx(styles.hero, 'mobile-not-border-radius')}
-			onTouchStart={handleTouchStart}
-			onTouchMove={handleTouchMove}
-			onTouchEnd={handleTouchEndWithSwipe}
-		>
+		<div className={clsx(styles.hero, 'mobile-not-border-radius')} onTouchStart={handleTouchStart} onTouchMove={handleTouchMove} onTouchEnd={handleTouchEndWithSwipe}>
 			{/* Nội dung chính của Hero Section */}
-			<HeroSectionContent items={memoizedProducts} current={current} />
+			<HeroSectionContent items={memoizedProducts} idx={idx} />
 
 			{/* Nút điều hướng và các điểm chỉ mục */}
 			<ThumbnailNavButton
@@ -78,13 +67,8 @@ function HeroSection({ items }: HeroSectionProps) {
 				className={styles.nav}
 			/>
 			<div className={styles.dots}>
-				{memoizedProducts.map((_, idx) => (
-					<button
-						key={idx}
-						className={`${styles.dot} ${idx === current ? styles.active : ''}`}
-						onClick={() => handleDotClick(idx)}
-						aria-label={`Chuyển đến sản phẩm ${idx + 1}`}
-					/>
+				{memoizedProducts.map((_, dotIdx) => (
+					<button key={dotIdx} className={`${styles.dot} ${idx === dotIdx ? styles.active : ''}`} onClick={() => handleDotClick(dotIdx)} aria-label={`Chuyển đến sản phẩm ${dotIdx + 1}`} />
 				))}
 			</div>
 		</div>
