@@ -6,16 +6,16 @@ export async function GET(req: NextRequest) {
 	const productId = req.nextUrl.pathname.split('/').pop();
 
 	if (!productId) {
-		return responseService.badRequest('Thiếu mã sản phẩm');
+		return responseService.badRequest('Missing product ID');
 	}
 
 	try {
 		const markdown = await productDetailMarkdownRepository.findOne({ productId });
 		if (!markdown) {
-			return responseService.error('Không tìm thấy thông tin markdown');
+			return responseService.error('Markdown information not found');
 		}
 		return responseService.success(markdown);
 	} catch (error) {
-		return responseService.error('Lấy thông tin markdown thất bại', undefined, error);
+		return responseService.error('Failed to retrieve markdown information', undefined, error);
 	}
 }

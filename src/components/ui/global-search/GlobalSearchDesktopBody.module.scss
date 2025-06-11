@@ -1,0 +1,65 @@
+@use '../../../app/vars' as *;
+
+.gs-wrap {
+	position: relative;
+	display: inline-flex;
+	padding: $spacing-4 0;
+	font-size: 1em;
+}
+
+.gs {
+	display: inline-flex;
+	align-items: center;
+	gap: 1ch;
+	padding: $spacing-8 $spacing-12;
+	border-radius: 50em;
+	transition: background-color 0.3s ease;
+
+	&--open {
+		background-color: rgba($black-100, 1);
+	}
+}
+
+.gs-input {
+	font-size: $font-size-14;
+	line-height: 16px;
+	width: 0;
+	color: $txt-secondary;
+	background-color: transparent;
+	transition: width 0.3s ease;
+
+	&--active {
+		width: 20ch;
+	}
+
+	&::placeholder {
+		color: $txt-tertiary;
+	}
+}
+
+.gs-btn {
+	cursor: pointer;
+	display: inline-flex;
+	justify-content: center;
+	align-items: center;
+
+	.icon {
+		aspect-ratio: 1;
+		font-size: $font-size-16;
+		color: $primary-color;
+		transition: color 0.3s ease, transform 0.3s ease;
+
+		&:hover {
+			transform: scale(1.1);
+		}
+		&:active {
+			transform: scale(0.9);
+		}
+	}
+}
+
+@media screen and (max-width: $breakpoint-md) {
+	.gs-wrap {
+		display: none;
+	}
+}

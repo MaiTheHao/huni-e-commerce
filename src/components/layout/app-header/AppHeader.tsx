@@ -5,6 +5,7 @@ import AppHeaderLeftSide from './AppHeaderLeftSide';
 import styles from './AppHeader.module.scss';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
+import GlobalSearch from '@/components/ui/global-search/GlobalSearch';
 
 function AppHeader() {
 	return (
@@ -23,6 +24,7 @@ function AppHeader() {
 					</label>
 				</div>
 			</div>
+			{/* <GlobalSearch isFull /> */}
 		</div>
 	);
 }

@@ -1,6 +1,7 @@
 import mongoose from 'mongoose';
 import { IProductBase, PRODUCT_FILTERABLE_FIELDS, PRODUCT_SEARCHABLE_FIELDS, PRODUCT_SORTABLE_FIELDS, ProductSearchCriteria } from './product.entity';
 import { TFilterCriteria, TSortCriteria } from '@/interfaces';
+import { ISwitchType } from './switch.entity';
 
 export interface IKeyboardBase extends IProductBase {
 	caseMaterial: string;
@@ -12,7 +13,7 @@ export interface IKeyboardBase extends IProductBase {
 	rapidTrigger: boolean;
 	rgb: boolean;
 	series: string | null;
-	switchType: IKeyboardSwitchType;
+	switchType: ISwitchType;
 }
 
 export interface IKeyboard extends IKeyboardBase {
@@ -26,9 +27,6 @@ export type IKeyboardLayout = (typeof KEYBOARD_LAYOUTS)[number];
 
 export const KEYBOARD_CONNECTIVITIES = ['Type-C', 'Bluetooth', '2.4GHz', 'USB-A'] as const;
 export type IKeyboardConnectivity = (typeof KEYBOARD_CONNECTIVITIES)[number];
-
-export const KEYBOARD_SWITCH_TYPES = ['Linear', 'Tactile', 'Clicky', 'Optical', 'Magnetic'] as const;
-export type IKeyboardSwitchType = (typeof KEYBOARD_SWITCH_TYPES)[number];
 
 export const KEYBOARD_SEARCHABLE_FIELDS = [...PRODUCT_SEARCHABLE_FIELDS, 'modelName', 'collab', 'series', 'switchType'] as const;
 export type KeyboardSearchableFields = (typeof KEYBOARD_SEARCHABLE_FIELDS)[number];

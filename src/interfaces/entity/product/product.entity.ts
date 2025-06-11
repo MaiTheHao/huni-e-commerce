@@ -10,6 +10,7 @@ export interface IProductBase {
 	images: string[];
 	tags: string[];
 	brand: string;
+	productType: string;
 	createdAt: Date;
 	updatedAt: Date;
 }

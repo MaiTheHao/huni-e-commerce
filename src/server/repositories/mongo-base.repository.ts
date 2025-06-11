@@ -1,10 +1,4 @@
-import {
-	IMongoRepository,
-	IPagination,
-	PaginatedResult,
-	PRODUCT_FILTERABLE_FIELDS,
-	PRODUCT_SEARCHABLE_FIELDS,
-} from '@/interfaces';
+import { IMongoRepository, IPagination, PaginatedResult, PRODUCT_FILTERABLE_FIELDS, PRODUCT_SEARCHABLE_FIELDS } from '@/interfaces';
 import { Model, Document, FilterQuery, Types } from 'mongoose';
 import { connectToDatabase, disconnectFromDatabase } from '../database/connection';
 import { getPagination } from '@/util/page.util';
@@ -82,14 +76,18 @@ export class MongoBaseRepository<T, D extends Document> implements IMongoReposit
 		};
 	}
 
-	async search(keyword: string, page: number, limit: number): Promise<PaginatedResult<D[]>> {
+	async search(keyword: string, page: number, limit: number, sort?: TSortCriteria, projection?: Record<string, any>): Promise<PaginatedResult<D[]>> {
 		await this.ensureConnected();
 		const skip = (page - 1) * limit;
 
 		// Xây dựng điều kiện tìm kiếm
-		const query = generateSearchQuery<D>(keyword, this.searchableFields);
-		const total = await this.model.countDocuments(query).exec();
-		const data = total ? await this.model.find(query).skip(skip).limit(limit).exec() : [];
+		const searchQuery = generateSearchQuery<D>(keyword, this.searchableFields);
+		const pipeline: any[] = [{ $match: searchQuery }, ...generateSortPipeline(sort), { $skip: skip }, { $limit: limit }];
+		if (projection) {
+			pipeline.push({ $project: projection });
+		}
+		const total = await this.model.countDocuments(searchQuery).exec();
+		const data = total ? await this.model.aggregate(pipeline).exec() : [];
 
 		return {
 			data,
@@ -97,12 +95,7 @@ export class MongoBaseRepository<T, D extends Document> implements IMongoReposit
 		};
 	}
 
-	async filter(
-		criteria: Record<string, any> = {},
-		page: number,
-		limit: number,
-		sort?: TSortCriteria
-	): Promise<PaginatedResult<D[]>> {
+	async filter(criteria: Record<string, any> = {}, page: number, limit: number, sort?: TSortCriteria): Promise<PaginatedResult<D[]>> {
 		await this.ensureConnected();
 		const skip = (page - 1) * limit;
 
@@ -111,12 +104,7 @@ export class MongoBaseRepository<T, D extends Document> implements IMongoReposit
 		const total = await this.model.countDocuments(filterableCriteria).exec();
 
 		// Thực hiện truy vấn với điều kiện lọc
-		const query = this.model.aggregate([
-			{ $match: filterableCriteria },
-			...generateSortPipeline(sort),
-			{ $skip: skip },
-			{ $limit: limit },
-		]);
+		const query = this.model.aggregate([{ $match: filterableCriteria }, ...generateSortPipeline(sort), { $skip: skip }, { $limit: limit }]);
 
 		const data = total ? await query.exec() : [];
 		return {
@@ -125,13 +113,7 @@ export class MongoBaseRepository<T, D extends Document> implements IMongoReposit
 		};
 	}
 
-	async searchFilter(
-		keyword: string = '',
-		criteria: Record<string, any> = {},
-		page: number,
-		limit: number,
-		sort?: TSortCriteria
-	): Promise<{ data: D[]; pagination: IPagination }> {
+	async searchFilter(keyword: string = '', criteria: Record<string, any> = {}, page: number, limit: number, sort?: TSortCriteria): Promise<{ data: D[]; pagination: IPagination }> {
 		await this.ensureConnected();
 		const skip = (page - 1) * limit;
 
@@ -152,12 +134,7 @@ export class MongoBaseRepository<T, D extends Document> implements IMongoReposit
 		}
 
 		// Thực hiện truy vấn với điều kiện đã kết hợp
-		const query = this.model.aggregate([
-			{ $match: filterableCriteria },
-			...generateSortPipeline(sort),
-			{ $skip: skip },
-			{ $limit: limit },
-		]);
+		const query = this.model.aggregate([{ $match: filterableCriteria }, ...generateSortPipeline(sort), { $skip: skip }, { $limit: limit }]);
 
 		const data = total ? await query.exec() : [];
 		const pagination = getPagination(page, limit, total);

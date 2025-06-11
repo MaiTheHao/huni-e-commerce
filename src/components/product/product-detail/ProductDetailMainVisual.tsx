@@ -59,28 +59,14 @@ function ProductDetailMainVisual({
 										}
 									}}
 								>
-									<Image
-										src={image}
-										alt={productName || ''}
-										fill
-										sizes='(max-width: 768px) 100vw, 50vw'
-										style={{ objectFit: 'cover' }}
-										quality={100}
-										priority={isActive}
-									/>
+									<Image src={image} alt={productName || ''} fill sizes='(max-width: 768px) 100vw, 50vw' style={{ objectFit: 'cover' }} quality={100} priority={isActive} />
 								</li>
 							);
 						})
 					)}
 				</ul>
 				<DiscountTag discountPercent={discountPercent} />
-				<ThumbnailNavButton
-					className={styles.nav}
-					onPrev={onPrevThumbnail}
-					onNext={onNextThumbnail}
-					nextDisabled={isNextDisabled}
-					prevDisabled={isPrevDisabled}
-				/>
+				<ThumbnailNavButton className={styles.nav} onPrev={onPrevThumbnail} onNext={onNextThumbnail} nextDisabled={isNextDisabled} prevDisabled={isPrevDisabled} />
 			</div>
 
 			<div className={styles.thumbWrap}>
@@ -103,26 +89,12 @@ function ProductDetailMainVisual({
 									}
 								}}
 							>
-								<Image
-									src={image}
-									alt={`Thumbnail ${index + 1}`}
-									fill
-									sizes='(max-width: 768px) 100vw, 560px'
-									style={{ objectFit: 'cover' }}
-									quality={80}
-									priority={isActive}
-								/>
+								<Image src={image} alt={`Thumbnail ${index + 1}`} fill sizes='(max-width: 768px) 100vw, 560px' style={{ objectFit: 'cover' }} quality={80} priority={isActive} />
 							</li>
 						);
 					})}
 				</ul>
-				<ThumbnailNavButton
-					className={styles.nav}
-					onPrev={onPrevThumbnail}
-					onNext={onNextThumbnail}
-					nextDisabled={isNextDisabled}
-					prevDisabled={isPrevDisabled}
-				/>
+				<ThumbnailNavButton className={styles.nav} onPrev={onPrevThumbnail} onNext={onNextThumbnail} nextDisabled={isNextDisabled} prevDisabled={isPrevDisabled} />
 			</div>
 		</div>
 	);

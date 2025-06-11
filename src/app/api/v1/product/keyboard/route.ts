@@ -11,7 +11,7 @@ export async function GET(req: NextRequest) {
 
 	const { data, pagination } = await keyboardRepository.findWithPagination(page, limit);
 	return responseService.success({
-		message: 'Lấy danh sách bàn phím thành công',
+		message: 'Get all keyboards successfully',
 		data: {
 			keyboards: data,
 			pagination,

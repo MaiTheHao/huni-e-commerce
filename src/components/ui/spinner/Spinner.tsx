@@ -8,11 +8,11 @@ type SpinnerProps = {
 };
 
 const Spinners = {
-	default: <FontAwesomeIcon icon={faSpinner} spin />,
+	default: faSpinner,
 };
 
 function Spinner({ type = 'default', className }: SpinnerProps) {
-	return <i className={className}>{Spinners[type]}</i>;
+	return <FontAwesomeIcon icon={Spinners[type]} className={className} spin />;
 }
 
 export default Spinner;

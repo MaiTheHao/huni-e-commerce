@@ -16,30 +16,30 @@ export async function POST(req: NextRequest) {
 
 		try {
 			if (aborted || req.signal.aborted) {
-				return responseService.error('Yêu cầu đã bị hủy', 499);
+				return responseService.error('Request has been aborted', 499);
 			}
 
 			const { data, pagination } = await keyboardRepository.searchFilter(body.keyword, body.criteria, body.page, body.limit, body.sort);
 
 			if (aborted || req.signal.aborted) {
-				return responseService.error('Yêu cầu đã bị hủy', 499);
+				return responseService.error('Request has been aborted', 499);
 			}
 			const response: ISearchFilterKeyboardsResponse = {
 				keyboards: data as any,
 				pagination: pagination,
-				message: 'Tìm kiếm và lọc bàn phím thành công',
+				message: 'Search and filter keyboards successfully',
 			};
 
 			return responseService.success(response, response.message);
 		} catch {
 			if (aborted || req.signal.aborted) {
-				return responseService.error('Yêu cầu đã bị hủy', 499);
+				return responseService.error('Request has been aborted', 499);
 			}
-			return responseService.error('Lỗi khi tìm kiếm và lọc bàn phím', 500);
+			return responseService.error('Error searching and filtering keyboards', 500);
 		} finally {
 			req.signal.removeEventListener('abort', abortHandler);
 		}
 	} catch {
-		return responseService.error('Lỗi khi xử lý yêu cầu', 500);
+		return responseService.error('Error processing request', 500);
 	}
 }

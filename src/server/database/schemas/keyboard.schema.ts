@@ -1,4 +1,5 @@
-import { IKeyboard, KEYBOARD_CONNECTIVITIES, KEYBOARD_LAYOUTS, KEYBOARD_SWITCH_TYPES } from '@/interfaces';
+import { IKeyboard, KEYBOARD_CONNECTIVITIES, KEYBOARD_LAYOUTS } from '@/interfaces';
+import { SWITCH_TYPES } from '@/interfaces/entity/product/switch.entity';
 import mongoose from 'mongoose';
 
 export const KeyboardSchema = new mongoose.Schema<IKeyboard>({
@@ -12,8 +13,9 @@ export const KeyboardSchema = new mongoose.Schema<IKeyboard>({
 	stock: { type: Number, default: 0, min: 0 },
 	isActive: { type: Boolean, default: false },
 	brand: { type: String, required: true },
+	productType: { type: String, default: 'keyboard' },
 	caseMaterial: { type: String, required: true },
-	switchType: { type: String, enum: KEYBOARD_SWITCH_TYPES, required: true },
+	switchType: { type: String, enum: SWITCH_TYPES, required: true },
 	hotswap: { type: Boolean, default: false },
 	rapidTrigger: { type: Boolean, default: false },
 	rgb: { type: Boolean, default: false },

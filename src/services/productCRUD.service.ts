@@ -1,4 +1,4 @@
-import { IProduct, PaginatedResult, IPagination } from '@/interfaces';
+import { IProduct, PaginatedResult, IPagination, TSortCriteria, IMongoRepository } from '@/interfaces';
 import { PRODUCT_REPOSITORIES } from '@/server/repositories';
 import { convertDocumentsToObjects } from '@/util/convert';
 
@@ -15,7 +15,7 @@ class ProductCRUDService {
 	}
 
 	private async aggregateRepositories<T>(
-		action: (repo: any) => Promise<any>,
+		action: (repo: IMongoRepository<IProduct, any>) => Promise<any>,
 		options?: {
 			withPagination?: boolean;
 			page?: number;
@@ -23,7 +23,7 @@ class ProductCRUDService {
 			returnFirst?: boolean;
 		}
 	): Promise<T[] | PaginatedResult<T[]> | T | null> {
-		const repositories = Object.values(PRODUCT_REPOSITORIES);
+		const repositories: IMongoRepository<IProduct, any>[] = Object.values(PRODUCT_REPOSITORIES);
 		const { withPagination = false, page = 1, limit = 10, returnFirst = false } = options || {};
 
 		if (returnFirst) {
@@ -44,13 +44,8 @@ class ProductCRUDService {
 		const responses = await Promise.all(repositories.map(action));
 
 		if (withPagination) {
-			const data = responses.flatMap((response) =>
-				convertDocumentsToObjects<T>(response?.data || response || [])
-			);
-			const total = responses.reduce(
-				(sum, response) => sum + (response?.pagination?.total || response?.length || 0),
-				0
-			);
+			const data = responses.flatMap((response) => convertDocumentsToObjects<T>(response?.data || response || []));
+			const total = responses.reduce((sum, response) => sum + (response?.pagination?.total || response?.length || 0), 0);
 
 			const pagination: IPagination = {
 				total,
@@ -71,14 +66,6 @@ class ProductCRUDService {
 		return this.aggregateRepositories<T>((repo) => repo.findById(id), { returnFirst: true }) as Promise<T | null>;
 	}
 
-	async searchProducts(keyword: string, page: number = 1, limit: number = 10): Promise<PaginatedResult<IProduct[]>> {
-		return this.aggregateRepositories<IProduct>((repo) => repo.search(keyword, page, limit), {
-			withPagination: true,
-			page,
-			limit,
-		}) as Promise<PaginatedResult<IProduct[]>>;
-	}
-
 	async findOne<T>(filter: Record<string, any>): Promise<T | null> {
 		return this.aggregateRepositories<T>((repo) => repo.findOne(filter), {
 			returnFirst: true,
@@ -89,12 +76,15 @@ class ProductCRUDService {
 		return this.aggregateRepositories<T>((repo) => repo.findAll(filter || {})) as Promise<T[]>;
 	}
 
-	async filter<T>(
-		criteria: Record<string, any>,
-		page: number = 1,
-		limit: number = 10,
-		sort?: any
-	): Promise<PaginatedResult<T[]>> {
+	async search(keyword: string, page: number = 1, limit: number = 10, sort?: TSortCriteria, projection?: Record<string, any>): Promise<PaginatedResult<IProduct[]>> {
+		return this.aggregateRepositories<IProduct>((repo) => repo.search(keyword, page, limit, sort, projection), {
+			withPagination: true,
+			page,
+			limit,
+		}) as Promise<PaginatedResult<IProduct[]>>;
+	}
+
+	async filter<T>(criteria: Record<string, any>, page: number = 1, limit: number = 10, sort?: any): Promise<PaginatedResult<T[]>> {
 		return this.aggregateRepositories<T>((repo) => repo.filter(criteria, page, limit, sort), {
 			withPagination: true,
 			page,
@@ -103,20 +93,9 @@ class ProductCRUDService {
 	}
 
 	async count(filter?: Record<string, any>): Promise<number> {
-		const results = (await this.aggregateRepositories<any>((repo) =>
-			repo.count ? repo.count(filter || {}) : repo.findAll(filter || {})
-		)) as any[];
+		const results = (await this.aggregateRepositories<any>((repo) => (repo.count ? repo.count(filter || {}) : repo.findAll(filter || {})))) as any[];
 
 		return results.reduce((sum, result) => sum + (typeof result === 'number' ? result : result.length), 0);
-	}
-
-	async exists(filter: Record<string, any>): Promise<boolean> {
-		const result = await this.aggregateRepositories<any>(
-			(repo) => (repo.exists ? repo.exists(filter) : repo.findOne(filter)),
-			{ returnFirst: true }
-		);
-
-		return !!result;
 	}
 }
 

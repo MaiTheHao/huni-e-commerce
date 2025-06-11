@@ -1,5 +1,5 @@
 import { Cart, CartItem } from '@/interfaces';
-import { getJsonCookie, setJsonCookie, deleteCookie } from '../util/cookie';
+import { getJsonCookie, setJsonCookie, deleteCookie } from '../util/cookie.util';
 import { responseService } from './response.service';
 
 const CART_COOKIE_NAME = 'cart';

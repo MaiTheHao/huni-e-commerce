@@ -310,12 +310,3 @@ $logo-size: $unit * 10;
 		display: flex;
 	}
 }
-
-@media screen and (max-width: $breakpoint-sm) {
-	.app-header__search-wrapper {
-		display: none;
-	}
-	.app-header__global-search {
-		display: inline-flex;
-	}
-}

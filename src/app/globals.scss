@@ -261,35 +261,32 @@ $link-underline-offset: -0.5ch !default;
 
 // auto generated markdown styles
 .markdown {
+	h1,
+	h2,
+	h3,
+	h4,
+	h5,
+	h6 {
+		color: $accent-color;
+		font-weight: $font-weight-semibold;
+	}
 	h1 {
 		font-size: 2em;
-		font-weight: $font-weight-bold;
-		color: $accent-color;
 	}
 	h2 {
 		font-size: 1.75em;
-		font-weight: $font-weight-semibold;
-		color: $accent-color;
 	}
 	h3 {
 		font-size: 1.5em;
-		font-weight: $font-weight-semibold;
-		color: $accent-color;
 	}
 	h4 {
 		font-size: 1.25em;
-		font-weight: $font-weight-semibold;
-		color: $accent-color;
 	}
 	h5 {
 		font-size: 1.125em;
-		font-weight: $font-weight-semibold;
-		color: $accent-color;
 	}
 	h6 {
 		font-size: 1em;
-		font-weight: $font-weight-semibold;
-		color: $accent-color;
 	}
 
 	p {
@@ -383,24 +380,21 @@ $link-underline-offset: -0.5ch !default;
 
 // shimmer
 .shimmer {
-	background: linear-gradient(
-		to right,
-		rgba($black-100, 0.1) 0%,
-		rgba($black-500, 0.1) 50%,
-		rgba($black-900, 0.1) 100%
-	);
+	background: linear-gradient(to right, rgba($black-100, 0.1) 0%, rgba($black-500, 0.1) 50%, rgba($black-900, 0.1) 100%);
 	border-radius: 0.25rem;
 	background-size: 200% 100%;
 	animation: shimmer 1.25s infinite;
 }
 
 .shimmer--primary-color {
-	background: linear-gradient(
-		to right,
-		rgba($primary-color, 0.1) 0%,
-		rgba($primary-color, 0.2) 50%,
-		rgba($primary-color, 0.3) 100%
-	);
+	background: linear-gradient(to right, rgba($primary-color, 0.1) 0%, rgba($primary-color, 0.2) 50%, rgba($primary-color, 0.3) 100%);
+	border-radius: 0.25rem;
+	background-size: 200% 100%;
+	animation: shimmer 1.25s infinite;
+}
+
+.shimmer--light {
+	background: linear-gradient(to right, rgba($white, 0.2) 0%, rgba($black-100, 0.3) 50%, rgba($black-200, 0.2) 100%);
 	border-radius: 0.25rem;
 	background-size: 200% 100%;
 	animation: shimmer 1.25s infinite;

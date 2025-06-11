@@ -1,5 +1,6 @@
 import mongoose, { FilterQuery } from 'mongoose';
 import { IPagination } from '../ui';
+import { TSortCriteria } from '../filter';
 
 export type PaginatedResult<T> = { data: T; pagination: IPagination };
 
@@ -20,7 +21,7 @@ export interface IMongoRepository<T, D extends mongoose.Document> {
 	findAll(filter?: FilterQuery<D>): Promise<D[]>;
 	findOne(filter: FilterQuery<D>): Promise<D | null>;
 	findWithPagination(page: number, limit: number, filter?: FilterQuery<D>): Promise<PaginatedResult<D[]>>;
-	search(keyword: string, page: number, limit: number): Promise<PaginatedResult<D[]>>;
+	search(keyword: string, page: number, limit: number, sort?: TSortCriteria, projection?: Record<string, any>): Promise<PaginatedResult<D[]>>;
 	filter(criteria: FilterQuery<D>, page: number, limit: number, sort?: any): Promise<PaginatedResult<D[]>>;
 	searchFilter(keyword: string, criteria: Record<string, any>, page: number, limit: number, sort?: any): Promise<PaginatedResult<D[]>>;
 	count(filter?: FilterQuery<D>): Promise<number>;

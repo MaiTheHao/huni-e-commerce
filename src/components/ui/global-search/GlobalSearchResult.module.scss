@@ -1,0 +1,144 @@
+@use '../../../app/vars' as *;
+
+.gs-results {
+	position: absolute;
+	top: 110%;
+	right: 0;
+	width: 20em;
+	z-index: 20;
+	background-color: white;
+	border: 1px solid $black-200;
+	border-radius: 0.25rem;
+	box-shadow: 0 0 0.5em rgba(0, 0, 0, 0.1);
+	padding: $spacing-4;
+	font-size: 1em;
+
+	&-list {
+		position: relative;
+		max-height: calc(3.5em * 5);
+		display: flex;
+		flex-direction: column;
+		overflow-y: auto;
+		overflow-x: hidden;
+		z-index: 10;
+
+		&::-webkit-scrollbar {
+			width: 8px;
+			background: transparent;
+		}
+		&::-webkit-scrollbar-thumb {
+			background: rgba($black-200, 0.3);
+			border-radius: 4px;
+			transition: background 0.2s;
+		}
+		&::-webkit-scrollbar-thumb:hover {
+			background: rgba($primary-color, 0.5);
+		}
+		&::-webkit-scrollbar-track {
+			background: transparent;
+		}
+
+		scrollbar-width: thin;
+		scrollbar-color: rgba($black-200, 0.3) transparent;
+
+		-ms-overflow-style: auto;
+	}
+
+	&-item {
+		cursor: pointer;
+		flex: 1 0 3.5em;
+		position: relative;
+		display: flex;
+		align-items: center;
+		gap: 1ch;
+		padding: 0.25em;
+		border-bottom: 1px solid rgba($black-200, 0.5);
+		transition: background-color 0.2s;
+
+		&-img {
+			flex-grow: 0;
+			flex-shrink: 0;
+			aspect-ratio: 1;
+			position: relative;
+			height: 100%;
+			max-height: 3.5em;
+			border-radius: 0.25em;
+			overflow: hidden;
+		}
+
+		&-info {
+			position: relative;
+			display: flex;
+			flex-direction: column;
+		}
+
+		&-title {
+			font-size: 0.75em;
+			font-weight: $font-weight-regular;
+		}
+
+		&-price {
+			position: relative;
+			display: flex;
+			align-items: center;
+			gap: 0.5ch;
+			font-size: 0.75em;
+			font-weight: $font-weight-semibold;
+			&--old {
+				color: $txt-secondary;
+				text-decoration: line-through;
+				font-size: 0.85em;
+			}
+
+			&--cur {
+				color: $primary-color;
+			}
+		}
+
+		&--disabled {
+			cursor: not-allowed;
+			opacity: 0.5;
+		}
+
+		&:hover {
+			background-color: rgba($black-200, 0.3);
+		}
+
+		&:active {
+			background-color: rgba($black-200, 0.5);
+		}
+	}
+
+	&-more {
+		cursor: pointer;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		width: 100%;
+		min-height: 1.5em;
+		background-color: rgba($black-200, 0.25);
+		padding: 0.5ch 0;
+
+		&-btn {
+			cursor: pointer;
+			display: flex;
+			align-items: center;
+			gap: 0.5ch;
+			font-size: 0.85em;
+			font-weight: $font-weight-semibold;
+			color: $accent-color;
+			background: transparent;
+			border: none;
+			transition: color 0.2s, text-decoration 0.2s;
+
+			&:hover {
+				color: darken($accent-color, 10%);
+				text-decoration: underline;
+			}
+
+			&:active {
+				color: darken($accent-color, 15%);
+			}
+		}
+	}
+}

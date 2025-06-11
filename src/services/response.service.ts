@@ -15,7 +15,7 @@ class ResponseService {
 
 	success<T>(data: T, message = 'Success', statusCode = HTTPStatus.OK) {
 		const response: IResponse<T> = { message, data };
-		return NextResponse.json(response, { status: statusCode });
+		return NextResponse.json(response, { status: statusCode, statusText: message });
 	}
 
 	created<T>(data?: T, message = 'Created successfully') {
