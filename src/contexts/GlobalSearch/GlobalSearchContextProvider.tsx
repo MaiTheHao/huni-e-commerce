@@ -43,6 +43,7 @@ const GlobalSearchContextProvider = ({ children }: GlobalSearchProviderProps) =>
 		setResult(null);
 		setKeyword('');
 		setPage(1);
+		setIsLoading(false);
 		previousKeywordRef.current = '';
 	}, []);
 

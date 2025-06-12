@@ -1,19 +1,18 @@
 'use client';
+import styles from './GlobalSearchMiniBody.module.scss';
 import useGlobalSearchContext from '@/contexts/GlobalSearch/useGlobalSearchContext';
-import styles from './GlobalSearchDesktopBody.module.scss';
-import React, { useEffect, useState, useRef } from 'react';
 import clsx from 'clsx';
+import { useEffect, useRef, useState } from 'react';
+import GlobalSearchResult from '../GlobalSearchResult';
+import Spinner from '../../spinner/Spinner';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
-import Spinner from '../spinner/Spinner';
-import { calcDiscountPrice, toLocalePrice, toNumber } from '@/util';
-import GlobalSearchResult from './GlobalSearchResult';
 
-type GlobalSearchDesktopBodyProps = {
+type GlobalSearchMiniBodyProps = {
 	debounceTime?: number;
 };
 
-function GlobalSearchDesktopBody({ debounceTime = 350 }: GlobalSearchDesktopBodyProps) {
+function GlobalSearchMiniBody({ debounceTime = 350 }: GlobalSearchMiniBodyProps) {
 	const { keyword, setKeyword, page, setPage, result, isLoading, resetSearch } = useGlobalSearchContext();
 	const [isSearchOpen, setIsSearchOpen] = useState(false);
 	const [input, setInput] = useState(keyword);
@@ -42,7 +41,7 @@ function GlobalSearchDesktopBody({ debounceTime = 350 }: GlobalSearchDesktopBody
 			}
 		}, debounceTime);
 		return () => clearTimeout(handler);
-	}, [input, isSearchOpen, setKeyword, keyword]);
+	}, [input, isSearchOpen, setKeyword, keyword, debounceTime]);
 
 	const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		setInput(e.target.value);
@@ -58,8 +57,8 @@ function GlobalSearchDesktopBody({ debounceTime = 350 }: GlobalSearchDesktopBody
 	useEffect(() => {
 		const handleClickOutside = (event: MouseEvent) => {
 			if (searchRef.current && !searchRef.current.contains(event.target as Node)) {
-				setIsSearchOpen(false);
 				resetSearch();
+				setIsSearchOpen(false);
 			}
 		};
 
@@ -93,21 +92,9 @@ function GlobalSearchDesktopBody({ debounceTime = 350 }: GlobalSearchDesktopBody
 					{isLoading ? <Spinner className={styles.icon} /> : <FontAwesomeIcon icon={faSearch} className={styles.icon} />}
 				</button>
 			</div>
-			<GlobalSearchResult
-				isShowable={isShowable}
-				result={result}
-				isMorePages={isMorePages}
-				isLoading={isLoading}
-				setIsSearchOpen={setIsSearchOpen}
-				resetSearch={resetSearch}
-				handleShowMore={handleShowMore}
-				toLocalePrice={toLocalePrice}
-				calcDiscountPrice={calcDiscountPrice}
-				toNumber={toNumber}
-				Spinner={Spinner}
-			/>
+			<GlobalSearchResult isShowable={isShowable} result={result} isMorePages={isMorePages} isLoading={isLoading} handleShowMore={handleShowMore} className={styles['gs-results']} />
 		</div>
 	);
 }
 
-export default GlobalSearchDesktopBody;
+export default GlobalSearchMiniBody;

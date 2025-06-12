@@ -5,49 +5,26 @@ import Image from 'next/image';
 import clsx from 'clsx';
 import styles from './GlobalSearchResult.module.scss';
 import { IProduct, PaginatedResult } from '@/interfaces';
+import Spinner from '../spinner/Spinner';
+import { calcDiscountPrice, toLocalePrice, toNumber } from '@/util';
 
 interface GlobalSearchResultProps {
 	isShowable: boolean;
 	result: PaginatedResult<IProduct[]> | null;
 	isMorePages: boolean;
 	isLoading: boolean;
-	setIsSearchOpen: (open: boolean) => void;
-	resetSearch: () => void;
 	handleShowMore: () => void;
-	toLocalePrice: (price: number) => string;
-	calcDiscountPrice: (price: number, discountPercent: number) => number;
-	toNumber: (value: any) => number;
-	Spinner: React.ComponentType<{ className?: string }>;
+	className?: string;
 }
 
-const GlobalSearchResult: React.FC<GlobalSearchResultProps> = ({
-	isShowable,
-	result,
-	isMorePages,
-	isLoading,
-	setIsSearchOpen,
-	resetSearch,
-	handleShowMore,
-	toLocalePrice,
-	calcDiscountPrice,
-	toNumber,
-	Spinner,
-}) => {
+const GlobalSearchResult: React.FC<GlobalSearchResultProps> = ({ isShowable, result, isMorePages, isLoading, handleShowMore, className = '' }) => {
 	if (!isShowable) return null;
 
 	return (
-		<div className={styles['gs-results']}>
+		<div className={clsx(styles['gs-results'], className)}>
 			<ul className={styles['gs-results-list']}>
 				{result?.data?.map((item) => (
-					<Link
-						href={`/${item.productType}/${item._id}`}
-						key={item._id}
-						className={clsx(styles['gs-results-item'])}
-						onClick={() => {
-							setIsSearchOpen(false);
-							resetSearch();
-						}}
-					>
+					<Link href={`/${item.productType}/${item._id}`} key={item._id} className={clsx(styles['gs-results-item'])}>
 						<div className={styles['gs-results-item-img']}>
 							<Image src={item?.images[0]} alt={item.name} fill sizes='(max-width: 768px) 100%, 50vw' />
 						</div>

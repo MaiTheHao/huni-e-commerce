@@ -1,0 +1,74 @@
+@use '../../../../app/vars' as *;
+
+.gs-wrap {
+	width: 100vw;
+	inset: 0;
+	background: $white;
+	display: none;
+	flex-direction: column;
+	align-items: center;
+	overflow-y: auto;
+	font-size: 1em;
+	padding: 0.25em 0.5em;
+	border-bottom: 1px solid $black-300;
+}
+
+.gs {
+	width: 100%;
+	max-width: 600px;
+	display: flex;
+	align-items: center;
+	gap: 1ch;
+	border-radius: 2em;
+	padding: 0.5em 1em;
+	font-size: 1em;
+	box-shadow: 0 0 0.2em 0.1em inset rgba($black-400, 0.25);
+}
+
+.gs-input {
+	flex: 1;
+	font-size: $font-size-14;
+	color: $accent-color;
+
+	&::placeholder {
+		color: $txt-secondary;
+		opacity: 0.8;
+	}
+}
+
+.gs-btn {
+	cursor: pointer;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	background: none;
+	border: none;
+	padding: 0 $spacing-8;
+	font-size: 1em;
+
+	.icon {
+		font-size: 1em;
+		color: $primary-color;
+		transition: transform 0.3s;
+
+		&:hover {
+			transform: scale(1.1);
+		}
+		&:active {
+			transform: scale(0.9);
+		}
+	}
+}
+
+.gs-results {
+	top: 100%;
+	width: 100%;
+	border: none;
+	border-bottom: 1px solid $black-300;
+}
+
+@media screen and (max-width: $breakpoint-sm) {
+	.gs-wrap {
+		display: flex;
+	}
+}

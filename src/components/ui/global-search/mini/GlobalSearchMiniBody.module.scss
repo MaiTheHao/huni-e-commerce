@@ -1,4 +1,4 @@
-@use '../../../app/vars' as *;
+@use '../../../../app/vars' as *;
 
 .gs-wrap {
 	position: relative;
@@ -16,7 +16,7 @@
 	transition: background-color 0.3s ease;
 
 	&--open {
-		background-color: rgba($black-100, 1);
+		box-shadow: 0 0 0.2em 0.1em inset rgba($black-400, 0.25);
 	}
 }
 
@@ -24,7 +24,7 @@
 	font-size: $font-size-14;
 	line-height: 16px;
 	width: 0;
-	color: $txt-secondary;
+	color: $accent-color;
 	background-color: transparent;
 	transition: width 0.3s ease;
 
@@ -33,7 +33,7 @@
 	}
 
 	&::placeholder {
-		color: $txt-tertiary;
+		color: $txt-secondary;
 	}
 }
 
@@ -58,7 +58,12 @@
 	}
 }
 
-@media screen and (max-width: $breakpoint-md) {
+.gs-results {
+	width: 30em;
+	right: 0;
+}
+
+@media screen and (max-width: $breakpoint-sm) {
 	.gs-wrap {
 		display: none;
 	}
