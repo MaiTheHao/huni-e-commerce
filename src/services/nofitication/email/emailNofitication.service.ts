@@ -5,18 +5,13 @@ import template from './template.json';
 
 export class EmailNofiticationService {
 	private static instance: EmailNofiticationService;
-	private transporter: nodemailer.Transporter;
 	private SENDER_EMAIL = process.env.SENDER_EMAIL || '';
 	private APP_PASSWORD = process.env.APP_PASSWORD || '';
 
 	private constructor() {
-		this.transporter = nodemailer.createTransport({
-			service: 'gmail',
-			auth: {
-				user: this.SENDER_EMAIL,
-				pass: this.APP_PASSWORD,
-			},
-		});
+		if (!this.SENDER_EMAIL || !this.APP_PASSWORD) {
+			throw new Error('Vui lòng cấu hình SENDER_EMAIL và APP_PASSWORD trong biến môi trường.');
+		}
 	}
 
 	public static getInstance(): EmailNofiticationService {
@@ -26,9 +21,26 @@ export class EmailNofiticationService {
 		return EmailNofiticationService.instance;
 	}
 
+	// Tạo một hàm riêng để tạo transporter mới cho mỗi lần gửi email
+	// (Trong môi trường serverless như Vercel, mỗi hàm có thể chạy trên một instance riêng biệt,
+	// nên việc tạo mới transporter cho mỗi lần gửi sẽ đảm bảo kết nối luôn hoạt động)
+	private createTransporter(): nodemailer.Transporter {
+		return nodemailer.createTransport({
+			service: 'gmail',
+			auth: {
+				user: this.SENDER_EMAIL,
+				pass: this.APP_PASSWORD,
+			},
+		});
+	}
+
 	public async sendEmailNotification(email: string, subject: string, html: string): Promise<void> {
+		// Tạo transporter mới cho mỗi lần gửi email để tránh các vấn đề về connection timeout
+		// trong môi trường serverless
+		const transporter = this.createTransporter();
+
 		try {
-			this.transporter.sendMail({
+			await transporter.sendMail({
 				from: `${infoData.shopName} <${this.SENDER_EMAIL}>`,
 				to: email,
 				subject: subject,
