@@ -9,9 +9,10 @@ import clsx from 'clsx';
 
 export type HeroSectionProps = {
 	items: IHeroSection[];
+	timeout?: number; // Thời gian chuyển đổi giữa các sản phẩm, mặc định là 3000ms
 };
 
-function HeroSection({ items }: HeroSectionProps) {
+function HeroSection({ items, timeout = 5000 }: HeroSectionProps) {
 	const [idx, setIdx] = useState(0);
 
 	const memoizedProducts = useMemo(() => items.filter((p) => p.image).map((p, idx) => ({ ...p, _index: idx })), [items]);
@@ -19,7 +20,7 @@ function HeroSection({ items }: HeroSectionProps) {
 	useEffect(() => {
 		const timer = setInterval(() => {
 			handleNext();
-		}, 3000);
+		}, timeout);
 
 		return () => clearInterval(timer);
 	}, [idx, memoizedProducts.length]);

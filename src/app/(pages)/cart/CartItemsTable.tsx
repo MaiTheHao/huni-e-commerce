@@ -37,27 +37,13 @@ function CartItemsTable({ items, products, loading, onRemove, onQuantity }: Prop
 
 									return (
 										<li key={item.productId} className={styles.cartItem}>
-											<button
-												className={styles.itemRemoveButton}
-												onClick={() => onRemove(item.productId)}
-											>
+											<button className={styles.itemRemoveButton} onClick={() => onRemove(item.productId)}>
 												<FontAwesomeIcon icon={faTrashCan} />
 											</button>
-											<div className={styles.itemImage}>
-												{product?.images?.[0] && (
-													<Image
-														src={product.images[0]}
-														alt={product.name}
-														fill
-														className={styles.productImage}
-													/>
-												)}
-											</div>
+											<div className={styles.itemImage}>{product?.images?.[0] && <Image src={product.images[0]} alt={product.name} fill className={styles.productImage} />}</div>
 											<div className={styles.itemName}>
 												<span>{product.name}</span>
-												<span className={styles.itemMobilePrice}>
-													{toLocalePrice(product.price * item.quantity)}
-												</span>
+												<span className={styles.itemMobilePrice}>{toLocalePrice(product.price * item.quantity)}</span>
 											</div>
 											<div className={styles.itemQuantityControl}>
 												<Quantity
@@ -69,9 +55,7 @@ function CartItemsTable({ items, products, loading, onRemove, onQuantity }: Prop
 													debounceTime={500}
 												/>
 											</div>
-											<span className={styles.itemPrice}>
-												{toLocalePrice(product.price * item.quantity)}
-											</span>
+											<span className={styles.itemPrice}>{toLocalePrice(product.price * item.quantity)}</span>
 										</li>
 									);
 								})}

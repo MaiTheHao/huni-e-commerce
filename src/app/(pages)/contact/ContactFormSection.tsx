@@ -60,7 +60,7 @@ function ContactFormSection() {
 					children: (
 						<>
 							<form onSubmit={handleSubmit} className={styles.contactForm}>
-								<LabelInput placeholder='Nhập họ tên của bạn' label='Tên của bạn' name='name' required value={state.name} onChange={handleChange('name')} />
+								<LabelInput placeholder='Nguyễn Văn A' label='Tên của bạn' name='name' required value={state.name} onChange={handleChange('name')} />
 								<LabelInput placeholder='example@gmail.com' label='Email của bạn' name='email' type='email' required value={state.email} onChange={handleChange('email')} />
 								<LabelInput placeholder='0987654321' label='Số điện thoại' name='phone' type='text' required value={state.phone} onChange={handleChange('phone')} />
 								<LabelInput placeholder='Nội dung tin nhắn' label='Tin nhắn của bạn' name='message' type='textarea' required value={state.message} onChange={handleChange('message')} />
@@ -78,7 +78,7 @@ function ContactFormSection() {
 									}
 									label={
 										<>
-											Tôi đồng ý với
+											Tôi đồng ý với{' '}
 											<Link className={styles.privacyLink} href='/privacy-policy'>
 												Chính sách bảo mật
 											</Link>

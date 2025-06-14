@@ -30,15 +30,11 @@ const CartPriceTable: React.FC<Props> = ({ items, products, vat, loading }) => {
 						<ul className={styles.priceSummaryList}>
 							<li className={styles.priceSummaryItem}>
 								<span className={styles.summaryTitle}>Tổng cộng</span>
-								<span className={styles.summaryPrice}>
-									{total.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}
-								</span>
+								<span className={styles.summaryPrice}>{total.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}</span>
 							</li>
 							<li className={styles.priceSummaryItem}>
 								<span className={styles.summaryTitle}>VAT</span>
-								<span className={styles.summaryPrice}>
-									{vatAmount.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}
-								</span>
+								<span className={styles.summaryPrice}>{vatAmount.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}</span>
 							</li>
 						</ul>
 					),
@@ -57,7 +53,7 @@ const CartPriceTable: React.FC<Props> = ({ items, products, vat, loading }) => {
 			]}
 			footer={
 				<Link href='/checkout' className={clsx('cta-button')}>
-					Thanh toán ngay
+					Đặt hàng ngay
 				</Link>
 			}
 			loading={loading}

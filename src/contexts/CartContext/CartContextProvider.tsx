@@ -22,20 +22,32 @@ function CartContextProvider({ children }: CartContextProviderProps) {
 	const [loading, setLoading] = useState(false);
 
 	const fetchProducts = useCallback(async (cartItems: ICartItem[]) => {
-		const ids = cartItems.map((item) => item.productId);
-		const uniqueIds = Array.from(new Set(ids));
-		const fetches = uniqueIds.map(async (id) => {
-			try {
-				const res = await fetch(`/api/v1/product/${id}`);
-				if (!res.ok) return [id, null];
-				const data = await res.json();
-				return [id, data.data as IProduct];
-			} catch {
-				return [id, null];
+		const ids = Array.from(new Set(cartItems.map((item) => item.productId)));
+		if (ids.length === 0) {
+			setProducts({});
+			return;
+		}
+		try {
+			const res = await fetch('/api/v1/product/batch', {
+				method: 'POST',
+				headers: { 'Content-Type': 'application/json' },
+				body: JSON.stringify({ ids }),
+			});
+			if (!res.ok) {
+				setProducts({});
+				return;
 			}
-		});
-		const results = await Promise.all(fetches);
-		setProducts(Object.fromEntries(results));
+			const data = await res.json();
+			const productsArray = data.data as IProduct[];
+			const productsMap: Record<string, IProduct | null> = {};
+			ids.forEach((id) => {
+				const product = productsArray.find((p) => p && p._id === id) || null;
+				productsMap[id] = product;
+			});
+			setProducts(productsMap);
+		} catch {
+			setProducts({});
+		}
 	}, []);
 
 	const fetchCart = useCallback(async () => {

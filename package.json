@@ -14,17 +14,22 @@
     "@fortawesome/free-regular-svg-icons": "^6.7.2",
     "@fortawesome/free-solid-svg-icons": "^6.7.2",
     "@fortawesome/react-fontawesome": "^0.2.2",
+    "@types/jsonwebtoken": "^9.0.9",
+    "@types/nodemailer": "^6.4.17",
     "clsx": "^2.1.1",
+    "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.15.1",
     "next": "15.3.2",
     "next-auth": "^4.24.11",
+    "nodemailer": "^7.0.3",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-markdown": "^10.1.0",
     "remark-gfm": "^4.0.1",
     "sass": "^1.89.0",
     "sweetalert2": "^11.22.0",
-    "uuid": "^11.1.0"
+    "uuid": "^11.1.0",
+    "zod": "^3.25.64"
   },
   "devDependencies": {
     "@types/node": "^20",

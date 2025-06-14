@@ -1,0 +1,149 @@
+@use '../../../app/vars' as *;
+@use 'sass:map';
+
+.AuthForm {
+	font-size: 16px;
+	width: 100%;
+	max-width: 442px;
+	background-color: $white;
+	padding: 2em;
+	border-radius: 0.5em;
+	display: flex;
+	flex-direction: column;
+	gap: 2.5em;
+
+	@media screen and (max-width: $breakpoint-md) {
+		max-width: 100%;
+		border-radius: 0;
+	}
+
+	@media screen and (max-width: $breakpoint-sm) {
+		padding: 1em;
+	}
+}
+
+.AuthPage__header {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	font-size: 1em;
+	gap: 0.5em;
+
+	h2 {
+		font-size: 1.5em;
+		color: $accent-color;
+		font-weight: $font-weight-semibold;
+	}
+
+	span {
+		font-size: 0.875em;
+		color: $txt-secondary;
+		font-weight: $font-weight-light;
+		text-align: center;
+	}
+}
+
+.AuthPage__body {
+	display: flex;
+	flex-direction: column;
+	gap: 1.5em;
+}
+
+.AuthPage__body__form {
+	display: flex;
+	flex-direction: column;
+	gap: 1em;
+
+	&__field {
+		position: relative;
+		display: flex;
+		flex-direction: column;
+		gap: 0.25em;
+
+		&__input {
+			&.invalid {
+				&:not(:focus-within) {
+					input {
+						border-color: map.get($error, 'icon');
+					}
+				}
+			}
+		}
+
+		&__error {
+			color: map.get($error, 'icon');
+			font-size: 0.875em;
+			font-weight: $font-weight-light;
+		}
+	}
+
+	&__additionalLinks {
+		display: flex;
+		flex-direction: column;
+		align-items: flex-end;
+
+		&__item {
+			font-size: 0.875em;
+			color: $txt-secondary;
+			font-weight: $font-weight-light;
+
+			&:hover {
+				color: $accent-color;
+				text-decoration: underline;
+			}
+		}
+	}
+}
+
+.AuthPage__body__OAuth {
+	display: flex;
+	flex-direction: column;
+	gap: 0.5em;
+
+	&__title {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		font-size: 1em;
+
+		span {
+			font-size: 0.875em;
+			color: $txt-tertiary;
+			font-weight: $font-weight-light;
+			margin: 0 0.5em;
+		}
+
+		div {
+			flex: 1;
+			height: 1px;
+			background-color: $txt-light;
+			border-radius: 0.25em;
+		}
+	}
+
+	&__items {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		gap: 1em;
+	}
+}
+
+.AuthPage__body__addition {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	gap: 1ch;
+	font-size: 0.875em;
+	color: $txt-secondary;
+	font-weight: $font-weight-light;
+
+	a {
+		color: $accent-color;
+		text-decoration: underline;
+	}
+}
+
+.AuthPage__body__form__btn {
+	width: 100%;
+}

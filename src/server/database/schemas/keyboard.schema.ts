@@ -2,7 +2,7 @@ import { IKeyboard, KEYBOARD_CONNECTIVITIES, KEYBOARD_LAYOUTS } from '@/interfac
 import { SWITCH_TYPES } from '@/interfaces/entity/product/switch.entity';
 import mongoose from 'mongoose';
 
-export const KeyboardSchema = new mongoose.Schema<IKeyboard>({
+const KeyboardSchema = new mongoose.Schema<IKeyboard>({
 	name: { type: String, required: true },
 	modelName: { type: String, required: true },
 	price: { type: Number, required: true, min: 0 },

@@ -34,13 +34,16 @@ function ModalAlert({ title, message, type = 'success', timeout, onClose }: Moda
 
 	useEffect(() => {
 		if (animation === 'slide-out') {
-			const timer = setTimeout(() => setVisible(false), ANIMATION_DURATION);
-			return () => {
-				clearTimeout(timer);
+			const timer = setTimeout(() => {
+				setVisible(false);
 				if (onClose) onClose();
+			}, ANIMATION_DURATION);
+			return () => {
+				if (onClose) onClose();
+				clearTimeout(timer);
 			};
 		}
-	}, [animation]);
+	}, [animation, onClose]);
 
 	if (!visible) return null;
 	return (

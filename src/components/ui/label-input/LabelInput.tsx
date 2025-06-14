@@ -6,37 +6,23 @@ type LabelInputProps = {
 	placeholder?: string;
 	name?: string;
 	required?: boolean;
-	type?: 'text' | 'email' | 'textarea';
+	type?: 'text' | 'email' | 'textarea' | 'password';
 	value?: string;
+	className?: string;
 	onChange?: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
 };
 
-function LabelInput({ label, name, required = false, type = 'text', placeholder, value, onChange }: LabelInputProps) {
+function LabelInput({ label, name, required = false, type = 'text', placeholder, value, onChange, className }: LabelInputProps) {
 	return (
-		<label className={styles.label} htmlFor={name}>
+		<label className={`${styles.label} ${className}`} htmlFor={name}>
 			<span className={styles.labelText}>
 				{label}
 				<span className={styles.required}>{required ? '*' : ''}</span>
 			</span>
 			{type === 'textarea' ? (
-				<textarea
-					className={styles.textarea}
-					name={name}
-					required={required}
-					placeholder={placeholder}
-					value={value}
-					onChange={onChange}
-				/>
+				<textarea className={styles.textarea} name={name} required={required} placeholder={placeholder} value={value} onChange={onChange} />
 			) : (
-				<input
-					className={styles.input}
-					type={type}
-					name={name}
-					required={required}
-					placeholder={placeholder}
-					value={value}
-					onChange={onChange}
-				/>
+				<input className={styles.input} type={type} name={name} required={required} placeholder={placeholder} value={value} onChange={onChange} />
 			)}
 		</label>
 	);

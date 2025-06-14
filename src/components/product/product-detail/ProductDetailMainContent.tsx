@@ -87,6 +87,18 @@ function ProductDetailMainContent<T extends IProduct>({
 		}
 	};
 
+	const handleBuyNow = async () => {
+		if (!product) return;
+		setCartStatus('loading');
+		try {
+			await handleAddToCart(product._id, quantity);
+			setCartStatus('success');
+			window.location.href = '/checkout';
+		} catch (error) {
+			setCartStatus('error');
+		}
+	};
+
 	return (
 		<>
 			{isLoading ? (
@@ -107,6 +119,7 @@ function ProductDetailMainContent<T extends IProduct>({
 							className={clsx(styles.actions__buyNow, 'cta-button', {
 								disabled: quantity <= 0,
 							})}
+							onClick={handleBuyNow}
 						>
 							Mua ngay
 						</button>

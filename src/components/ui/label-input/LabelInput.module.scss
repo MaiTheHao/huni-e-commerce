@@ -5,15 +5,15 @@
 	position: relative;
 	display: flex;
 	flex-direction: column;
-	gap: $spacing-8;
+	gap: 0.5ch;
 }
 
 .labelText {
 	position: relative;
 	display: flex;
 	align-items: center;
-	gap: $spacing-8;
-	font-size: $font-size-16;
+	gap: 0.5em;
+	font-size: 1em;
 	font-weight: $font-weight-semibold;
 
 	.required {
@@ -25,14 +25,15 @@
 }
 
 .baseInput {
-	font-size: $font-size-16;
+	font-size: 1em;
 	font-weight: $font-weight-regular;
-	border-radius: $spacing-4;
+	border-radius: 0.25em;
 	border: 1px solid $gray-300;
 	transition: border-color 0.3s ease;
 	background-color: $white;
-	padding: $spacing-8 $spacing-16;
-	line-height: 1.4;
+	color: $txt-primary;
+	padding: 0.5em 1em;
+	line-height: 1.25;
 
 	&::placeholder {
 		color: $txt-tertiary;
@@ -52,7 +53,7 @@
 
 .input {
 	@extend .baseInput;
-	font-size: $font-size-16;
+	font-size: 1em;
 	font-weight: $font-weight-regular;
 	color: $txt-primary;
 }

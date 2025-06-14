@@ -1,0 +1,6 @@
+{
+	"alreadyVerified": "<div style=\"font-family: Arial, sans-serif; color: #333;\"><h2>Email đã được xác thực</h2><p>Chào bạn,</p><p>Email của bạn đã được xác thực trước đó. Cảm ơn bạn đã sử dụng dịch vụ của chúng tôi!</p></div>",
+	"verifySuccess": "<div style=\"font-family: Arial, sans-serif; color: #333;\"><h2>Xác thực email thành công</h2><p>Chào bạn,</p><p>Email của bạn đã được xác thực thành công. Cảm ơn bạn đã sử dụng dịch vụ của chúng tôi!</p></div>",
+	"verifyError": "<div style=\"font-family: Arial, sans-serif; color: #333;\"><h2>Lỗi xác thực email</h2><p>Chào bạn,</p><p>Đã xảy ra lỗi trong quá trình xác thực email của bạn. Vui lòng thử lại sau.</p></div>",
+	"verifyEmail": "<div style=\"font-family: Arial, sans-serif; color: #333;\"><h2>Xác thực email của bạn</h2><p>Chào bạn,</p><p>Vui lòng xác thực email của bạn bằng cách nhấp vào nút bên dưới:</p><a href=\"{{verifyUrl}}\" style=\"display: inline-block; padding: 10px 20px; background-color: #0070f3; color: #fff; text-decoration: none; border-radius: 5px; margin: 16px 0;\">Xác thực Email</a><p>Nếu bạn không yêu cầu xác thực này, vui lòng bỏ qua email này.</p></div>"
+}

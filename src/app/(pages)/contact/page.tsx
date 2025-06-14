@@ -16,9 +16,9 @@ function ContactPage() {
 				<ContactFormSection />
 				<ContactInfoSection />
 			</section>
-			<section className={styles.contactFooter}>
+			{/* <section className={styles.contactFooter}>
 				<Image src='/svgs/map.svg' alt='Bản đồ vị trí cửa hàng' fill loading='lazy' />
-			</section>
+			</section> */}
 		</AppBody>
 	);
 }

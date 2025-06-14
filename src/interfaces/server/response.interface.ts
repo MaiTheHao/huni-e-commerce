@@ -3,3 +3,5 @@ export interface IResponse<T = any> {
 	data?: T;
 	error?: any;
 }
+
+export type TErrorFirst<E = any, T = any> = [error: E | null, data: T | null];

@@ -10,11 +10,11 @@ export async function GET(req: NextRequest) {
 	const limit = toNumber(searchParams.get('limit'), 1000);
 
 	const { data, pagination } = await keyboardRepository.findWithPagination(page, limit);
-	return responseService.success({
-		message: 'Get all keyboards successfully',
-		data: {
+	return responseService.success(
+		{
 			keyboards: data,
 			pagination,
 		},
-	});
+		'Lấy tất cả bàn phím thành công'
+	);
 }

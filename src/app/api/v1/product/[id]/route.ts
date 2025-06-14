@@ -7,17 +7,19 @@ export async function GET(req: NextRequest) {
 	const id = req.nextUrl.pathname.split('/').pop();
 
 	if (!id) {
-		return responseService.badRequest('Missing product ID');
+		return responseService.badRequest('Không tìm thấy ID sản phẩm');
 	}
 
 	try {
-		const product = await productCRUDService.findProductById<IProduct>(id);
-
+		const [error, product] = await productCRUDService.findProductById<IProduct>(id);
+		if (error) {
+			return responseService.error('Không thể lấy thông tin sản phẩm');
+		}
 		if (!product) {
-			return responseService.notFound('Product not found');
+			return responseService.notFound('Không tìm thấy sản phẩm');
 		}
 		return responseService.success(product);
 	} catch (error) {
-		return responseService.error('Failed to get product information', undefined, error);
+		return responseService.error('Không thể lấy thông tin sản phẩm');
 	}
 }

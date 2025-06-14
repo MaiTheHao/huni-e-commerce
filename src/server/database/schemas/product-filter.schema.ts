@@ -1,7 +1,7 @@
-import { IProductFilter } from '@/interfaces';
+import { IProductFilterBase } from '@/interfaces';
 import mongoose from 'mongoose';
 
-export const ProductFilterSchema = new mongoose.Schema<Omit<IProductFilter, '_id'>>({
+const ProductFilterSchema = new mongoose.Schema<IProductFilterBase>({
 	productType: { type: String, required: true, unique: true, index: true },
 	fields: [
 		{

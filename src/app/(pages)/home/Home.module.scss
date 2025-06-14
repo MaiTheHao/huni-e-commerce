@@ -48,3 +48,9 @@
 		text-underline-offset: 6px;
 	}
 }
+
+@media screen and (max-width: $breakpoint-sm) {
+	.content {
+		margin-bottom: $spacing-16;
+	}
+}

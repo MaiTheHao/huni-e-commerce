@@ -24,15 +24,7 @@ type CheckboxProps = {
 	onChange?: () => void;
 };
 
-function Checkbox({
-	id = 'checkbox',
-	label,
-	checked = false,
-	disabled = false,
-	preventUncheck = false,
-	className,
-	onChange,
-}: CheckboxProps) {
+function Checkbox({ id = 'checkbox', label, checked = false, disabled = false, preventUncheck = false, className, onChange }: CheckboxProps) {
 	const [isChecked, setIsChecked] = useState(checked);
 
 	useEffect(() => {
@@ -58,18 +50,8 @@ function Checkbox({
 				[styles['checkbox--disabled']]: disabled,
 			})}
 		>
-			<input
-				type='checkbox'
-				id={id}
-				name={id}
-				checked={isChecked}
-				onChange={handleChange}
-				disabled={disabled}
-				className={styles['checkbox__input']}
-			/>
-			<div className={styles['checkbox__box']}>
-				{isChecked && <span className={styles['checkbox__checked']} />}
-			</div>
+			<input type='checkbox' id={id} name={id} checked={isChecked} onChange={handleChange} disabled={disabled} className={styles['checkbox__input']} />
+			<div className={styles['checkbox__box']}>{isChecked && <span className={styles['checkbox__checked']} />}</div>
 			{label && <span className={styles['checkbox__title']}>{label}</span>}
 		</label>
 	);

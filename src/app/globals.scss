@@ -56,7 +56,7 @@
 		}
 
 		@media screen and (max-width: $breakpoint-md) {
-			padding: 0 0 $app-body-padding-y-mobile 0;
+			padding: 0;
 		}
 	}
 }
@@ -120,11 +120,10 @@ $link-underline-offset: -0.5ch !default;
 	color: $txt-white;
 
 	&.disabled {
-		color: $gray-300;
 		cursor: not-allowed;
+		color: $gray-300;
 		box-shadow: none;
 		opacity: 0.75;
-		pointer-events: none;
 	}
 
 	&:hover:not(.disabled):not(:disabled) {

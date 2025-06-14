@@ -1,8 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
-
-export function middleware(request: NextRequest) {
+export async function middleware(req: NextRequest) {
 	const response = NextResponse.next();
-	const { pathname } = request.nextUrl;
+	const { pathname } = req.nextUrl;
+	console.log('Middleware is running for path:', pathname);
 
 	// Set the headers for CORS
 	let origin: string | string[] = process.env.ALLOWED_ORIGINS || '*';
@@ -14,7 +14,7 @@ export function middleware(request: NextRequest) {
 
 	// Chuyển hướng sang home nếu đường dẫn là '/'
 	if (pathname === '/') {
-		return NextResponse.redirect(new URL('/home', request.url));
+		return NextResponse.redirect(new URL('/home', req.url));
 	}
 
 	return response;

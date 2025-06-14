@@ -82,7 +82,11 @@
 				display: flex;
 				align-items: center;
 				gap: $spacing-16;
-				overflow-x: hidden;
+				overflow-x: auto;
+				scrollbar-width: none; // Firefox
+				&::-webkit-scrollbar {
+					display: none; // Chrome, Safari, Opera
+				}
 
 				.thumb {
 					cursor: pointer;

@@ -1,6 +1,6 @@
 'use client';
 import AppBody from '@/components/layout/app-body/AppBody';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useParams } from 'next/navigation';
 import { IKeyboard } from '@/interfaces';
 import ProductDetail, { ProductDetailProps } from '@/components/product/product-detail/ProductDetail';
@@ -28,11 +28,7 @@ function KeyboardDetailPage() {
 
 	return (
 		<AppBody>
-			<ProductDetail<IKeyboard>
-				productId={keyboardId}
-				attrs={keyboardAttrs}
-				fetchProductById={fetchKeyboardById}
-			/>
+			<ProductDetail<IKeyboard> productId={keyboardId} attrs={keyboardAttrs} fetchProductById={fetchKeyboardById} />
 		</AppBody>
 	);
 }

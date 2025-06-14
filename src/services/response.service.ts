@@ -15,7 +15,7 @@ class ResponseService {
 
 	success<T>(data: T, message = 'Success', statusCode = HTTPStatus.OK) {
 		const response: IResponse<T> = { message, data };
-		return NextResponse.json(response, { status: statusCode, statusText: message });
+		return NextResponse.json(response, { status: statusCode });
 	}
 
 	created<T>(data?: T, message = 'Created successfully') {
@@ -30,32 +30,39 @@ class ResponseService {
 
 	error(message = 'Error', statusCode = HTTPStatus.BAD_REQUEST, error?: any) {
 		const response: IResponse = { message, error };
-		return NextResponse.json(response, { status: statusCode, statusText: message });
+		return NextResponse.json(response, { status: statusCode });
 	}
 
 	badRequest(message = 'Bad request', error?: any) {
 		const response: IResponse = { message, error };
-		return NextResponse.json(response, { status: HTTPStatus.BAD_REQUEST, statusText: message });
+		return NextResponse.json(response, { status: HTTPStatus.BAD_REQUEST });
 	}
 
 	unauthorized(message = 'Unauthorized', error?: any) {
 		const response: IResponse = { message, error };
-		return NextResponse.json(response, { status: HTTPStatus.UNAUTHORIZED, statusText: message });
+		return NextResponse.json(response, { status: HTTPStatus.UNAUTHORIZED });
 	}
 
 	notFound(message = 'Not found', error?: any) {
 		const response: IResponse = { message, error };
-		return NextResponse.json(response, { status: HTTPStatus.NOT_FOUND, statusText: message });
+		return NextResponse.json(response, { status: HTTPStatus.NOT_FOUND });
 	}
 
 	duplicated(message = 'Duplicated', error?: any) {
 		const response: IResponse = { message, error };
-		return NextResponse.json(response, { status: HTTPStatus.CONFLICT, statusText: message });
+		return NextResponse.json(response, { status: HTTPStatus.CONFLICT });
 	}
 
 	alreadyChecked(message = 'Already checked', error?: any) {
 		const response: IResponse = { message, error };
-		return NextResponse.json(response, { status: HTTPStatus.BAD_REQUEST, statusText: message });
+		return NextResponse.json(response, { status: HTTPStatus.BAD_REQUEST });
+	}
+
+	sendHtml(html: string, statusCode = HTTPStatus.OK) {
+		return new Response(html, {
+			status: statusCode,
+			headers: { 'Content-Type': 'text/html; charset=utf-8' },
+		});
 	}
 }
 

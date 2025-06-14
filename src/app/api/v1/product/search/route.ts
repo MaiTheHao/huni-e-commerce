@@ -8,18 +8,18 @@ export async function GET(req: NextRequest) {
 	const keyword = searchParams.get('keyword') || '';
 
 	if (!keyword) {
-		return responseService.badRequest('Missing search keyword');
+		return responseService.badRequest('Thiếu từ khóa tìm kiếm');
 	}
 
 	const limit = toNumber(searchParams.get('limit'), 10);
 	const page = toNumber(searchParams.get('page'), 1);
 
 	if (limit < 1 || page < 1) {
-		return responseService.badRequest('Limit and page values must be greater than 0');
+		return responseService.badRequest('Giá trị limit và page phải lớn hơn 0');
 	}
 
 	try {
-		const results = await globalSearchService.searchProducts(keyword, page, limit, undefined, {
+		const [error, results] = await globalSearchService.searchProducts(keyword, page, limit, undefined, {
 			name: 1,
 			price: 1,
 			discountPercent: 1,
@@ -29,8 +29,11 @@ export async function GET(req: NextRequest) {
 			description: 1,
 			productType: 1,
 		});
-		return responseService.success(results, 'Product search successful');
+		if (error) {
+			return responseService.error('Tìm kiếm sản phẩm thất bại', undefined, error);
+		}
+		return responseService.success(results, 'Tìm kiếm sản phẩm thành công');
 	} catch (error) {
-		return responseService.error('Product search failed', undefined, error);
+		return responseService.error('Tìm kiếm sản phẩm thất bại', undefined, error);
 	}
 }

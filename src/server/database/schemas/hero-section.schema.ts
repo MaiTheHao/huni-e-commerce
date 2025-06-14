@@ -1,7 +1,7 @@
 import { IHeroSection } from '@/interfaces';
 import mongoose from 'mongoose';
 
-export const HeroSectionSchema = new mongoose.Schema<Omit<IHeroSection, '_id'>>({
+const HeroSectionSchema = new mongoose.Schema<Omit<IHeroSection, '_id'>>({
 	name: { type: String, required: true },
 	title: { type: String, required: true },
 	attrs: { type: [String], required: true },

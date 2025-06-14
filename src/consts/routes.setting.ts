@@ -8,12 +8,12 @@ export const ROUTES: { [key: string]: AppRoute } = {
 		title: 'Trang chủ',
 		icon: faHouse,
 	},
-	login: {
-		path: '/login',
+	signin: {
+		path: '/signin',
 		title: 'Đăng nhập',
 	},
-	register: {
-		path: '/register',
+	signup: {
+		path: '/signup',
 		title: 'Đăng ký',
 	},
 	keyboard: {

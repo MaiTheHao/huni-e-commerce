@@ -100,6 +100,7 @@ function ProductDetailMain<T extends IProduct>({ productId, attrs, fetchProductB
 		let data;
 		try {
 			data = await fetchProductById(productId);
+			document.title = (data as any).name || 'Chi tiết sản phẩm';
 			dispatch({ type: 'SET_PRODUCT', payload: data });
 		} catch (e) {
 			loggerService.error('Không thể lấy thông tin sản phẩm');
