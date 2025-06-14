@@ -3,9 +3,9 @@ import { ISigninRequest } from '@/interfaces/api/auth/sign-in.interface';
 import { authService } from '@/services/auth.service';
 import { cookieService } from '@/services/cookie.service';
 import { responseService } from '@/services/response.service';
-import { NextRequest, NextResponse } from 'next/server';
+import { NextRequest } from 'next/server';
 
-export async function POST(req: NextRequest, res: NextResponse) {
+export async function POST(req: NextRequest) {
 	let data: ISigninRequest;
 	try {
 		data = await req.json();
