@@ -19,6 +19,7 @@ export type AuthFormProps = {
 	subtitle: string;
 	fields: InputFieldConfig[];
 	submitText: string;
+	isSending?: boolean;
 	submitDisabled?: boolean;
 	additionalLink?:
 		| {

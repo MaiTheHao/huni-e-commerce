@@ -2,10 +2,11 @@
 import styles from './Signin.module.scss';
 import AppBody from '@/components/layout/app-body/AppBody';
 import AuthForm from '@/components/ui/auth-form/AuthForm';
+import ModalAlert from '@/components/ui/modal-alert/ModalAlert';
 import { IResponse, TErrorFirst } from '@/interfaces';
 import { ISigninRequest, ISigninResponse } from '@/interfaces/api/auth/sign-in.interface';
 import { emailSchema, passwordSchema } from '@/util/validate-input.util';
-import React from 'react';
+import React, { useState } from 'react';
 import { z } from 'zod';
 
 const fetchSignin = async (data: ISigninRequest): Promise<TErrorFirst<any, ISigninResponse>> => {
@@ -34,15 +35,26 @@ const signinValidate = z.object({
 type SigninPageProps = {};
 
 function SigninPage({}: SigninPageProps) {
+	const [successMessage, setSuccessMessage] = useState<string | null>(null);
+	const [errorMessage, setErrorMessage] = useState<string | null>(null);
+
+	const handleClearErrorMessage = () => {
+		setErrorMessage(null);
+	};
+
+	const handleClearSuccessMessage = () => {
+		setSuccessMessage(null);
+		// Add any navigation or state update after successful login
+	};
+
 	const handleSubmit = async (formData: any) => {
 		const [error, result] = await fetchSignin(formData as ISigninRequest);
 		if (error) {
-			alert(error);
+			setErrorMessage(error);
 			return;
 		}
 		if (result) {
-			alert('Đăng nhập thành công');
-			// Handle successful login, e.g., redirect or update state
+			setSuccessMessage('Đăng nhập thành công');
 			console.log('Access Token:', result.accessToken);
 		}
 	};
@@ -73,6 +85,9 @@ function SigninPage({}: SigninPageProps) {
 				validateSchema={signinValidate}
 				onSubmit={handleSubmit}
 			/>
+
+			{successMessage && <ModalAlert type='success' title='Thành công' message={successMessage} onClose={() => handleClearSuccessMessage()} />}
+			{errorMessage && <ModalAlert type='error' title='Lỗi' message={errorMessage} onClose={() => handleClearErrorMessage()} />}
 		</AppBody>
 	);
 }

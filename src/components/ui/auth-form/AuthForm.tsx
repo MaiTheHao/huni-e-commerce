@@ -9,7 +9,21 @@ import AuthSubmitButton from './components/AuthSubmitButton';
 import AuthOAuthProviders from './components/AuthOAuthProviders';
 import AuthBottomText from './components/AuthBottomText';
 
-function AuthForm({ title, subtitle, fields, submitText, submitDisabled, additionalLink, oauthProviders = [], bottomText, bottomLinkText, bottomLinkHref, validateSchema, onSubmit }: AuthFormProps) {
+function AuthForm({
+	title,
+	subtitle,
+	fields,
+	submitText,
+	submitDisabled,
+	isSending,
+	additionalLink,
+	oauthProviders = [],
+	bottomText,
+	bottomLinkText,
+	bottomLinkHref,
+	validateSchema,
+	onSubmit,
+}: AuthFormProps) {
 	const [formData, setFormData] = useState<Record<string, string>>({});
 	const [submitable, setSubmitable] = useState<boolean>(false);
 	const [validateError, setValidateError] = useState<Record<string, string>>({});
@@ -88,7 +102,7 @@ function AuthForm({ title, subtitle, fields, submitText, submitDisabled, additio
 							)}
 						</ul>
 					)}
-					<AuthSubmitButton text={submitText} submitable={submitable && !submitDisabled} />
+					<AuthSubmitButton text={submitText} submitable={submitable && !submitDisabled} isLoading={isSending} />
 				</form>
 				<AuthOAuthProviders providers={oauthProviders} />
 				<AuthBottomText text={bottomText} linkText={bottomLinkText} linkHref={bottomLinkHref} />
