@@ -24,7 +24,7 @@ export async function POST(req: NextRequest) {
 
 			// Gửi email xác thực
 			const emailVerifyToken = await tokenService.signEmailVerificationToken({ email: newUser.email });
-			nofiticationService.getEmailNofiticationService().sendVerifyEmail(newUser.email, emailVerifyToken);
+			await nofiticationService.getEmailNofiticationService().sendVerifyEmail(newUser.email, emailVerifyToken);
 
 			// Trả về thông tin người dùng mới
 			loggerService.info('Người dùng đăng ký thành công:', newUser.email);

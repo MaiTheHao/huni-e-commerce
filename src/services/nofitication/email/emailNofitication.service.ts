@@ -28,7 +28,7 @@ export class EmailNofiticationService {
 
 	public async sendEmailNotification(email: string, subject: string, html: string): Promise<void> {
 		try {
-			await this.transporter.sendMail({
+			this.transporter.sendMail({
 				from: `${infoData.shopName} <${this.SENDER_EMAIL}>`,
 				to: email,
 				subject: subject,
