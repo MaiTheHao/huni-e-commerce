@@ -1,5 +1,5 @@
 import { IMongoRepository, IPagination, PaginatedResult, PRODUCT_FILTERABLE_FIELDS, PRODUCT_SEARCHABLE_FIELDS } from '@/interfaces';
-import { Model, Document, FilterQuery, Types } from 'mongoose';
+import { Model, Document, FilterQuery, Types, UpdateQuery } from 'mongoose';
 import { connectToDatabase, disconnectFromDatabase } from '../database/connection';
 import { getPagination } from '@/util/page.util';
 import { generateFilterQuery } from '@/util/query/generate-filter-query.util';
@@ -24,19 +24,19 @@ export class MongoBaseRepository<T, D extends Document> implements IMongoReposit
 		return newRecord.save();
 	}
 
-	async findById(_id: string | Types.ObjectId): Promise<D | null> {
+	async findById(_id: string | Types.ObjectId, projection?: Record<string, any>): Promise<D | null> {
 		await this.ensureConnected();
-		return this.model.findById(_id).exec();
+		return this.model.findById(_id, projection).exec();
 	}
 
 	async update(filter: FilterQuery<D>, record: Partial<T>): Promise<D | null> {
 		await this.ensureConnected();
-		return this.model.findOneAndUpdate(filter, this.isUpdated(record), { new: true }).exec();
+		return this.model.findOneAndUpdate(filter, record as any, { new: true }).exec();
 	}
 
 	async upsert(filter: FilterQuery<D>, record: Partial<T>): Promise<D | null> {
 		await this.ensureConnected();
-		return this.model.findOneAndUpdate(filter, this.isUpdated(record), { new: true, upsert: true }).exec();
+		return this.model.findOneAndUpdate(filter, record as any, { new: true, upsert: true }).exec();
 	}
 
 	async delete(_id: string | Types.ObjectId): Promise<D | null> {
@@ -44,17 +44,17 @@ export class MongoBaseRepository<T, D extends Document> implements IMongoReposit
 		return this.model.findByIdAndDelete(_id).exec();
 	}
 
-	async findAll(filter?: FilterQuery<D>): Promise<D[]> {
+	async findAll(filter?: FilterQuery<D>, projection?: Record<string, any>): Promise<D[]> {
 		await this.ensureConnected();
 		return this.model
-			.find(filter || {})
+			.find(filter || {}, projection)
 			.sort({ _id: -1 })
 			.exec();
 	}
 
-	async findOne(filter: FilterQuery<D>): Promise<D | null> {
+	async findOne(filter: FilterQuery<D>, projection?: Record<string, any>): Promise<D | null> {
 		this.ensureConnected();
-		return this.model.findOne(filter).exec();
+		return this.model.findOne(filter, projection).exec();
 	}
 
 	async findWithPagination(page: number, limit: number, filter?: FilterQuery<D>): Promise<PaginatedResult<D[]>> {
@@ -150,8 +150,10 @@ export class MongoBaseRepository<T, D extends Document> implements IMongoReposit
 		return this.model.countDocuments(filter || {}).exec();
 	}
 
-	protected isUpdated(record: Partial<T>): Partial<T> & { updatedAt: Date } {
-		return { ...record, updatedAt: new Date() };
+	async exists(filter: FilterQuery<D>): Promise<boolean> {
+		await this.ensureConnected();
+		const count = await this.model.countDocuments(filter).limit(1).exec();
+		return count > 0;
 	}
 
 	protected async ensureConnected(): Promise<void> {

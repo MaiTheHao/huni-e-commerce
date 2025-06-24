@@ -9,21 +9,24 @@ type LabelInputProps = {
 	type?: 'text' | 'email' | 'textarea' | 'password';
 	value?: string;
 	className?: string;
+	validateError?: string;
 	onChange?: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
 };
 
-function LabelInput({ label, name, required = false, type = 'text', placeholder, value, onChange, className }: LabelInputProps) {
+function LabelInput({ label, name, required = false, type = 'text', placeholder, value, onChange, className, validateError }: LabelInputProps) {
+	const isValidateError = validateError && validateError.trim() !== '';
 	return (
-		<label className={`${styles.label} ${className}`} htmlFor={name}>
+		<label className={`${styles.label} ${className} ${isValidateError ? styles.invalid : ''}`} htmlFor={name}>
 			<span className={styles.labelText}>
 				{label}
 				<span className={styles.required}>{required ? '*' : ''}</span>
 			</span>
 			{type === 'textarea' ? (
-				<textarea className={styles.textarea} name={name} required={required} placeholder={placeholder} value={value} onChange={onChange} />
+				<textarea className={styles.textarea} name={name} required={required} placeholder={placeholder} value={value || ''} onChange={onChange} />
 			) : (
-				<input className={styles.input} type={type} name={name} required={required} placeholder={placeholder} value={value} onChange={onChange} />
+				<input className={styles.input} type={type} name={name} required={required} placeholder={placeholder} value={value || ''} onChange={onChange} />
 			)}
+			{isValidateError && <span className={styles.validateError}>{validateError}</span>}
 		</label>
 	);
 }

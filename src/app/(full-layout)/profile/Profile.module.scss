@@ -1,0 +1,529 @@
+@use '../../vars' as *;
+@use './profile-vars' as *;
+@use 'sass:map';
+@use 'sass:color';
+
+.container {
+	position: relative;
+	display: flex;
+	font-size: 1em;
+	gap: 1em;
+}
+
+.list-part--horizontal {
+	display: flex;
+	gap: 1em;
+	font-size: 1em;
+
+	.part {
+		flex: 1;
+	}
+}
+
+.part {
+	padding: $part-padding;
+	border-radius: $part-border-radius;
+	background-color: $white;
+	box-shadow: $box-shadow-card;
+	font-size: 1em;
+
+	&__title {
+		font-size: 1em;
+		font-weight: $font-weight-semibold;
+		margin-bottom: 0.5em;
+		color: $accent-color;
+	}
+
+	&__empty-state {
+		color: $txt-secondary;
+		font-style: italic;
+		padding: 2em;
+		text-align: center;
+		background-color: rgba($black-100, 0.3);
+		border-radius: $spacing-8;
+		border: 1px dashed $black-300;
+	}
+
+	&__loading-state {
+		color: $txt-secondary;
+		font-style: italic;
+		padding: 2em;
+		text-align: center;
+		background-color: rgba($black-100, 0.3);
+		border-radius: $spacing-8;
+		border: 1px dashed $black-300;
+	}
+}
+
+.left {
+	position: relative;
+	min-width: max-content;
+	flex: 2.5 0 0;
+	display: flex;
+	flex-direction: column;
+	gap: 1em;
+	font-size: 1em;
+
+	&__summary-info {
+		display: flex;
+		align-items: center;
+		gap: 0.75em;
+
+		&__avatar {
+			aspect-ratio: 1;
+			width: 52px;
+			border-radius: 50%;
+			overflow: hidden;
+
+			img {
+				width: 100%;
+				height: 100%;
+				object-fit: cover;
+			}
+		}
+
+		&__details {
+			display: flex;
+			flex-direction: column;
+			justify-content: center;
+			gap: 0.5ch;
+
+			span {
+				line-height: 1;
+			}
+
+			&__name {
+				color: $accent-color;
+				font-weight: $font-weight-semibold;
+				font-size: 0.875em;
+			}
+
+			&__email {
+				color: $txt-secondary;
+				font-weight: $font-weight-light;
+				font-size: 0.75em;
+			}
+		}
+	}
+
+	&__actions {
+		position: relative;
+		width: 100%;
+		height: 100%;
+		display: flex;
+		flex-direction: column;
+		gap: 0.5em;
+
+		&__btn {
+			cursor: pointer;
+			position: relative;
+			display: flex;
+			color: $txt-secondary;
+			align-items: center;
+			padding: 0.5em;
+			gap: 1em;
+			border-radius: $part-border-radius;
+			background-color: transparent;
+			border: 1px solid transparent;
+			transition: border 0.2s ease, color 0.2s ease, transform 0.1s ease;
+
+			&__icon {
+				aspect-ratio: 1;
+				flex: 0 0 1em;
+				display: flex;
+				justify-content: center;
+				align-items: center;
+
+				svg {
+					aspect-ratio: 1;
+					height: 100%;
+				}
+			}
+
+			span {
+				flex: 1;
+				text-align: left;
+				line-height: 1;
+				text-wrap: nowrap;
+				font-size: 0.875em;
+			}
+
+			&:not(.left__actions__btn--active) {
+				&:hover {
+					border: 1px solid rgba($accent-color, 0.5);
+					color: $txt-primary;
+				}
+
+				&:active {
+					transform: scale(0.99);
+				}
+			}
+		}
+
+		&__btn--active {
+			cursor: default;
+			background-color: rgba($black-200, 0.3);
+			color: $txt-primary;
+
+			&__icon {
+				svg {
+					fill: $accent-color;
+				}
+			}
+		}
+	}
+}
+
+.right {
+	flex: 7.5 0 0;
+	display: flex;
+	flex-direction: column;
+	gap: 1em;
+}
+
+// info ACCOUNT INFO PAGE
+.account-info-detail {
+	display: grid;
+	grid-template-columns: repeat(2, calc(50% - 1em));
+	grid-template-rows: auto;
+	column-gap: 2em;
+	font-size: 1em;
+
+	&__item {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: 1em;
+		padding: 1em 0;
+		border-bottom: 1px solid rgba($black-200, 1);
+		font-size: 1em;
+
+		&__label {
+			flex: 0 0 max-content;
+			font-size: 0.875em;
+			color: $txt-secondary;
+		}
+
+		&__value {
+			font-size: 0.875em;
+			color: $txt-primary;
+			font-weight: $font-weight-semibold;
+			text-align: right;
+
+			white-space: nowrap;
+			overflow: hidden;
+			text-overflow: ellipsis;
+		}
+
+		&:nth-last-child(-n + 2) {
+			border-bottom: none;
+		}
+	}
+}
+
+.account-info-actions {
+	&__list {
+		display: flex;
+		flex-direction: column;
+		gap: 0.5em;
+		margin: 0;
+		padding: 0;
+		font-size: 1em;
+
+		&__item {
+			list-style: none;
+			cursor: pointer;
+			display: flex;
+			align-items: center;
+			gap: $spacing-12;
+			padding: 0.25em 0;
+			color: $txt-secondary;
+			border-radius: $spacing-8;
+			border: 1px solid transparent;
+			transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+			font-weight: $font-weight-regular;
+			background-color: transparent;
+
+			svg {
+				flex: 0 0 1em;
+				width: 1em;
+				height: 1em;
+				transition: color 0.2s ease;
+			}
+
+			&__button {
+				color: inherit;
+				text-decoration: none;
+				background: none;
+				border: none;
+				flex: 1;
+				text-align: left;
+				font-size: 0.875em;
+				font-weight: $font-weight-semibold;
+				transition: color 0.2s ease;
+				cursor: pointer;
+				padding: 0;
+			}
+
+			&:hover {
+				transform: translateY(-1px);
+
+				.account-info-actions__list__item__button,
+				svg {
+					color: color.adjust($primary-color, $lightness: 0%);
+				}
+			}
+
+			&:active {
+				transform: translateY(0);
+			}
+
+			&--danger {
+				color: map.get($error, text);
+
+				svg {
+					color: map.get($error, icon);
+				}
+
+				.account-info-actions__list__item__button {
+					color: map.get($error, text);
+				}
+
+				&:hover {
+					.account-info-actions__list__item__button,
+					svg {
+						color: color.adjust(map.get($error, icon), $lightness: 10%);
+					}
+				}
+			}
+		}
+	}
+}
+
+.account-info-linked-accounts {
+	&__list {
+		position: relative;
+		font-size: 1em;
+		display: flex;
+		flex-direction: column;
+		gap: 0.5em;
+		&__item {
+			font-size: 1em;
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+
+			&__provider {
+				font-size: 1em;
+				display: flex;
+				align-items: center;
+				gap: 0.75ch;
+				color: $txt-secondary;
+
+				span {
+					font-size: 0.875em;
+					color: $txt-primary;
+					font-weight: $font-weight-semibold;
+				}
+			}
+
+			&__action {
+				font-size: 1em;
+				display: flex;
+				align-items: center;
+				gap: 0.5ch;
+				color: $txt-secondary;
+				padding: 0.25em 0.5em;
+				border-radius: 0.25em;
+
+				svg {
+					font-size: 0.875em;
+				}
+
+				&:hover {
+					color: $primary-color;
+				}
+			}
+
+			&.linked {
+				.account-info-linked-accounts__list__item__provider {
+					color: $txt-primary;
+				}
+				.account-info-linked-accounts__list__item__action {
+					cursor: default;
+					color: $accent-color;
+					background-color: rgba($primary-color, 0.2);
+				}
+			}
+		}
+	}
+}
+
+// info EDIT PROFILE PAGE
+.edit-profile-form {
+	margin-top: 1em;
+	display: flex;
+	flex-direction: column;
+	gap: 0.5em;
+	font-size: 1em;
+
+	&__actions {
+		display: flex;
+		justify-content: flex-end;
+		align-items: center;
+		gap: 0.5em;
+	}
+}
+
+// info ADDRESS MANAGEMENT PAGE
+.shipping-address {
+	display: flex;
+	flex-direction: column;
+	gap: 0.5em;
+	font-size: 1em;
+	&__add {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		font-size: 0.875em;
+		gap: 0.5em;
+
+		&__input {
+			flex: 1;
+			padding: 0.5em;
+			border-radius: 0.25em;
+			border: 1px solid $black-300;
+		}
+
+		&__button {
+			cursor: pointer;
+			padding: 0.5em 1em;
+			border-radius: 0.25em;
+			background-color: $primary-color;
+			color: $txt-white;
+			transition: opacity 0.1s ease, background-color 0.1s ease;
+
+			&:hover {
+				opacity: 0.9;
+			}
+
+			&:active {
+				background-color: color.adjust($primary-color, $lightness: -15%);
+			}
+		}
+	}
+}
+
+.shipping-address-list {
+	position: relative;
+	display: flex;
+	flex-direction: column;
+	gap: 1em;
+	font-size: 1em;
+
+	&__item {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		gap: 1em;
+		background-color: $white;
+		box-shadow: $box-shadow-sm;
+		padding: 0.75em 1em;
+		border-radius: 0.25em;
+		border: 1px solid $black-200;
+		font-size: 0.875em;
+		transition: transform 0.1s ease, box-shadow 0.1s ease;
+
+		&__info {
+			flex: 8;
+			font-size: 1em;
+			display: flex;
+			align-items: center;
+
+			&__text {
+				width: 100%;
+			}
+
+			&__input {
+				min-width: 100%;
+				min-height: 4em;
+				resize: vertical;
+				border: 1px solid $black-200;
+				padding: 0.5em;
+				border-radius: 0.25em;
+			}
+		}
+
+		&__actions {
+			flex: 2;
+			display: flex;
+			justify-content: flex-end;
+			align-items: center;
+			gap: 0.5em;
+			font-size: 1em;
+
+			button {
+				cursor: pointer;
+				padding: 0.25em 1em;
+				border-radius: 0.25em;
+				font-size: 1em;
+				text-wrap: nowrap;
+				text-align: center;
+				transition: background-color 0.1s ease, color 0.1s ease;
+
+				&:active {
+					color: $txt-white;
+				}
+			}
+
+			@mixin address-action-btn($type) {
+				background-color: map.get($type, bg);
+				color: map.get($type, text);
+
+				&:active {
+					background-color: color.adjust(map.get($type, bg), $lightness: -20%);
+				}
+			}
+
+			&__set-primary {
+				@include address-action-btn($success);
+				&.is-primary {
+					pointer-events: none;
+					background-color: map.get($warning, bg);
+					color: map.get($warning, text);
+				}
+			}
+
+			&__edit {
+				@include address-action-btn($info);
+
+				&--save {
+					@include address-action-btn($success);
+				}
+
+				&--cancel {
+					@include address-action-btn($error);
+				}
+			}
+
+			&__delete {
+				@include address-action-btn($error);
+			}
+		}
+	}
+}
+
+@media screen and (max-width: $breakpoint-lg) {
+	.container {
+		flex-direction: column;
+		gap: 0.5em;
+	}
+
+	.left {
+		flex: 1 0 100%;
+	}
+
+	.right {
+		flex: 1 0 100%;
+	}
+}

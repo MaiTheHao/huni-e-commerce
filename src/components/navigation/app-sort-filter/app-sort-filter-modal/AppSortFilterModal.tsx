@@ -111,10 +111,10 @@ const AppSortFilterModal: React.FC<AppSortFilterModalProps> = ({ initialFilter, 
 			contentClassName={styles.modal__content}
 			stickyFooter={
 				<div className={styles.modal__actions}>
-					<button onClick={handleReset} className={clsx(styles['modal__actions__action'], styles['modal__actions__action--cancel'], 'cta-button--outlined')}>
+					<button onClick={handleReset} className={clsx(styles['modal__actions__action'], styles['modal__actions__action--cancel'], 'cta-button--secondary')}>
 						Hủy
 					</button>
-					<button onClick={handleSubmit} className={clsx(styles['modal__actions__action'], styles['modal__actions__action--submit'], 'cta-button')}>
+					<button onClick={handleSubmit} className={clsx(styles['modal__actions__action'], styles['modal__actions__action--submit'], 'cta-button--primary')}>
 						Xem kết quả
 					</button>
 				</div>

@@ -1,8 +1,9 @@
 import { userRepository } from '@/server/repositories/user.repository';
-import { authService } from '@/services/auth.service';
+import { authService } from '@/services/auth/auth.service';
 import { loggerService } from '@/services/logger.service';
 import { responseService } from '@/services/response.service';
 import { tokenService } from '@/services/token.service';
+import { toString } from '@/util';
 import { NextRequest } from 'next/server';
 
 export async function GET(req: NextRequest) {
@@ -18,11 +19,27 @@ export async function GET(req: NextRequest) {
 		return responseService.unauthorized('Không được phép truy cập');
 	}
 
-	const user = await userRepository.findById(decoded.uid);
+	const user = await userRepository.findById(decoded.uid, {
+		email: 1,
+		name: 1,
+		avatar: 1,
+		roles: 1,
+		oauthProviders: 1,
+	});
 	if (!user) {
 		loggerService.error('Không tìm thấy người dùng với ID', decoded.uid);
-		return responseService.unauthorized('Không được phép truy cập');
+		return responseService.notFound('Không tìm thấy người dùng');
 	}
 
-	return responseService.success(user, 'Lấy thông tin người dùng thành công');
+	return responseService.success(
+		{
+			uid: toString(user._id),
+			email: user.email,
+			name: user.name,
+			avatar: user.avatar || '',
+			roles: user.roles || [],
+			oauthProviders: user.oauthProviders || [],
+		},
+		'Lấy thông tin người dùng thành công'
+	);
 }

@@ -64,6 +64,20 @@ class ResponseService {
 			headers: { 'Content-Type': 'text/html; charset=utf-8' },
 		});
 	}
+
+	// Hàm này sẽ chuyển hướng đến một URL cụ thể
+	redirect(url: string, statusCode = HTTPStatus.FOUND) {
+		return NextResponse.redirect(url, {
+			status: statusCode,
+		});
+	}
+
+	// Hàm này sẽ chuyển hướng đến một URL cụ thể với base URL từ biến môi trường
+	redirectClient(url: string, statusCode = HTTPStatus.FOUND) {
+		return NextResponse.redirect(`${process.env.NEXT_PUBLIC_HOST}${url}`, {
+			status: statusCode,
+		});
+	}
 }
 
 export const responseService = ResponseService.getInstance();

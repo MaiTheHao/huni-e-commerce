@@ -14,20 +14,12 @@ class UserRepository extends MongoBaseRepository<IUser, IUserDocument> {
 		return UserRepository.instance;
 	}
 
-	async signup(email: string, name: string, password: string, salt: Buffer): Promise<IUserDocument> {
-		await this.ensureConnected();
-		const newUser = new this.model({ email, name, password, salt });
-		return newUser.save();
+	async findByEmail(email: string, projection?: Record<string, any>): Promise<IUserDocument | null> {
+		return this.findOne({ email }, projection);
 	}
 
-	async findByEmail(email: string): Promise<IUserDocument | null> {
-		await this.ensureConnected();
-		return this.model.findOne({ email });
-	}
-
-	async findByPhone(phone: string): Promise<IUserDocument | null> {
-		await this.ensureConnected();
-		return this.model.findOne({ phone });
+	async findByPhone(phone: string, projection?: Record<string, any>): Promise<IUserDocument | null> {
+		return this.findOne({ phone }, projection);
 	}
 }
 

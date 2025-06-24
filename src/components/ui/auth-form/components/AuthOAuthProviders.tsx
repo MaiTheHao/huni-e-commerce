@@ -1,6 +1,5 @@
 'use client';
 import React, { memo } from 'react';
-import Link from 'next/link';
 import Image from 'next/image';
 import styles from '../AuthForm.module.scss';
 import { OAuthProvider } from '../types';
@@ -22,9 +21,9 @@ const AuthOAuthProviders = ({ providers }: AuthOAuthProvidersProps) => {
 			<ul className={styles.AuthPage__body__OAuth__items}>
 				{providers.map((provider, index) => (
 					<li key={index}>
-						<Link href={provider.href}>
+						<a href={provider.href} target='_self' rel='noopener noreferrer'>
 							<Image src={provider.iconSrc} alt={provider.name} width={24} height={24} />
-						</Link>
+						</a>
 					</li>
 				))}
 			</ul>

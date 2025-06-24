@@ -1,6 +1,6 @@
 // filepath: d:\MyWorkSpace\Projects\Web\E-Commerce Huni\source\src\components\hero-section\HeroSectionContent.tsx
 'use client';
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import styles from './HeroSection.module.scss';
 import clsx from 'clsx';
 import Link from 'next/link';
@@ -15,27 +15,23 @@ export type HeroSectionContentProps = {
 
 function HeroSectionContent({ items, idx }: HeroSectionContentProps) {
 	const [isRedirecting, setIsRedirecting] = useState(false);
+	const clickedIdx = useRef<number | null>(null);
+
+	if (clickedIdx.current !== null && clickedIdx.current !== idx) idx = clickedIdx.current;
+
+	const handleClick = (index: number) => {
+		clickedIdx.current = index;
+		setIsRedirecting(true);
+	};
 
 	return (
 		<ul className={styles.list} style={{ transform: `translateX(-${idx * 100}%)` }}>
-			{items.map((product) => {
+			{items.map((product, map_idx) => {
 				const attrs = product.attrs?.slice(0, 3);
 				const hasContent = product.name || (attrs && attrs.length > 0) || (product.cta && product.ctaHref);
 
 				return (
-					<li
-						key={product._id}
-						className={`${styles.item}`}
-						// ref={(el) => {
-						// 	if (isActive && el) {
-						// 		el.scrollIntoView({
-						// 			behavior: 'smooth',
-						// 			block: 'nearest',
-						// 			inline: 'start',
-						// 		});
-						// 	}
-						// }}
-					>
+					<li key={product._id} className={`${styles.item}`}>
 						{product.image && (
 							<Image
 								src={product.image}
@@ -55,7 +51,7 @@ function HeroSectionContent({ items, idx }: HeroSectionContentProps) {
 									{product.name && <h3 className={styles.title}>{product.name}</h3>}
 									{attrs && attrs.length > 0 && <p className={styles.attrs}>{attrs.join(' | ')}</p>}
 									{product.cta && product.ctaHref && (
-										<Link className={clsx('cta-button', styles.cta)} href={product.ctaHref} onClick={() => setIsRedirecting(true)}>
+										<Link className={clsx('cta-button--primary', styles.cta)} href={product.ctaHref} onClick={() => handleClick(map_idx)}>
 											{isRedirecting ? <Spinner /> : <span>{product.cta}</span>}
 										</Link>
 									)}

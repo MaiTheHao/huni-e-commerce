@@ -16,10 +16,20 @@
 
 html,
 body {
-	height: 100%;
+	min-height: 100%;
+	height: max-content;
 	width: 100%;
 	overflow-x: hidden;
 	overflow-y: auto;
+
+	/* Ẩn scroll bar của body */
+	& {
+		scrollbar-width: none; /* Firefox */
+		-ms-overflow-style: none; /* IE and Edge */
+	}
+	&::-webkit-scrollbar {
+		display: none; /* Chrome, Safari, Opera */
+	}
 }
 
 html {
@@ -30,15 +40,6 @@ body {
 	background-color: $white;
 	color: $txt-primary;
 	font-family: var(--font-be-vietnam-pro);
-
-	/* Ẩn scroll bar của body */
-	& {
-		scrollbar-width: none; /* Firefox */
-		-ms-overflow-style: none; /* IE and Edge */
-	}
-	&::-webkit-scrollbar {
-		display: none; /* Chrome, Safari, Opera */
-	}
 }
 
 a {

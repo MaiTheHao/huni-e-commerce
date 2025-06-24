@@ -1,3 +1,4 @@
+import { COOKIE_KEYS } from '@/consts/keys';
 import { TErrorFirst } from '@/interfaces';
 import { loggerService } from '@/services/logger.service';
 import { cookies } from 'next/headers';
@@ -71,7 +72,7 @@ class CookieService {
 
 	async setRefreshToken(token: string): Promise<void> {
 		try {
-			await this.setJson('refreshToken', token, {
+			await this.setJson(COOKIE_KEYS.REFRESH_TOKEN, token, {
 				maxAge: 604800,
 				httpOnly: true,
 				path: '/',
@@ -84,7 +85,7 @@ class CookieService {
 
 	async getRefreshToken(): Promise<TErrorFirst<any, string | null>> {
 		try {
-			const token = await this.getJson<string>('refreshToken');
+			const token = await this.getJson<string>(COOKIE_KEYS.REFRESH_TOKEN);
 			return token ? [null, token] : [null, null];
 		} catch (error) {
 			loggerService.error('Không thể lấy refresh token:', error);
@@ -94,7 +95,7 @@ class CookieService {
 
 	async deleteRefreshToken(): Promise<void> {
 		try {
-			await this.delete('refreshToken');
+			await this.delete(COOKIE_KEYS.REFRESH_TOKEN);
 		} catch (error) {
 			loggerService.error('Không thể xóa refresh token:', error);
 		}

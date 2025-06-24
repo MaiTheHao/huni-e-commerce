@@ -1,13 +1,13 @@
 @use '../../../app/vars' as *;
 @use 'sass:map';
 
-$modal-width-lg: calc(125 * $unit); // 500px
-$modal-width-md: calc(100 * $unit); // 400px
-$modal-width-sm: calc(70 * $unit); // 280px
+$modal-width-lg: calc(130 * $unit); // 500px
+$modal-width-md: calc(110 * $unit); // 400px
+$modal-width-sm: 95vw; // 280px
 
 $modal-dy-lg: calc(20 * $unit);
 $modal-dy-md: calc(16 * $unit);
-$modal-dy-sm: calc(12 * $unit);
+$modal-dy-sm: 10vh;
 
 .modal {
 	position: fixed;
@@ -101,8 +101,10 @@ $modal-dy-sm: calc(12 * $unit);
 			font-size: 1.125em;
 		}
 		.message {
-			font-size: 1em;
-			line-height: 1.25;
+			font-size: 0.875em;
+			line-height: 1.5;
+			letter-spacing: 0.05em;
+			text-align: justify;
 		}
 	}
 
@@ -159,10 +161,15 @@ $modal-dy-sm: calc(12 * $unit);
 		transform: translateX(0) scale(1);
 		filter: blur(0);
 	}
-	60% {
-		opacity: 0.7;
-		transform: translateX(10%) scale(0.98);
-		filter: blur(2px);
+	40% {
+		opacity: 0.8;
+		transform: translateX(8%) scale(0.99);
+		filter: blur(1px);
+	}
+	70% {
+		opacity: 0.5;
+		transform: translateX(25%) scale(0.97);
+		filter: blur(3px);
 	}
 	to {
 		opacity: 0;
@@ -177,7 +184,7 @@ $modal-dy-sm: calc(12 * $unit);
 		opacity: 0;
 	}
 	60% {
-		transform: scale(1.15);
+		transform: scale(1.1);
 		opacity: 1;
 	}
 	100% {

@@ -15,8 +15,13 @@ const nextConfig: NextConfig = {
 				protocol: 'https',
 				hostname: 'nvs.tn-cdn.net',
 			},
+			{
+				protocol: 'https',
+				hostname: 'th.bing.com',
+			},
 		],
 	},
+	allowedDevOrigins: ['https://accounts.google.com', 'http://localhost:3000'],
 };
 
 export default nextConfig;

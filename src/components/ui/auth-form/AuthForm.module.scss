@@ -5,6 +5,8 @@
 	font-size: 16px;
 	width: 100%;
 	max-width: 442px;
+	min-height: max-content;
+	height: max-content;
 	background-color: $white;
 	padding: 2em;
 	border-radius: 0.5em;
@@ -59,22 +61,6 @@
 		display: flex;
 		flex-direction: column;
 		gap: 0.25em;
-
-		&__input {
-			&.invalid {
-				&:not(:focus-within) {
-					input {
-						border-color: map.get($error, 'icon');
-					}
-				}
-			}
-		}
-
-		&__error {
-			color: map.get($error, 'icon');
-			font-size: 0.875em;
-			font-weight: $font-weight-light;
-		}
 	}
 
 	&__additionalLinks {

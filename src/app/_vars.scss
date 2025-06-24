@@ -8,19 +8,19 @@ $black-700: #424242;
 $black-800: #212121;
 $black-900: #000000;
 
-$gray-100: #f8f9fa;
-$gray-200: #e9ecef;
-$gray-300: #dee2e6;
-$gray-400: #ced4da;
-$gray-500: #adb5bd;
-$gray-600: #6c757d;
-$gray-700: #495057;
-$gray-800: #343a40;
-$gray-900: #212529;
+$gray-100: #f4f6f7;
+$gray-200: #e6eaeb;
+$gray-300: #d8dde0;
+$gray-400: #c9d0d4;
+$gray-500: #b7bfc4;
+$gray-600: #a2abae;
+$gray-700: #8c9497;
+$gray-800: #71787a;
+$gray-900: #575c5e;
 $primary-color: #255f38;
 $secondary-color: #3f7d58;
 $accent-color: #194026;
-$body-bg-color: #eef1f2;
+$body-bg-color: $gray-100;
 $white: #ffffff;
 $txt-primary: $black-800;
 $txt-secondary: $black-500;
@@ -31,28 +31,34 @@ $txt-accent: $primary-color;
 $yellow-color: #ffe066;
 $orange-color: #ffc145;
 $success: (
-	bg: #e6f9f0,
+	bg: #e1f8ef,
 	icon: #27ae60,
-	text: #145c32,
-	border: #d4f0e6,
+	text: #218c5a,
+	border: #aeead1,
 );
 $info: (
-	bg: #eaf6fb,
-	icon: #2980b9,
-	text: #17496b,
-	border: #d0e8f2,
+	bg: #e3f2fd,
+	icon: #2196f3,
+	text: #1976d2,
+	border: #90caf9,
 );
 $warning: (
-	bg: #fff8e1,
-	icon: #f1c40f,
-	text: #7d6608,
-	border: #f9f3d8,
+	bg: #fff4e6,
+	icon: #ff8c00,
+	text: #cc7000,
+	border: #ffcc99,
 );
 $error: (
-	bg: #fdecea,
+	bg: #ffeae8,
 	icon: #e74c3c,
-	text: #922b21,
-	border: #f8d7da,
+	text: #b94a48,
+	border: #ffbdb7,
+);
+$question: (
+	bg: #f8f9fa,
+	icon: #6c757d,
+	text: #495057,
+	border: #dee2e6,
 );
 
 $unit: 0.25rem;
@@ -101,3 +107,18 @@ $app-body-padding-y-tablet: 32px;
 
 $app-body-padding-x-mobile: 8px;
 $app-body-padding-y-mobile: 16px;
+
+// BOX SHADOWS
+$box-shadow-xs: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+$box-shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+$box-shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+$box-shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+$box-shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+$box-shadow-2xl: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+$box-shadow-inner: inset 0 2px 4px 0 rgba(0, 0, 0, 0.06);
+$box-shadow-none: none;
+$box-shadow-card: 0 2px 8px rgba(0, 0, 0, 0.08);
+$box-shadow-hover: 0 8px 16px rgba(0, 0, 0, 0.12);
+$box-shadow-focus: 0 0 0 3px rgba(37, 95, 56, 0.2);
+$box-shadow-dropdown: 0 4px 12px rgba(0, 0, 0, 0.15);
+$box-shadow-modal: 0 16px 32px rgba(0, 0, 0, 0.2);

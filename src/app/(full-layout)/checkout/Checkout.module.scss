@@ -1,0 +1,125 @@
+@use '../../_vars.scss' as *;
+
+.container {
+	display: flex;
+	gap: $spacing-24;
+	flex-direction: column;
+	font-size: 16px;
+
+	@media (min-width: $breakpoint-lg) {
+		flex-direction: row;
+	}
+}
+
+.table {
+	border-radius: 8px;
+	font-size: 1em;
+	flex: 1;
+
+	&:last-child {
+		flex: 1;
+	}
+}
+
+.form {
+	display: flex;
+	flex-direction: column;
+	gap: 0.875em;
+	font-size: 1em;
+}
+
+.orderTable {
+	font-size: 1em;
+}
+
+.orderItems {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+	display: flex;
+	flex-direction: column;
+	gap: 0.75em;
+	font-size: 1em;
+}
+
+.orderItem {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding-bottom: 0.75em;
+	border-bottom: 1px solid $gray-200;
+	font-size: 0.875em;
+}
+
+.itemName {
+	flex: 1;
+	margin: 0;
+	color: $txt-secondary;
+	font-weight: $font-weight-regular;
+}
+
+.itemPrice {
+	font-weight: $font-weight-semibold;
+	color: $secondary-color;
+}
+
+.itemQuantity {
+	padding: 0 0.75em;
+	color: $txt-secondary;
+}
+
+.orderSummary {
+	display: flex;
+	flex-direction: column;
+	gap: 0.5em;
+	margin-top: 2em;
+}
+
+.orderSummaryItem {
+	display: flex;
+	justify-content: space-between;
+	font-size: 1em;
+
+	.orderSummaryLabel {
+		color: $txt-primary;
+		font-weight: $font-weight-semibold;
+	}
+
+	.orderSummaryValue {
+		color: $secondary-color;
+		font-weight: $font-weight-semibold;
+	}
+
+	&.orderSummaryTotal {
+		border-top: 1px solid $secondary-color;
+		padding-top: 0.5em;
+		.orderSummaryLabel {
+			font-size: 1.125em;
+		}
+		.orderSummaryValue {
+			font-size: 1.125em;
+			color: $secondary-color;
+		}
+	}
+}
+
+.orderFooterNote {
+	font-size: 0.875em;
+	color: $txt-secondary;
+	text-align: center;
+
+	span {
+		font-weight: $font-weight-light;
+	}
+}
+
+@media (max-width: $breakpoint-md) {
+	.formTable,
+	.orderTable {
+		width: 100%;
+	}
+
+	.container {
+		gap: $spacing-16;
+	}
+}

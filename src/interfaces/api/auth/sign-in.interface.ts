@@ -3,6 +3,6 @@ export interface ISigninRequest {
 	password: string;
 }
 
-export interface ISigninResponse {
+export interface ISigninResponseData {
 	accessToken: string;
 }

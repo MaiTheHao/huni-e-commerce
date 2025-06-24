@@ -1,12 +1,16 @@
 import nodemailer from 'nodemailer';
 import infoData from '@/data/info.json';
 import { loggerService } from '../../logger.service';
-import template from './template.json';
+import { readFileSync } from 'fs';
+import path, { join } from 'path';
+import { fileURLToPath } from 'url';
 
 export class EmailNofiticationService {
 	private static instance: EmailNofiticationService;
 	private SENDER_EMAIL = process.env.SENDER_EMAIL || '';
 	private APP_PASSWORD = process.env.APP_PASSWORD || '';
+	private __dirname = path.dirname(fileURLToPath(import.meta.url));
+	private readonly innerTemplateFolderURL = path.join(this.__dirname, './templates');
 
 	private constructor() {
 		if (!this.SENDER_EMAIL || !this.APP_PASSWORD) {
@@ -14,16 +18,13 @@ export class EmailNofiticationService {
 		}
 	}
 
-	public static getInstance(): EmailNofiticationService {
+	static getInstance(): EmailNofiticationService {
 		if (!EmailNofiticationService.instance) {
 			EmailNofiticationService.instance = new EmailNofiticationService();
 		}
 		return EmailNofiticationService.instance;
 	}
 
-	// Tạo một hàm riêng để tạo transporter mới cho mỗi lần gửi email
-	// (Trong môi trường serverless như Vercel, mỗi hàm có thể chạy trên một instance riêng biệt,
-	// nên việc tạo mới transporter cho mỗi lần gửi sẽ đảm bảo kết nối luôn hoạt động)
 	private createTransporter(): nodemailer.Transporter {
 		return nodemailer.createTransport({
 			service: 'gmail',
@@ -34,9 +35,26 @@ export class EmailNofiticationService {
 		});
 	}
 
-	public async sendEmailNotification(email: string, subject: string, html: string): Promise<void> {
-		// Tạo transporter mới cho mỗi lần gửi email để tránh các vấn đề về connection timeout
-		// trong môi trường serverless
+	private readTemplate(templateName: string): string {
+		try {
+			const templatePath = join(this.innerTemplateFolderURL, `${templateName}.html`);
+			return readFileSync(templatePath, 'utf-8');
+		} catch (error) {
+			loggerService.error(`Lỗi khi đọc template ${templateName}:`, error);
+			throw new Error(`Không thể đọc template ${templateName}`);
+		}
+	}
+
+	private replaceTemplateVariables(template: string, variables: Record<string, string>): string {
+		let result = template;
+		Object.entries(variables).forEach(([key, value]) => {
+			const placeholder = `{{${key}}}`;
+			result = result.replace(new RegExp(placeholder, 'g'), value);
+		});
+		return result;
+	}
+
+	async sendEmailNotification(email: string, subject: string, html: string): Promise<void> {
 		const transporter = this.createTransporter();
 
 		try {
@@ -52,22 +70,27 @@ export class EmailNofiticationService {
 		}
 	}
 
-	public async sendVerifyEmail(email: string, token: string): Promise<void> {
-		const template = await import('./template.json');
+	async sendVerifyEmail(email: string, token: string): Promise<void> {
 		const verifyUrl = `${process.env.NEXT_PUBLIC_HOST}${process.env.NEXT_PUBLIC_API_URL}/auth/verify-email?token=${encodeURIComponent(token)}`;
-		const html = template.verifyEmail.replace('{{verifyUrl}}', verifyUrl);
+		const expString = process.env.EMAIL_VERIFICATION_TOKEN_EXPIRATION || '5m';
+		const template = this.readTemplate('verifyEmail');
+		const html = this.replaceTemplateVariables(template, {
+			verifyUrl,
+			expString,
+		});
+
 		await this.sendEmailNotification(email, 'Xác thực email', html);
 	}
 
-	public getVerifySuccessHtml(): string {
-		return template.verifySuccess;
-	}
+	async sendResetPasswordEmail(email: string, token: string): Promise<void> {
+		const resetUrl = `${process.env.NEXT_PUBLIC_HOST}${process.env.NEXT_PUBLIC_API_URL}/auth/reset-password?token=${encodeURIComponent(token)}`;
+		const expString = process.env.RESET_PASSWORD_TOKEN_EXPIRATION || '5m';
+		const template = this.readTemplate('resetPassword');
+		const html = this.replaceTemplateVariables(template, {
+			resetUrl,
+			expString,
+		});
 
-	public getVerifyErrorHtml(): string {
-		return template.verifyError;
-	}
-
-	public getAlreadyVerifiedHtml(): string {
-		return template.alreadyVerified;
+		await this.sendEmailNotification(email, 'Đặt lại mật khẩu', html);
 	}
 }

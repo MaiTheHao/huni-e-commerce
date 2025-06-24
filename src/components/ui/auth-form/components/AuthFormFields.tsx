@@ -25,12 +25,8 @@ const AuthFormFields = ({ fields, formData, validateError, handleInputChange }: 
 						onChange={handleInputChange}
 						className={`${styles.AuthPage__body__form__field__input} ${validateError[field.name] ? styles.invalid : ''}`}
 						required={field.required}
+						validateError={validateError[field.name] || ''}
 					/>
-					{validateError[field.name] && (
-						<span key={`AuthPage__body__form__field__error:${field.label}`} className={styles.AuthPage__body__form__field__error}>
-							{validateError[field.name]}
-						</span>
-					)}
 				</div>
 			))}
 		</>

@@ -1,3 +1,4 @@
+import { IEmailVerifyTokenPayload } from '@/interfaces';
 import { userRepository } from '@/server/repositories/user.repository';
 import { loggerService } from '@/services/logger.service';
 import { nofiticationService } from '@/services/nofitication/nofitication.service';
@@ -8,7 +9,7 @@ import { NextRequest } from 'next/server';
 const emailService = nofiticationService.getEmailNofiticationService();
 
 export async function POST(req: NextRequest) {
-	let body: { email: string } | null = null;
+	let body: IEmailVerifyTokenPayload | null = null;
 	try {
 		body = await req.json();
 	} catch (error) {
@@ -21,7 +22,7 @@ export async function POST(req: NextRequest) {
 	}
 
 	try {
-		const token = await tokenService.signEmailVerificationToken({ email: body.email });
+		const token = await tokenService.signEmailVerificationToken(body);
 		await emailService.sendVerifyEmail(body.email, token);
 		return responseService.success(null, 'Email xác thực đã được gửi thành công');
 	} catch (error) {
@@ -29,40 +30,38 @@ export async function POST(req: NextRequest) {
 		return responseService.error('Đã xảy ra lỗi trong quá trình gửi email xác thực');
 	}
 }
-
 export async function GET(req: NextRequest) {
 	const token = req.nextUrl.searchParams.get('token');
 
 	if (!token) {
-		return responseService.badRequest('Token là bắt buộc');
+		return responseService.redirectClient('/notification/email-verification/error');
 	}
 
-	const [verifyError, decoded] = await tokenService.verifyEmailVerificationToken<{ email: string }>(token);
+	const [verifyError, decoded] = await tokenService.verifyEmailVerificationToken(token);
 
 	if (verifyError) {
 		loggerService.error(`Lỗi khi xác thực token: ${verifyError}`);
-		return responseService.sendHtml(emailService.getVerifyErrorHtml());
+		return responseService.redirectClient('/notification/email-verification/error');
 	}
 
 	if (!decoded) {
-		return responseService.badRequest('Token là bắt buộc');
+		return responseService.redirectClient('/notification/email-verification/error');
 	}
 
 	const user = await userRepository.findByEmail(decoded.email);
 	if (!user) {
-		return responseService.notFound('Người dùng không tồn tại');
+		return responseService.redirectClient('/notification/email-verification/error');
 	}
 
 	if (user.isEmailVerified) {
-		return responseService.sendHtml(emailService.getAlreadyVerifiedHtml());
+		return responseService.redirectClient('/notification/email-verification/already-verified');
 	}
 
 	try {
 		await userRepository.update({ _id: user.id }, { isEmailVerified: true });
+		return responseService.redirectClient('/notification/email-verification/success');
 	} catch (error) {
 		loggerService.error('Lỗi khi xác thực email:', error);
-		return responseService.sendHtml(emailService.getVerifyErrorHtml());
+		return responseService.redirectClient('/notification/email-verification/error');
 	}
-
-	return responseService.sendHtml(emailService.getVerifySuccessHtml());
 }

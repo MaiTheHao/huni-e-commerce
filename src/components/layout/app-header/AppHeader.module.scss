@@ -173,16 +173,24 @@ $logo-size: $unit * 10;
 	align-items: center;
 	padding: $spacing-12;
 
-	svg {
+	svg,
+	img {
 		aspect-ratio: 1;
 		width: $font-size-16;
 		color: $txt-secondary;
 		transition: color 0.3s ease, transform 0.3s ease;
 	}
 
+	img {
+		width: $font-size-32;
+		border-radius: 50%;
+		object-fit: cover;
+	}
+
 	&--clickable {
 		cursor: pointer;
-		&:hover svg {
+		&:hover > svg,
+		&:hover > img {
 			color: $txt-primary;
 			transform: scale(1.1);
 		}
@@ -258,6 +266,152 @@ $logo-size: $unit * 10;
 		&:active {
 			transform: scale(0.9);
 		}
+	}
+}
+
+// Profile
+.app-header__profile {
+	position: relative;
+	font-size: 1em;
+}
+
+$part-padding: 0.5em;
+.app-header__profile-dropdown {
+	position: absolute;
+	top: 150%;
+	right: 0;
+	min-width: 15em;
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+	padding: 0.5em;
+	border-radius: 0.25em;
+	background-color: $white;
+	box-shadow: $box-shadow-dropdown;
+	font-size: 1em;
+	animation: app-header-profile-slide-in 0.3s ease forwards;
+
+	&__user {
+		display: flex;
+		align-items: center;
+		gap: 0.5em;
+		font-size: 1em;
+		padding-bottom: $part-padding;
+
+		&__avatar {
+			aspect-ratio: 1;
+			position: relative;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			width: 32px;
+			height: 32px;
+			border-radius: 50%;
+			overflow: hidden;
+
+			img {
+				width: 100%;
+				height: 100%;
+				object-fit: cover;
+			}
+		}
+
+		&__name {
+			color: $txt-primary;
+			font-size: 0.875em;
+			font-weight: $font-weight-semibold;
+		}
+	}
+
+	&__spread-line {
+		width: 100%;
+		height: 0.75px;
+		background-color: $txt-tertiary;
+	}
+
+	&-actions {
+		font-size: 1em;
+		position: relative;
+		width: 100%;
+		height: max-content;
+		display: flex;
+		flex-direction: column;
+		font-size: 1em;
+
+		&__item {
+			cursor: pointer;
+			transition: background-color 0.3s ease, color 0.3s ease;
+
+			&:hover {
+				background-color: rgba($black-100, 0.9);
+				color: $txt-primary;
+
+				.app-header__profile-dropdown-actions__icon {
+					background-color: $txt-primary;
+					svg {
+						color: $white;
+					}
+				}
+			}
+
+			&:active {
+				background-color: rgba($black-100, 0.6);
+				color: $txt-primary;
+			}
+		}
+
+		&__link {
+			cursor: pointer;
+			width: 100%;
+			display: flex;
+			justify-content: flex-start;
+			align-items: center;
+			padding: $part-padding 0.25em;
+			gap: 0.75em;
+		}
+
+		&__icon {
+			position: relative;
+			width: 24px;
+			height: 24px;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			padding: 0.35em;
+			border-radius: 50%;
+			background-color: $black-200;
+			transition: background-color 0.3s ease, color 0.3s ease;
+
+			svg {
+				color: $txt-primary;
+				aspect-ratio: 1;
+				height: 100%;
+				transition: color 0.3s ease;
+			}
+		}
+
+		&__label {
+			text-align: left;
+			width: 100%;
+			font-size: 0.75em;
+			text-transform: capitalize;
+		}
+
+		&__arrow {
+			color: $txt-primary;
+			font-size: 0.75em;
+		}
+	}
+}
+
+@keyframes app-header-profile-slide-in {
+	from {
+		opacity: 0;
+		transform: translateY(-50%);
+	}
+	to {
+		opacity: 1;
+		transform: translateY(0);
 	}
 }
 

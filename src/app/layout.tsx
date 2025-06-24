@@ -1,13 +1,12 @@
 import type { Metadata } from 'next';
 import { Be_Vietnam_Pro } from 'next/font/google';
 import './globals.scss';
-import AppHeader from '@/components/layout/app-header/AppHeader';
-import AppFooter from '@/components/layout/app-footer/AppFooter';
 import CartContextProvider from '@/contexts/CartContext/CartContextProvider';
+import AuthContextProvider from '@/contexts/AuthContext/AuthContextProvider';
 
 const beVietnamPro = Be_Vietnam_Pro({
 	variable: '--font-be-vietnam-pro',
-	subsets: ['latin'],
+	subsets: ['latin', 'vietnamese'],
 	weight: ['100', '200', '300', '400', '500', '600', '700', '800', '900'],
 });
 
@@ -32,13 +31,11 @@ export default function RootLayout({
 }>) {
 	return (
 		<html lang='vi'>
-			<CartContextProvider>
-				<body className={`${beVietnamPro.variable}`}>
-					<AppHeader />
-					{children}
-					<AppFooter />
-				</body>
-			</CartContextProvider>
+			<AuthContextProvider>
+				<CartContextProvider>
+					<body className={`${beVietnamPro.variable}`}>{children}</body>
+				</CartContextProvider>
+			</AuthContextProvider>
 		</html>
 	);
 }

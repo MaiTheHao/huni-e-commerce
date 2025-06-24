@@ -1,8 +1,7 @@
-import path from 'path';
 import { AppRoute } from '../interfaces';
 import { faHeadphones, faHouse, faKeyboard } from '@fortawesome/free-solid-svg-icons';
 
-export const ROUTES: { [key: string]: AppRoute } = {
+export const ROUTES: Record<string, AppRoute> = {
 	home: {
 		path: '/home',
 		title: 'Trang chủ',
@@ -15,6 +14,22 @@ export const ROUTES: { [key: string]: AppRoute } = {
 	signup: {
 		path: '/signup',
 		title: 'Đăng ký',
+	},
+	logout: {
+		path: '/logout',
+		title: 'Đăng xuất',
+	},
+	resetPassword: {
+		path: '/reset-password',
+		title: 'Đặt lại mật khẩu',
+	},
+	verifyEmail: {
+		path: '/verify-email',
+		title: 'Xác thực email',
+	},
+	profile: {
+		path: '/profile/account-info',
+		title: 'Hồ sơ',
 	},
 	keyboard: {
 		path: '/keyboard',

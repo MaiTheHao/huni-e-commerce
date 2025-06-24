@@ -3,6 +3,7 @@ import React, { useState, ReactNode, useEffect, useCallback, useMemo } from 'rea
 import CartContext from './CartContext';
 import { ICartItem } from '../../interfaces';
 import { IProduct } from '@/interfaces';
+import { loggerService } from '@/services/logger.service';
 
 interface CartContextProviderProps {
 	children: ReactNode;
@@ -60,7 +61,7 @@ function CartContextProvider({ children }: CartContextProviderProps) {
 			const data = (await res.json()).data;
 			cartItems = data.cart.items || [];
 		} catch (error) {
-			console.error('Error fetching cart:', error);
+			loggerService.error('Lỗi khi lấy giỏ hàng:', error);
 		} finally {
 			setLoading(false);
 			setItems((prevItems) => {

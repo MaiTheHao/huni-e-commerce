@@ -1,4 +1,5 @@
 import mongoose from 'mongoose';
+import { IOAuthProvider } from './oauth-provider.interface';
 
 export const USER_ROLES = ['user', 'admin'] as const;
 export type TUserRole = (typeof USER_ROLES)[number];
@@ -8,10 +9,12 @@ export interface IUserBase {
 	phone: string;
 	password: string;
 	name: string;
-	address?: string;
+	avatar: string;
+	addresses: string[];
 	roles: TUserRole[];
 	salt: Buffer;
 	isEmailVerified: Boolean;
+	oauthProviders: IOAuthProvider[];
 	createdAt: Date;
 	updatedAt: Date;
 }

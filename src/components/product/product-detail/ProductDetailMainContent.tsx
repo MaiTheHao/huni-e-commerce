@@ -116,15 +116,15 @@ function ProductDetailMainContent<T extends IProduct>({
 					<div className={styles.actions}>
 						<Quantity value={quantity} onChange={onChangeQuantity} min={minQuantity} max={maxQuantity} className={styles.actions__quantity} debounceTime={0} />
 						<button
-							className={clsx(styles.actions__buyNow, 'cta-button', {
+							className={clsx(styles.actions__buyNow, 'cta-button--primary', {
 								disabled: quantity <= 0,
 							})}
 							onClick={handleBuyNow}
 						>
-							Mua ngay
+							Đặt hàng ngay
 						</button>
 						<button
-							className={clsx(styles.actions__addToCart, 'cta-button--outlined', {
+							className={clsx(styles.actions__addToCart, 'cta-button--secondary', {
 								disabled: quantity <= 0 || loading,
 							})}
 							onClick={handleContextAddToCart}

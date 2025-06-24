@@ -1,5 +1,5 @@
 import { ISignUpRequest } from '@/interfaces/api/auth/sign-up.interface';
-import { authService } from '@/services/auth.service';
+import { authService } from '@/services/auth/auth.service';
 import { loggerService } from '@/services/logger.service';
 import { nofiticationService } from '@/services/nofitication/nofitication.service';
 import { responseService } from '@/services/response.service';

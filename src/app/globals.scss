@@ -8,6 +8,7 @@
 	scrollbar-width: thin;
 	scrollbar-color: $gray-400 $gray-100;
 	line-height: 1.5;
+	font-family: inherit;
 }
 
 *::-webkit-scrollbar {
@@ -29,10 +30,15 @@
 	background: $gray-100;
 }
 
+body {
+	height: 100%;
+	background-color: $body-bg-color;
+}
+
 .app-container {
 	position: relative;
 	width: 100vw;
-	height: max-content;
+	min-height: max-content;
 	display: flex;
 	flex-direction: column;
 	align-items: center;
@@ -102,9 +108,38 @@ $link-underline-offset: -0.5ch !default;
 	}
 }
 
+// NOTE
+.note {
+	display: inline-block;
+	max-width: 100%;
+	padding: 0.5em 1em;
+	font-size: 0.85em;
+	color: $accent-color;
+	background: color.adjust($accent-color, $alpha: -0.92);
+	border-left: 3px solid $accent-color;
+	border-radius: 0.25em;
+	margin: 0.5em 0;
+	line-height: 1.6;
+	box-shadow: 0 1px 4px rgba($accent-color, 0.07);
+
+	&::before {
+		content: 'ℹ️';
+		margin-right: 0.5em;
+		vertical-align: middle;
+		opacity: 0.7;
+		font-size: 1.1em;
+	}
+}
+
 // CTA button styles
-.cta-button,
-.cta-button--outlined {
+.cta-button--primary,
+.cta-button--secondary,
+.cta-button--success,
+.cta-button--danger,
+.cta-button--error,
+.cta-button--warning,
+.cta-button--info,
+.cta-button--secondary {
 	cursor: pointer;
 	padding: 0.5em 1.5em;
 	border-radius: 0.25em;
@@ -113,18 +148,19 @@ $link-underline-offset: -0.5ch !default;
 	text-align: center;
 	text-wrap: nowrap;
 	transition: background 0.2s, color 0.2s, border-color 0.2s, transform 0.15s;
-}
 
-.cta-button {
-	background-color: $primary-color;
-	color: $txt-white;
-
-	&.disabled {
+	&.disabled,
+	&:disabled {
 		cursor: not-allowed;
-		color: $gray-300;
-		box-shadow: none;
+		color: $gray-600;
+		background-color: $gray-300;
 		opacity: 0.75;
 	}
+}
+
+.cta-button--primary {
+	background-color: $primary-color;
+	color: $txt-white;
 
 	&:hover:not(.disabled):not(:disabled) {
 		background-color: color.adjust($primary-color, $lightness: -5%);
@@ -136,7 +172,7 @@ $link-underline-offset: -0.5ch !default;
 	}
 }
 
-.cta-button--outlined {
+.cta-button--secondary {
 	background-color: $white;
 	color: $primary-color;
 	box-shadow: inset 0 0 0 2px $primary-color;
@@ -160,9 +196,72 @@ $link-underline-offset: -0.5ch !default;
 	}
 }
 
+.cta-button--success {
+	background-color: map.get($success, icon);
+	color: $txt-white;
+
+	&:hover:not(.disabled):not(:disabled) {
+		background-color: color.adjust(map.get($success, icon), $lightness: -5%);
+	}
+
+	&:active:not(.disabled):not(:disabled) {
+		background-color: color.adjust(map.get($success, icon), $lightness: -10%);
+		transform: scale(0.97);
+	}
+}
+
+.cta-button--danger,
+.cta-button--error {
+	background-color: map.get($error, icon);
+	color: $white;
+
+	&:hover:not(.disabled):not(:disabled) {
+		background-color: color.adjust(map.get($error, icon), $lightness: -5%);
+	}
+
+	&:active:not(.disabled):not(:disabled) {
+		background-color: color.adjust(map.get($error, icon), $lightness: -10%);
+		transform: scale(0.97);
+	}
+}
+
+.cta-button--warning {
+	background-color: map.get($warning, icon);
+	color: $white;
+
+	&:hover:not(.disabled):not(:disabled) {
+		background-color: color.adjust(map.get($warning, icon), $lightness: -5%);
+	}
+
+	&:active:not(.disabled):not(:disabled) {
+		background-color: color.adjust(map.get($warning, icon), $lightness: -10%);
+		transform: scale(0.97);
+	}
+}
+
+.cta-button--info {
+	background-color: map.get($info, icon);
+	color: $txt-white;
+
+	&:hover:not(.disabled):not(:disabled) {
+		background-color: color.adjust(map.get($info, icon), $lightness: -5%);
+	}
+
+	&:active:not(.disabled):not(:disabled) {
+		background-color: color.adjust(map.get($info, icon), $lightness: -10%);
+		transform: scale(0.97);
+	}
+}
+
 // SweetAlert custom styles
 .swal2-popup {
 	font-family: inherit;
+
+	&::-webkit-scrollbar {
+		display: none;
+	}
+	scrollbar-width: none;
+
 	.swal2-title {
 		color: $primary-color;
 		font-weight: $font-weight-semibold;
@@ -172,30 +271,75 @@ $link-underline-offset: -0.5ch !default;
 		color: $txt-secondary;
 	}
 
-	.swal2-actions {
-		.swal2-confirm {
-			@extend .cta-button;
+	.swal2-actions .swal2-confirm,
+	.swal2-actions .swal2-cancel {
+		cursor: pointer;
+		padding: 0.5em 1.5em;
+		border-radius: 0.25em;
+		font-weight: $font-weight-semibold;
+		font-size: 1em;
+		text-align: center;
+		text-wrap: nowrap;
+		transition: background 0.2s, color 0.2s, border-color 0.2s, transform 0.15s;
+		background-color: $primary-color;
+		color: $txt-white;
+
+		&.disabled,
+		&:disabled {
+			cursor: not-allowed;
+			color: $gray-600;
+			background-color: $gray-300;
+			opacity: 0.75;
+		}
+
+		&:hover:not(.disabled):not(:disabled) {
+			background-color: color.adjust($primary-color, $lightness: -5%);
+		}
+
+		&:active:not(.disabled):not(:disabled) {
+			background-color: color.adjust($primary-color, $lightness: -10%);
+			transform: scale(0.97);
 		}
 	}
 
-	&:has(.swal2-error) {
-		.swal2-title {
-			color: map.get($error, text);
-		}
+	@each $type, $map in (success: $success, info: $info, warning: $warning, error: $error, question: $question) {
+		&:has(.swal2-#{$type}) {
+			.swal2-title,
+			.swal2-html-container {
+				color: map.get($map, text);
+			}
+			.swal2-icon.swal2-#{$type},
+			.swal2-icon.swal2-#{$type} .swal2-icon-content {
+				color: map.get($map, text);
+				border-color: map.get($map, bg);
+				background-color: map.get($map, bg);
+			}
+			.swal2-actions .swal2-confirm {
+				background-color: map.get($map, bg);
+				color: map.get($map, text);
 
-		.swal2-actions {
-			.swal2-confirm {
-				@extend .cta-button;
-				background-color: map.get($error, bg);
+				&:hover:not(.disabled):not(:disabled) {
+					background-color: color.adjust(map.get($map, bg), $lightness: -5%);
+				}
+				&:active:not(.disabled):not(:disabled) {
+					background-color: color.adjust(map.get($map, bg), $lightness: -10%);
+					transform: scale(0.97);
+				}
+			}
+			.swal2-actions .swal2-cancel {
+				background-color: $gray-700;
+				color: $txt-white;
+
+				&:hover:not(.disabled):not(:disabled) {
+					background-color: color.adjust($gray-700, $lightness: -5%);
+				}
+				&:active:not(.disabled):not(:disabled) {
+					background-color: color.adjust($gray-700, $lightness: -10%);
+					transform: scale(0.97);
+				}
 			}
 		}
 	}
-}
-
-// Global styles for text
-.info {
-	font-size: $font-size-14;
-	color: $txt-secondary;
 }
 
 // Spin

@@ -6,6 +6,14 @@
 	display: flex;
 	flex-direction: column;
 	gap: 0.5ch;
+
+	&.invalid {
+		&:not(:focus-within) {
+			input {
+				border-color: map.get($error, 'icon');
+			}
+		}
+	}
 }
 
 .labelText {
@@ -56,4 +64,12 @@
 	font-size: 1em;
 	font-weight: $font-weight-regular;
 	color: $txt-primary;
+}
+
+.validateError {
+	top: 100%;
+	left: 0;
+	font-size: 0.875em;
+	color: map.get($error, 'icon');
+	margin-top: 0.25em;
 }

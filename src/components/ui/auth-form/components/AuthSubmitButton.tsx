@@ -11,7 +11,7 @@ type AuthSubmitButtonProps = {
 
 const AuthSubmitButton = ({ text, submitable, isLoading }: AuthSubmitButtonProps) => {
 	return (
-		<button type='submit' className={`${styles.AuthPage__body__form__btn} cta-button ${submitable ? '' : 'disabled'}`} disabled={!submitable}>
+		<button type='submit' className={`${styles.AuthPage__body__form__btn} cta-button--primary ${submitable ? '' : 'disabled'}`} disabled={!submitable}>
 			{isLoading ? <Spinner /> : text}
 		</button>
 	);

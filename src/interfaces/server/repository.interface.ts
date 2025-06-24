@@ -12,14 +12,14 @@ export interface IRepositoryFactory {
 export interface IMongoRepository<T, D extends mongoose.Document> {
 	// BASIC
 	create(record: T): Promise<D>;
-	findById(_id: string | mongoose.Types.ObjectId): Promise<D | null>;
+	findById(_id: string | mongoose.Types.ObjectId, projection?: Record<string, any>): Promise<D | null>;
 	update(filter: mongoose.FilterQuery<D>, record: Partial<T>): Promise<D | null>;
 	delete(_id: string | mongoose.Types.ObjectId): Promise<D | null>;
 
 	// ADVANCED
 	upsert(filter: FilterQuery<D>, record: Partial<Omit<T, '_id'>>): Promise<D | null>;
-	findAll(filter?: FilterQuery<D>): Promise<D[]>;
-	findOne(filter: FilterQuery<D>): Promise<D | null>;
+	findAll(filter?: FilterQuery<D>, projection?: Record<string, any>): Promise<D[]>;
+	findOne(filter: FilterQuery<D>, projection?: Record<string, any>): Promise<D | null>;
 	findWithPagination(page: number, limit: number, filter?: FilterQuery<D>): Promise<PaginatedResult<D[]>>;
 	search(keyword: string, page: number, limit: number, sort?: TSortCriteria, projection?: Record<string, any>): Promise<PaginatedResult<D[]>>;
 	filter(criteria: FilterQuery<D>, page: number, limit: number, sort?: any): Promise<PaginatedResult<D[]>>;

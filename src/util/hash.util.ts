@@ -2,14 +2,14 @@ import * as crypto from 'crypto';
 
 export function generateSalt(length: number = 16): Buffer {
 	if (length <= 0) {
-		throw new Error('Salt length must be a positive integer');
+		throw new Error('Chỉ số độ dài phải lớn hơn 0');
 	}
 	return crypto.randomBytes(length);
 }
 
 export function hashPassword(password: string, salt: Buffer): string {
 	if (!password || !salt) {
-		throw new Error('Password and salt are required');
+		throw new Error('Mật khẩu và salt là bắt buộc');
 	}
 	const hash = crypto.pbkdf2Sync(password, salt, 100_000, 64, 'sha512');
 	return hash.toString('hex');

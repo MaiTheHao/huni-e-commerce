@@ -7,3 +7,5 @@ export * from './product/keyboard.entity';
 
 export * from './token.interface';
 export * from './user.interface';
+export * from './oauth-provider.interface';
+export * from './blacklist-token.interface';
