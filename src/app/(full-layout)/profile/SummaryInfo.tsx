@@ -5,11 +5,11 @@ import styles from './Profile.module.scss';
 import { useAuthGuard } from '@/hooks/useAuthGuard';
 
 export default function SummaryInfo() {
-	const { user, isAuthenticated } = useAuthContext();
 	const authGuard = useAuthGuard({
 		immediate: true,
 		redirectTo: '/home',
 	});
+	const { user, isAuthenticated } = useAuthContext();
 
 	return (
 		<div className={`${styles['left__summary-info']} ${styles['left-item']} ${styles.part}`}>

@@ -2,46 +2,14 @@
 import styles from '../Profile.module.scss';
 import useAuthContext from '@/contexts/AuthContext/useAuthContext';
 import Spinner from '@/components/ui/spinner/Spinner';
-import { IGetDeliveryInfoResponseData } from '@/interfaces/api/user/get-delivery-info.interface';
-import { memo, useEffect, useState } from 'react';
-import api from '@/services/http-client/axios-interceptor';
-import { loggerService } from '@/services/logger.service';
-import { IResponse } from '@/interfaces';
+import { memo } from 'react';
+import { useDeliveryInfo } from '../DeliveryInfoContextProvider';
 
-const fetchUserDeliveryInfo = async (): Promise<IGetDeliveryInfoResponseData> => {
-	try {
-		const response = await api.get('/user/delivery-info');
-		const responseData: IResponse<IGetDeliveryInfoResponseData> = response.data;
-
-		if (response.status !== 200) {
-			loggerService.error('Lỗi khi lấy thông tin giao hàng:', responseData?.error);
-			throw new Error(responseData?.message || 'Không thể lấy thông tin giao hàng');
-		}
-
-		return responseData.data as IGetDeliveryInfoResponseData;
-	} catch (error) {
-		loggerService.error('Lỗi khi lấy thông tin giao hàng:', error);
-		throw new Error('Không thể lấy thông tin giao hàng');
-	} finally {
-		loggerService.info('Đã hoàn thành việc lấy thông tin giao hàng');
-	}
-};
+const nullValue = 'Chưa có';
 
 function AccountInfoDetail() {
 	const { isAuthenticated } = useAuthContext();
-	const [isGettingDeliveryInfo, setIsGettingDeliveryInfo] = useState<boolean>(true);
-	const [deliveryInfo, setDeliveryInfo] = useState<IGetDeliveryInfoResponseData | null>(null);
-
-	useEffect(() => {
-		fetchUserDeliveryInfo()
-			.then((data) => {
-				setDeliveryInfo(data);
-			})
-			.catch(console.error)
-			.finally(() => {
-				setIsGettingDeliveryInfo(false);
-			});
-	}, []);
+	const { deliveryInfo, isGettingDeliveryInfo } = useDeliveryInfo();
 
 	return (
 		<div className={styles.part}>
@@ -50,19 +18,19 @@ function AccountInfoDetail() {
 				<ul className={styles['account-info-detail']}>
 					<li className={styles['account-info-detail__item']}>
 						<span className={styles['account-info-detail__item__label']}>Tên:</span>
-						<span className={styles['account-info-detail__item__value']}>{deliveryInfo.name || '. . .'}</span>
+						<span className={styles['account-info-detail__item__value']}>{deliveryInfo.name || nullValue}</span>
 					</li>
 					<li className={styles['account-info-detail__item']}>
 						<span className={styles['account-info-detail__item__label']}>Email:</span>
-						<span className={styles['account-info-detail__item__value']}>{deliveryInfo.email || '. . .'}</span>
+						<span className={styles['account-info-detail__item__value']}>{deliveryInfo.email || nullValue}</span>
 					</li>
-					<li className={styles['account-info-detail__item']}>
+					<li className={`${styles['account-info-detail__item']} ${styles['no-border']}`}>
 						<span className={styles['account-info-detail__item__label']}>Số điện thoại:</span>
-						<span className={styles['account-info-detail__item__value']}>{deliveryInfo.phone || '. . .'}</span>
+						<span className={styles['account-info-detail__item__value']}>{deliveryInfo.phone || nullValue}</span>
 					</li>
-					<li className={styles['account-info-detail__item']}>
-						<span className={styles['account-info-detail__item__label']}>Địa chỉ mặc định:</span>
-						<span className={styles['account-info-detail__item__value']}>{deliveryInfo.addresses?.[0] || '. . .'}</span>
+					<li className={`${styles['account-info-detail__item']} ${styles['no-border']}`}>
+						<span className={styles['account-info-detail__item__label']}>Địa chỉ chính:</span>
+						<span className={styles['account-info-detail__item__value']}>{deliveryInfo.addresses?.[0] || nullValue}</span>
 					</li>
 				</ul>
 			) : isGettingDeliveryInfo ? (

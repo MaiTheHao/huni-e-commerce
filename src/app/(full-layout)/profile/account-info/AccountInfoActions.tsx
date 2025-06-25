@@ -17,7 +17,7 @@ function AccountInfoActions() {
 				<li className={styles['account-info-actions__list__item']}>
 					<FontAwesomeIcon icon={faUserPen} />
 					<Link className={styles['account-info-actions__list__item__button']} href={'edit-profile'}>
-						Chỉnh sửa thông tin
+						Chỉnh sửa
 					</Link>
 				</li>
 				<li className={styles['account-info-actions__list__item']}>

@@ -9,7 +9,7 @@ export default function AccountInfoClient() {
 	return (
 		<>
 			<AccountInfoDetail />
-			<div className={styles['list-part--horizontal']}>
+			<div className={`${styles['list-part--horizontal']} ${styles.AdditionalInfo}`}>
 				<AccountInfoActions />
 				<AccountInfoLinkedAccounts />
 			</div>

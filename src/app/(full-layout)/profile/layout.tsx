@@ -1,3 +1,4 @@
+import DeliveryInfoContextProvider from './DeliveryInfoContextProvider';
 import styles from './Profile.module.scss';
 import ProfileNavbar from './ProfileNavbar';
 import SummaryInfo from './SummaryInfo';
@@ -16,7 +17,9 @@ export default function ProfileLayout({ children }: { children: React.ReactNode 
 				<ProfileNavbar />
 			</section>
 
-			<section className={`${styles.right} ${styles.block}`}>{children}</section>
+			<section className={`${styles.right} ${styles.block}`}>
+				<DeliveryInfoContextProvider>{children}</DeliveryInfoContextProvider>
+			</section>
 		</div>
 	);
 }

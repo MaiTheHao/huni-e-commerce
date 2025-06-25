@@ -8,7 +8,7 @@ export default function EmailVerificationErrorPage() {
 			content='Đã xảy ra lỗi khi xác minh địa chỉ email của bạn. Vui lòng thử lại hoặc liên hệ hỗ trợ nếu sự cố tiếp tục.'
 			cta={{
 				text: 'Thử lại',
-				href: '/email-verification',
+				href: '/verify-email',
 			}}
 		/>
 	);

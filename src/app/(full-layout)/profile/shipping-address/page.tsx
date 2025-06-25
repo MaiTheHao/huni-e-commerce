@@ -1,5 +1,5 @@
 'use client';
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useCallback } from 'react';
 import styles from '../Profile.module.scss';
 import Swal from 'sweetalert2';
 import api from '@/services/http-client/axios-interceptor';
@@ -13,6 +13,7 @@ import { isEmpty } from '@/util';
 import { HTTPStatus } from '@/enums/HttpStatus.enum';
 import ShippingAddressAddForm from './ShippingAddressAddForm';
 import ShippingAddressList from './ShippingAddressList';
+import { useDeliveryInfo } from '../DeliveryInfoContextProvider';
 
 interface Address {
 	id: string;
@@ -29,37 +30,9 @@ const transformAddresses = (addresses: string[]): Address[] => {
 };
 
 export default function AddressesPage() {
-	const [addresses, setAddresses] = useState<Address[]>([]);
-	const [isLoading, setIsLoading] = useState(true);
+	const { deliveryInfo, isGettingDeliveryInfo, refetchDeliveryInfo } = useDeliveryInfo();
 
-	useEffect(() => {
-		fetchAddresses();
-	}, []);
-
-	const fetchAddresses = async () => {
-		try {
-			const response = await api.get('/user/delivery-info');
-			const responseData: IResponse<IGetDeliveryInfoResponseData> = response.data;
-
-			if (response.status !== 200) {
-				throw new Error(responseData?.message || 'Không thể lấy thông tin giao hàng');
-			}
-
-			const data = responseData.data as IGetDeliveryInfoResponseData;
-			const addressList = data.addresses || [];
-
-			setAddresses(transformAddresses(addressList));
-		} catch (error) {
-			loggerService.error('Lỗi khi lấy thông tin địa chỉ:', error);
-			Swal.fire({
-				icon: 'error',
-				title: 'Lỗi',
-				text: 'Không thể lấy thông tin địa chỉ',
-			});
-		} finally {
-			setIsLoading(false);
-		}
-	};
+	const addresses: Address[] = transformAddresses(deliveryInfo?.addresses || []);
 
 	const validateForm = (value: string) => {
 		if (!value) return 'Địa chỉ không được để trống';
@@ -68,58 +41,48 @@ export default function AddressesPage() {
 		return '';
 	};
 
-	// info Hàm xử lí thêm địa chỉ giao hàng
-	const handleAddAddress = useCallback(async (newAddress: string): Promise<boolean> => {
-		const errorMsg = validateForm(newAddress);
-		if (errorMsg) {
-			Swal.fire({
-				icon: 'error',
-				title: 'Lỗi!',
-				text: errorMsg,
-			});
-			return false;
-		}
-
-		try {
-			// Chuẩn bị dữ liệu để gửi lên API
-			const addAddressRequestData: IAddDeliveryAddressRequestData = {
-				address: newAddress,
-			};
-
-			// Gửi yêu cầu thêm địa chỉ mới
-			const response = await api.post('/user/delivery-info/address/add', addAddressRequestData);
-			const responseData: IResponse<IGetDeliveryInfoResponseData> = response.data;
-
-			if (response.status !== HTTPStatus.OK) {
-				throw new Error(responseData?.message || 'Không thể thêm địa chỉ giao hàng');
+	const handleAddAddress = useCallback(
+		async (newAddress: string): Promise<boolean> => {
+			const errorMsg = validateForm(newAddress);
+			if (errorMsg) {
+				Swal.fire({
+					icon: 'error',
+					title: 'Lỗi!',
+					text: errorMsg,
+				});
+				return false;
 			}
 
-			// Thông tin giao hàng mới
-			const deliveryInfo = responseData.data;
+			try {
+				const addAddressRequestData: IAddDeliveryAddressRequestData = { address: newAddress };
+				const response = await api.post('/user/delivery-info/address/add', addAddressRequestData);
+				const responseData: IResponse<IGetDeliveryInfoResponseData> = response.data;
 
-			// Nếu thông tin rỗng
-			if (isEmpty(deliveryInfo)) throw new Error('Thông tin giao hàng không hợp lệ');
+				if (response.status !== HTTPStatus.OK) {
+					throw new Error(responseData?.message || 'Không thể thêm địa chỉ giao hàng');
+				}
 
-			setAddresses(transformAddresses(deliveryInfo!.addresses || []));
-			Swal.fire({
-				icon: 'success',
-				title: 'Thành công!',
-				text: 'Thêm địa chỉ thành công',
-			});
+				if (isEmpty(responseData.data)) throw new Error('Thông tin giao hàng không hợp lệ');
 
-			return true;
-		} catch (error: any) {
-			Swal.fire({
-				icon: 'error',
-				title: 'Lỗi!',
-				text: error.message,
-			});
+				await refetchDeliveryInfo();
+				Swal.fire({
+					icon: 'success',
+					title: 'Thành công!',
+					text: 'Thêm địa chỉ thành công',
+				});
+				return true;
+			} catch (error: any) {
+				Swal.fire({
+					icon: 'error',
+					title: 'Lỗi!',
+					text: error.message,
+				});
+				return false;
+			}
+		},
+		[refetchDeliveryInfo]
+	);
 
-			return false;
-		}
-	}, []);
-
-	// info Logic xử lí chỉnh sửa địa chỉ giao hàng
 	const handleSaveEdit = useCallback(
 		async (newAddress: Address): Promise<boolean> => {
 			const errorMsg = validateForm(newAddress.value);
@@ -148,7 +111,7 @@ export default function AddressesPage() {
 					throw new Error(responseData?.message || 'Không thể cập nhật địa chỉ giao hàng');
 				}
 
-				setAddresses(transformAddresses(responseData.data!.addresses || []));
+				await refetchDeliveryInfo();
 				Swal.fire({
 					icon: 'success',
 					title: 'Thành công!',
@@ -164,19 +127,15 @@ export default function AddressesPage() {
 				return false;
 			}
 		},
-		[addresses]
+		[addresses, refetchDeliveryInfo]
 	);
 
-	// info Hàm xử lí xóa địa chỉ giao hàng
 	const handleDeleteAddress = useCallback(
 		async (idx: number) => {
 			try {
-				const deletedAddress = addresses[idx];
 				const updateData: IUpdateDeliveryInfoRequestData = {
 					addresses: addresses.reduce((acc: string[], addr, i) => {
-						if (i !== idx) {
-							acc.push(addr.value);
-						}
+						if (i !== idx) acc.push(addr.value);
 						return acc;
 					}, []),
 				};
@@ -192,8 +151,8 @@ export default function AddressesPage() {
 					throw new Error(responseData?.message || 'Không thể xóa địa chỉ giao hàng');
 				}
 
-				setAddresses(transformAddresses(responseData.data!.addresses || []));
-				loggerService.info(`Đã xóa địa chỉ: ${deletedAddress.value}`);
+				await refetchDeliveryInfo();
+				loggerService.info(`Đã xóa địa chỉ: ${addresses[idx]?.value}`);
 				Swal.fire({
 					icon: 'success',
 					title: 'Thành công!',
@@ -208,10 +167,9 @@ export default function AddressesPage() {
 				});
 			}
 		},
-		[addresses]
+		[addresses, refetchDeliveryInfo]
 	);
 
-	// info Hàm xử lí đặt địa chỉ mặc định
 	const handleSetPrimaryAddress = useCallback(
 		async (idx: number) => {
 			try {
@@ -235,7 +193,7 @@ export default function AddressesPage() {
 					throw new Error(responseData?.message || 'Không thể cập nhật địa chỉ giao hàng');
 				}
 
-				setAddresses(transformAddresses(responseData.data!.addresses || []));
+				await refetchDeliveryInfo();
 				Swal.fire({
 					icon: 'success',
 					title: 'Thành công!',
@@ -249,27 +207,25 @@ export default function AddressesPage() {
 				});
 			}
 		},
-		[addresses]
+		[addresses, refetchDeliveryInfo]
 	);
 
 	return (
-		<>
-			<div className={styles.part}>
-				<div className={styles.part__title}>Địa chỉ giao hàng</div>
-				<div className={styles['shipping-address']}>
-					<ShippingAddressAddForm onSubmit={handleAddAddress} />
+		<div className={styles.part}>
+			<div className={styles.part__title}>Địa chỉ giao hàng</div>
+			<div className={styles['shipping-address']}>
+				<ShippingAddressAddForm onSubmit={handleAddAddress} />
 
-					{isLoading ? (
-						<p className={styles['part__loading-state']}>
-							<Spinner /> Đang tải địa chỉ...
-						</p>
-					) : addresses.length > 0 ? (
-						<ShippingAddressList addresses={addresses} onSave={handleSaveEdit} onSetPrimary={handleSetPrimaryAddress} onDelete={handleDeleteAddress} />
-					) : (
-						<p className={styles['part__empty-state']}>Chưa có địa chỉ giao hàng nào.</p>
-					)}
-				</div>
+				{isGettingDeliveryInfo ? (
+					<p className={styles['part__loading-state']}>
+						<Spinner /> Đang tải địa chỉ...
+					</p>
+				) : addresses.length > 0 ? (
+					<ShippingAddressList addresses={addresses} onSave={handleSaveEdit} onSetPrimary={handleSetPrimaryAddress} onDelete={handleDeleteAddress} />
+				) : (
+					<p className={styles['part__empty-state']}>Chưa có địa chỉ giao hàng nào.</p>
+				)}
 			</div>
-		</>
+		</div>
 	);
 }

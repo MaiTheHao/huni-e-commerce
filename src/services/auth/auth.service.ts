@@ -192,6 +192,7 @@ class AuthService {
 				const [createErr, newUser] = await userService.create({
 					email: userData.email,
 					name: userData.name,
+					avatar: userData.picture,
 					oauthProviders: [
 						{
 							providerName: 'google',

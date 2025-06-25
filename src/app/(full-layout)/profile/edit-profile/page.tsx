@@ -2,15 +2,17 @@
 import styles from '../Profile.module.scss';
 import React, { useCallback, useEffect, useState } from 'react';
 import { z } from 'zod';
-import api from '@/services/http-client/axios-interceptor';
 import { loggerService } from '@/services/logger.service';
-import { IResponse } from '@/interfaces';
 import { IGetDeliveryInfoResponseData } from '@/interfaces/api/user/get-delivery-info.interface';
 import LabelInput from '@/components/ui/label-input/LabelInput';
 import { nameSchema, phoneSchema } from '@/util/validate-input.util';
 import { IUpdateDeliveryInfoRequestData } from '@/interfaces/api/user/update-delivery-info.interface';
 import Swal from 'sweetalert2';
 import useAuthContext from '@/contexts/AuthContext/useAuthContext';
+import { useDeliveryInfo } from '../DeliveryInfoContextProvider';
+import api from '@/services/http-client/axios-interceptor';
+import { IResponse } from '@/interfaces';
+import Spinner from '@/components/ui/spinner/Spinner';
 
 const editProfileValidate = z.object({
 	name: nameSchema,
@@ -18,48 +20,24 @@ const editProfileValidate = z.object({
 });
 
 export default function EditProfile() {
+	const { deliveryInfo, isGettingDeliveryInfo, refetchDeliveryInfo } = useDeliveryInfo();
 	const { updateUser } = useAuthContext();
-	const [isLoading, setIsLoading] = useState(true);
 	const [form, setForm] = useState<IUpdateDeliveryInfoRequestData>({
-		name: '',
-		phone: '',
+		name: deliveryInfo?.name || '',
+		phone: deliveryInfo?.phone || '',
 	});
+
 	const [validateError, setValidateError] = useState<Record<string, string>>({});
 	const [submitable, setSubmitable] = useState(false);
 
-	// Fetch user delivery info on component mount
 	useEffect(() => {
-		const fetchUserData = async () => {
-			try {
-				const response = await api.get('/user/delivery-info');
-				const responseData: IResponse<IGetDeliveryInfoResponseData> = response.data;
-
-				if (response.status !== 200) {
-					throw new Error(responseData?.message || 'Không thể lấy thông tin giao hàng');
-				}
-
-				const data = responseData.data as IGetDeliveryInfoResponseData;
-				setForm({
-					name: data.name || '',
-					phone: data.phone || '',
-				});
-
-				return data;
-			} catch (error) {
-				loggerService.error('Lỗi khi lấy thông tin giao hàng:', error);
-				Swal.fire({
-					icon: 'error',
-					title: 'Lỗi',
-					text: 'Không thể lấy thông tin giao hàng',
-				});
-			} finally {
-				setIsLoading(false);
-				loggerService.info('Đã hoàn thành việc lấy thông tin giao hàng');
-			}
-		};
-
-		fetchUserData();
-	}, []);
+		if (deliveryInfo) {
+			setForm({
+				name: deliveryInfo.name || '',
+				phone: deliveryInfo.phone || '',
+			});
+		}
+	}, [deliveryInfo]);
 
 	const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
 		const { name, value } = e.target;
@@ -82,12 +60,12 @@ export default function EditProfile() {
 
 	const handleReset = useCallback(() => {
 		setForm({
-			name: form.name || '',
-			phone: form.phone || '',
+			name: deliveryInfo?.name || '',
+			phone: deliveryInfo?.phone || '',
 		});
 		setValidateError({});
 		setSubmitable(false);
-	}, [form.name, form.phone]);
+	}, [deliveryInfo]);
 
 	const handleSubmit = async (e: React.FormEvent) => {
 		e.preventDefault();
@@ -110,8 +88,6 @@ export default function EditProfile() {
 			return;
 		}
 
-		setIsLoading(true);
-
 		try {
 			const response = await api.post('/user/delivery-info', form);
 			const responseData: IResponse<IGetDeliveryInfoResponseData> = response.data;
@@ -130,6 +106,7 @@ export default function EditProfile() {
 			});
 
 			setSubmitable(false);
+			await refetchDeliveryInfo();
 		} catch (error) {
 			loggerService.error('Lỗi khi cập nhật thông tin giao hàng:', error);
 			Swal.fire({
@@ -138,7 +115,6 @@ export default function EditProfile() {
 				text: 'Cập nhật thông tin giao hàng thất bại',
 			});
 		} finally {
-			setIsLoading(false);
 			loggerService.info('Đã hoàn thành việc cập nhật thông tin giao hàng');
 		}
 	};
@@ -146,8 +122,10 @@ export default function EditProfile() {
 	return (
 		<div className={styles.part}>
 			<span className={styles.part__title}>Chỉnh sửa thông tin giao hàng</span>
-			{isLoading ? (
-				<p>Đang tải...</p>
+			{isGettingDeliveryInfo ? (
+				<p className={styles['part__loading-state']}>
+					<Spinner /> Đang tải thông tin giao hàng...
+				</p>
 			) : (
 				<form onSubmit={handleSubmit} className={styles['edit-profile-form']}>
 					<span className='note'>Chức năng này đang được cải thiện.</span>
