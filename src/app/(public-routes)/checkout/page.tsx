@@ -4,15 +4,13 @@ import styles from './Checkout.module.scss';
 import { z } from 'zod';
 import Swal from 'sweetalert2';
 import { useCartContext } from '@/contexts/CartContext/useCartContext';
-import { IGetDeliveryInfoResponseData } from '@/interfaces/api/user/get-delivery-info.interface';
-import { IResponse, TErrorFirst } from '@/interfaces';
 import { emailSchema, nameSchema, phoneSchema } from '@/util/validate-input.util';
 import tax from '@/data/tax.json';
-import api from '@/services/http-client/axios-interceptor';
 import CheckoutForm from './CheckoutForm';
 import CheckoutInfo from './CheckoutInfo';
 import { useAuthGuard } from '@/hooks/useAuthGuard';
 import { toString } from '@/util';
+import { useDeliveryInfoContext } from '@/contexts/DeliveryInfoContext/DeliveryInfoContextProvider';
 
 const checkoutValidate = z.object({
 	name: nameSchema,
@@ -50,19 +48,6 @@ const initialState: State = {
 	submitable: false,
 };
 
-const fetchUserDeliveryInfo = async (): Promise<TErrorFirst<any, IGetDeliveryInfoResponseData | null>> => {
-	try {
-		const response = await api.get('/user/delivery-info');
-		const responseData = response.data as IResponse<IGetDeliveryInfoResponseData>;
-		if (responseData.error || !responseData.data) {
-			return [responseData.message, null];
-		}
-		return [null, responseData.data];
-	} catch (error) {
-		return [error, null];
-	}
-};
-
 function reducer(state: State, action: Action): State {
 	switch (action.type) {
 		case 'SET_FORM':
@@ -82,13 +67,11 @@ function reducer(state: State, action: Action): State {
 const VAT: number = parseInt(tax.VAT, 10) / 100;
 
 function CheckoutPage() {
-	const { isAuthenticated } = useAuthGuard({
-		immediate: false,
-	});
+	const { deliveryInfo, isGettingDeliveryInfo } = useDeliveryInfoContext();
+	const { isAuthenticated } = useAuthGuard({ immediate: false });
 	const [state, dispatch] = useReducer(reducer, initialState);
 	const { items, products, loading } = useCartContext();
 	const [validateError, setValidateError] = useState<Record<string, string>>({});
-	const [isGettingDeliveryInfo, setIsGettingDeliveryInfo] = useState(false);
 	const [isSubmitting, setIsSubmitting] = useState(false);
 
 	const total = items.reduce((sum, item) => sum + (products[item.productId]?.price || 0) * item.quantity, 0) || 0;
@@ -164,32 +147,23 @@ function CheckoutPage() {
 	);
 
 	useEffect(() => {
-		const fetchAndSetDeliveryInfo = async () => {
-			setIsGettingDeliveryInfo(true);
-			const [error, data] = await fetchUserDeliveryInfo();
-			if (!error && data) {
-				dispatch({
-					type: 'SET_FORM',
-					formData: {
-						name: data.name,
-						email: data.email,
-						phone: data.phone,
-						address: data.addresses[0],
-					},
-				});
-			} else if (error) {
-				console.error('Error fetching user delivery info:', error);
-			}
-			setIsGettingDeliveryInfo(false);
-		};
-
-		fetchAndSetDeliveryInfo();
-	}, []);
+		if (!deliveryInfo) return;
+		const isSubmitable = deliveryInfo.name && deliveryInfo.email && deliveryInfo.phone && deliveryInfo.addresses[0];
+		dispatch({
+			type: 'SET_FORM',
+			formData: {
+				name: deliveryInfo.name,
+				email: deliveryInfo.email,
+				phone: deliveryInfo.phone,
+				address: deliveryInfo.addresses[0],
+			},
+		});
+		dispatch({ type: 'SET_SUBMITABLE', value: !!isSubmitable });
+	}, [deliveryInfo]);
 
 	return (
 		<section className={styles.container}>
 			<CheckoutForm formData={state.formData} validateError={validateError} loading={loading || isGettingDeliveryInfo} onInputChange={handleInputChange} />
-
 			<CheckoutInfo
 				items={items}
 				products={products}

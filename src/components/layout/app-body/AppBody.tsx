@@ -1,3 +1,4 @@
+'use client';
 import React from 'react';
 import styles from './AppBody.module.scss';
 import clsx from 'clsx';

@@ -13,7 +13,7 @@ import { isEmpty } from '@/util';
 import { HTTPStatus } from '@/enums/HttpStatus.enum';
 import ShippingAddressAddForm from './ShippingAddressAddForm';
 import ShippingAddressList from './ShippingAddressList';
-import { useDeliveryInfo } from '../DeliveryInfoContextProvider';
+import { useDeliveryInfoContext } from '@/contexts/DeliveryInfoContext/DeliveryInfoContextProvider';
 
 interface Address {
 	id: string;
@@ -30,7 +30,7 @@ const transformAddresses = (addresses: string[]): Address[] => {
 };
 
 export default function AddressesPage() {
-	const { deliveryInfo, isGettingDeliveryInfo, refetchDeliveryInfo } = useDeliveryInfo();
+	const { deliveryInfo, isGettingDeliveryInfo, refetchDeliveryInfo } = useDeliveryInfoContext();
 
 	const addresses: Address[] = transformAddresses(deliveryInfo?.addresses || []);
 

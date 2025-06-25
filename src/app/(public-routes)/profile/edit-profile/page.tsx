@@ -9,10 +9,11 @@ import { nameSchema, phoneSchema } from '@/util/validate-input.util';
 import { IUpdateDeliveryInfoRequestData } from '@/interfaces/api/user/update-delivery-info.interface';
 import Swal from 'sweetalert2';
 import useAuthContext from '@/contexts/AuthContext/useAuthContext';
-import { useDeliveryInfo } from '../DeliveryInfoContextProvider';
+import { useDeliveryInfoContext } from '@/contexts/DeliveryInfoContext/DeliveryInfoContextProvider';
 import api from '@/services/http-client/axios-interceptor';
 import { IResponse } from '@/interfaces';
 import Spinner from '@/components/ui/spinner/Spinner';
+import { isEmpty } from '@/util';
 
 const editProfileValidate = z.object({
 	name: nameSchema,
@@ -20,7 +21,7 @@ const editProfileValidate = z.object({
 });
 
 export default function EditProfile() {
-	const { deliveryInfo, isGettingDeliveryInfo, refetchDeliveryInfo } = useDeliveryInfo();
+	const { deliveryInfo, isGettingDeliveryInfo, refetchDeliveryInfo } = useDeliveryInfoContext();
 	const { updateUser } = useAuthContext();
 	const [form, setForm] = useState<IUpdateDeliveryInfoRequestData>({
 		name: deliveryInfo?.name || '',
@@ -30,32 +31,18 @@ export default function EditProfile() {
 	const [validateError, setValidateError] = useState<Record<string, string>>({});
 	const [submitable, setSubmitable] = useState(false);
 
-	useEffect(() => {
-		if (deliveryInfo) {
-			setForm({
-				name: deliveryInfo.name || '',
-				phone: deliveryInfo.phone || '',
-			});
-		}
-	}, [deliveryInfo]);
-
 	const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
 		const { name, value } = e.target;
 		const fieldSchema = editProfileValidate.shape[name as keyof typeof editProfileValidate.shape];
 		const validationResult = fieldSchema.safeParse(value);
 
-		setForm((prev) => ({ ...prev, [name]: value }));
-		setValidateError((prev) => ({
-			...prev,
-			[name]: validationResult.success ? '' : validationResult.error.errors[0].message,
-		}));
+		const updatedForm = { ...form, [name]: value };
+		const updatedError = { ...validateError, [name]: validationResult.success ? '' : validationResult.error.errors[0].message };
+		const isSubmitable = Object.keys(updatedError).every((key) => !updatedError[key]) && Object.values(updatedForm).every((val) => !isEmpty(val));
 
-		setTimeout(() => {
-			const updatedForm = { ...form, [name]: value };
-			const hasErrors = Object.values(validateError).some((error) => error !== '');
-			const hasEmptyFields = Object.values(updatedForm).some((val) => !val.toString().trim());
-			setSubmitable(!hasErrors && !hasEmptyFields);
-		}, 0);
+		setForm(updatedForm);
+		setValidateError(updatedError);
+		setSubmitable(isSubmitable);
 	};
 
 	const handleReset = useCallback(() => {
@@ -118,6 +105,17 @@ export default function EditProfile() {
 			loggerService.info('Đã hoàn thành việc cập nhật thông tin giao hàng');
 		}
 	};
+
+	useEffect(() => {
+		if (deliveryInfo) {
+			// const isSubmitable = deliveryInfo.name && deliveryInfo.phone;
+			// setSubmitable(!!isSubmitable);
+			setForm({
+				name: deliveryInfo.name || '',
+				phone: deliveryInfo.phone || '',
+			});
+		}
+	}, [deliveryInfo]);
 
 	return (
 		<div className={styles.part}>

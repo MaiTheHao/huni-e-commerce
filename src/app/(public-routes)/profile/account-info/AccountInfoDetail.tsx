@@ -3,13 +3,13 @@ import styles from '../Profile.module.scss';
 import useAuthContext from '@/contexts/AuthContext/useAuthContext';
 import Spinner from '@/components/ui/spinner/Spinner';
 import { memo } from 'react';
-import { useDeliveryInfo } from '../DeliveryInfoContextProvider';
+import { useDeliveryInfoContext } from '@/contexts/DeliveryInfoContext/DeliveryInfoContextProvider';
 
 const nullValue = 'Chưa có';
 
 function AccountInfoDetail() {
 	const { isAuthenticated } = useAuthContext();
-	const { deliveryInfo, isGettingDeliveryInfo } = useDeliveryInfo();
+	const { deliveryInfo, isGettingDeliveryInfo } = useDeliveryInfoContext();
 
 	return (
 		<div className={styles.part}>

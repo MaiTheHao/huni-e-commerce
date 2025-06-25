@@ -7,7 +7,6 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Link from 'next/link';
 import Spinner from '@/components/ui/spinner/Spinner';
 import { useState, memo, useEffect, useCallback } from 'react';
-import Image from 'next/image';
 import { ROUTES } from '@/consts/routes.setting';
 
 const ProfileDropdownActions = memo(function ProfileDropdownActions({ isAuthenticated, onLogout, onRedirecting }: { isAuthenticated: boolean; onLogout: () => void; onRedirecting: () => void }) {
@@ -58,7 +57,12 @@ const ProfileDropdownActions = memo(function ProfileDropdownActions({ isAuthenti
 							</div>
 						</Link>
 					) : (
-						<button className={styles['app-header__profile-dropdown-actions__link']} onClick={action.onClick}>
+						<button
+							className={styles['app-header__profile-dropdown-actions__link']}
+							onClick={() => {
+								action.onClick?.();
+							}}
+						>
 							<div className={styles['app-header__profile-dropdown-actions__icon']}>
 								<FontAwesomeIcon icon={action.icon} />
 							</div>

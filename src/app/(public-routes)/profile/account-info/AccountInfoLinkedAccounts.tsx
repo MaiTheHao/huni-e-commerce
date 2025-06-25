@@ -1,3 +1,4 @@
+'use client';
 import { memo } from 'react';
 import styles from '../Profile.module.scss';
 import Image from 'next/image';

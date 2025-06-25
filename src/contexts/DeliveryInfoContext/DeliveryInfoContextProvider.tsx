@@ -1,5 +1,5 @@
 'use client';
-import React, { createContext, useContext, useEffect, useState, ReactNode, useCallback } from 'react';
+import React, { createContext, useContext, useEffect, useState, ReactNode, useCallback, useMemo, memo } from 'react';
 import api from '@/services/http-client/axios-interceptor';
 import { loggerService } from '@/services/logger.service';
 import { IGetDeliveryInfoResponseData } from '@/interfaces/api/user/get-delivery-info.interface';
@@ -17,7 +17,7 @@ const DeliveryInfoContext = createContext<DeliveryInfoContextType>({
 	refetchDeliveryInfo: async () => {},
 });
 
-export const useDeliveryInfo = () => useContext(DeliveryInfoContext);
+export const useDeliveryInfoContext = () => useContext(DeliveryInfoContext);
 
 const fetchUserDeliveryInfo = async (): Promise<IGetDeliveryInfoResponseData | null> => {
 	try {
@@ -61,7 +61,9 @@ function DeliveryInfoContextProvider({ children }: Props) {
 		};
 	}, [refetchDeliveryInfo]);
 
-	return <DeliveryInfoContext.Provider value={{ deliveryInfo, isGettingDeliveryInfo, refetchDeliveryInfo }}>{children}</DeliveryInfoContext.Provider>;
+	const contextValue = useMemo(() => ({ deliveryInfo, isGettingDeliveryInfo, refetchDeliveryInfo }), [deliveryInfo, isGettingDeliveryInfo, refetchDeliveryInfo]);
+
+	return <DeliveryInfoContext.Provider value={contextValue}>{children}</DeliveryInfoContext.Provider>;
 }
 
-export default DeliveryInfoContextProvider;
+export default memo(DeliveryInfoContextProvider);

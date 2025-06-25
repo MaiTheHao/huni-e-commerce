@@ -21,7 +21,7 @@ const COLORS = {
 
 class Logger {
 	private readonly isProduction: boolean = process.env.NODE_ENV !== 'development';
-	private readonly logable: boolean = !this.isProduction || true;
+	private readonly logable: boolean = !this.isProduction;
 	private static instance: Logger;
 
 	private constructor() {}
@@ -34,7 +34,7 @@ class Logger {
 	}
 
 	private log(level: LogLevel, message: string, ...optionalParams: any[]) {
-		if (!this.logable && level !== LogLevel.ERROR && level !== LogLevel.CRITICAL) return;
+		if (!this.logable) return;
 		const color = COLORS[level] || '';
 		const reset = COLORS.RESET;
 		const now = new Date();

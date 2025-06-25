@@ -31,11 +31,11 @@ export default function RootLayout({
 }>) {
 	return (
 		<html lang='vi'>
-			<AuthContextProvider>
-				<CartContextProvider>
-					<body className={`${beVietnamPro.variable}`}>{children}</body>
-				</CartContextProvider>
-			</AuthContextProvider>
+			<body className={`${beVietnamPro.variable}`}>
+				<AuthContextProvider>
+					<CartContextProvider>{children}</CartContextProvider>
+				</AuthContextProvider>
+			</body>
 		</html>
 	);
 }
