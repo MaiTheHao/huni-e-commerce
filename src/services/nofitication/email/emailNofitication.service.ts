@@ -37,7 +37,8 @@ export class EmailNofiticationService {
 
 	private readTemplate(templateName: string): string {
 		try {
-			const templatePath = join(this.innerTemplateFolderURL, `${templateName}.html`);
+			const templatePath = path.join(process.cwd(), 'public', 'html', 'email-templates', `${templateName}.html`);
+			loggerService.debug(`Đọc template từ: ${templatePath}`);
 			return readFileSync(templatePath, 'utf-8');
 		} catch (error) {
 			loggerService.error(`Lỗi khi đọc template ${templateName}:`, error);

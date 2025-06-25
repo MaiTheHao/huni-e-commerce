@@ -21,7 +21,7 @@ const COLORS = {
 
 class Logger {
 	private readonly isProduction: boolean = process.env.NODE_ENV !== 'development';
-	private readonly logable: boolean = !this.isProduction;
+	private readonly logable: boolean = !this.isProduction || true;
 	private static instance: Logger;
 
 	private constructor() {}

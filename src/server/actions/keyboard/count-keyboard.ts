@@ -1,3 +1,4 @@
+'use server';
 import { keyboardRepository } from '@/server/repositories';
 import { loggerService } from '@/services/logger.service';
 

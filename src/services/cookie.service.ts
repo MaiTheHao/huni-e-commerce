@@ -27,11 +27,11 @@ class CookieService {
 	) {
 		const cookieStore = await cookies();
 		cookieStore.set(name, value, {
-			maxAge: options?.maxAge || 60 * 60 * 24 * 7,
+			maxAge: options?.maxAge ?? (Number(process.env.COOKIE_MAX_AGE) || 60 * 60 * 24 * 7),
 			httpOnly: options?.httpOnly ?? true,
-			secure: options?.secure ?? process.env.NODE_ENV === 'production',
-			sameSite: options?.sameSite || 'lax',
-			path: options?.path || '/',
+			secure: options?.secure ?? process.env.COOKIE_SECURE === 'true',
+			sameSite: options?.sameSite ?? ((process.env.COOKIE_SAME_SITE as 'strict' | 'lax' | 'none') || 'lax'),
+			path: options?.path ?? '/',
 			...options,
 		});
 	}
