@@ -53,6 +53,16 @@ class ResponseService {
 		return NextResponse.json(response, { status: HTTPStatus.CONFLICT });
 	}
 
+	forbidden(message = 'Forbidden', error?: any) {
+		const response: IResponse = { message, error };
+		return NextResponse.json(response, { status: HTTPStatus.FORBIDDEN });
+	}
+
+	internalServerError(message = 'Internal server error', error?: any) {
+		const response: IResponse = { message, error };
+		return NextResponse.json(response, { status: HTTPStatus.INTERNAL_SERVER_ERROR });
+	}
+
 	alreadyChecked(message = 'Already checked', error?: any) {
 		const response: IResponse = { message, error };
 		return NextResponse.json(response, { status: HTTPStatus.BAD_REQUEST });

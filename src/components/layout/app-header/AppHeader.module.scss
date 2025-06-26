@@ -340,7 +340,7 @@ $part-padding: 0.5em;
 
 		&__item {
 			cursor: pointer;
-			transition: background-color 0.3s ease, color 0.3s ease;
+			transition: background-color 0.3s ease, color 0.3s ease, transform 0.1s ease;
 
 			&:hover {
 				background-color: rgba($black-100, 0.9);
@@ -355,8 +355,7 @@ $part-padding: 0.5em;
 			}
 
 			&:active {
-				background-color: rgba($black-100, 0.6);
-				color: $txt-primary;
+				transform: translateY(1px);
 			}
 		}
 

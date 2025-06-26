@@ -3,17 +3,14 @@ import styles from '../Profile.module.scss';
 import React, { useCallback, useEffect, useState } from 'react';
 import { z } from 'zod';
 import { loggerService } from '@/services/logger.service';
-import { IGetDeliveryInfoResponseData } from '@/interfaces/api/user/get-delivery-info.interface';
 import LabelInput from '@/components/ui/label-input/LabelInput';
 import { nameSchema, phoneSchema } from '@/util/validate-input.util';
 import { IUpdateDeliveryInfoRequestData } from '@/interfaces/api/user/update-delivery-info.interface';
 import Swal from 'sweetalert2';
 import useAuthContext from '@/contexts/AuthContext/useAuthContext';
 import { useDeliveryInfoContext } from '@/contexts/DeliveryInfoContext/DeliveryInfoContextProvider';
-import api from '@/services/http-client/axios-interceptor';
-import { IResponse } from '@/interfaces';
 import Spinner from '@/components/ui/spinner/Spinner';
-import { isEmpty } from '@/util';
+import { updateProfileInfo } from '../apis';
 
 const editProfileValidate = z.object({
 	name: nameSchema,
@@ -24,12 +21,11 @@ export default function EditProfile() {
 	const { deliveryInfo, isGettingDeliveryInfo, refetchDeliveryInfo } = useDeliveryInfoContext();
 	const { updateUser } = useAuthContext();
 	const [form, setForm] = useState<IUpdateDeliveryInfoRequestData>({
-		name: deliveryInfo?.name || '',
-		phone: deliveryInfo?.phone || '',
+		name: '',
+		phone: '',
 	});
 
 	const [validateError, setValidateError] = useState<Record<string, string>>({});
-	const [submitable, setSubmitable] = useState(false);
 
 	const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
 		const { name, value } = e.target;
@@ -38,11 +34,9 @@ export default function EditProfile() {
 
 		const updatedForm = { ...form, [name]: value };
 		const updatedError = { ...validateError, [name]: validationResult.success ? '' : validationResult.error.errors[0].message };
-		const isSubmitable = Object.keys(updatedError).every((key) => !updatedError[key]) && Object.values(updatedForm).every((val) => !isEmpty(val));
 
 		setForm(updatedForm);
 		setValidateError(updatedError);
-		setSubmitable(isSubmitable);
 	};
 
 	const handleReset = useCallback(() => {
@@ -51,11 +45,19 @@ export default function EditProfile() {
 			phone: deliveryInfo?.phone || '',
 		});
 		setValidateError({});
-		setSubmitable(false);
 	}, [deliveryInfo]);
 
 	const handleSubmit = async (e: React.FormEvent) => {
 		e.preventDefault();
+		const isEdited = form.name !== (deliveryInfo?.name || '') || form.phone !== (deliveryInfo?.phone || '');
+		if (!isEdited) {
+			Swal.fire({
+				icon: 'info',
+				title: 'Không có thay đổi',
+				text: 'Bạn chưa thay đổi thông tin nào để cập nhật.',
+			});
+			return;
+		}
 
 		const result = editProfileValidate.safeParse(form);
 		if (!result.success) {
@@ -76,14 +78,11 @@ export default function EditProfile() {
 		}
 
 		try {
-			const response = await api.post('/user/delivery-info', form);
-			const responseData: IResponse<IGetDeliveryInfoResponseData> = response.data;
-
-			if (response.status !== 200) {
-				throw new Error(responseData?.message || 'Không thể cập nhật thông tin giao hàng');
+			const [error, data] = await updateProfileInfo(form);
+			if (error || !data) {
+				throw new Error(error || 'Không thể cập nhật thông tin giao hàng');
 			}
 
-			const data = responseData.data as IGetDeliveryInfoResponseData;
 			updateUser({ name: data.name });
 
 			Swal.fire({
@@ -92,7 +91,6 @@ export default function EditProfile() {
 				text: 'Cập nhật thông tin giao hàng thành công!',
 			});
 
-			setSubmitable(false);
 			await refetchDeliveryInfo();
 		} catch (error) {
 			loggerService.error('Lỗi khi cập nhật thông tin giao hàng:', error);
@@ -108,8 +106,6 @@ export default function EditProfile() {
 
 	useEffect(() => {
 		if (deliveryInfo) {
-			// const isSubmitable = deliveryInfo.name && deliveryInfo.phone;
-			// setSubmitable(!!isSubmitable);
 			setForm({
 				name: deliveryInfo.name || '',
 				phone: deliveryInfo.phone || '',
@@ -145,11 +141,7 @@ export default function EditProfile() {
 						>
 							Đặt lại
 						</button>
-						<button
-							type='submit'
-							disabled={!submitable}
-							className={`${styles['edit-profile-form__actions__button']} ${styles['edit-profile-form__actions__button--submit']} cta-button--primary ${!submitable ? 'disabled' : ''}`}
-						>
+						<button type='submit' className={`${styles['edit-profile-form__actions__button']} ${styles['edit-profile-form__actions__button--submit']} cta-button--primary`}>
 							Cập nhật thông tin
 						</button>
 					</div>

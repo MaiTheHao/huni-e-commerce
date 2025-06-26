@@ -1,7 +1,7 @@
 'use client';
 import React, { useEffect, useReducer, useMemo, useCallback } from 'react';
 import styles from './ProductDetail.module.scss';
-import { calcDiscountPrice } from '@/util/price.util';
+import { calcDiscountedPrice } from '@/util/price.util';
 import { loggerService } from '@/services/logger.service';
 import { IProduct } from '@/interfaces';
 import ProductDetailMainVisual from './ProductDetailMainVisual';
@@ -29,7 +29,7 @@ function reducer<T>(state: State<T>, action: any): State<T> {
 	switch (action.type) {
 		case 'SET_PRODUCT':
 			const product = action.payload;
-			const discountedPrice = calcDiscountPrice((product as any).price, (product as any).discountPercent, true);
+			const discountedPrice = calcDiscountedPrice((product as any).price, (product as any).discountPercent, true);
 			return { ...state, product, discountedPrice };
 		case 'SET_THUMBNAIL_INDEX':
 			return { ...state, thumbnailIndex: action.payload };

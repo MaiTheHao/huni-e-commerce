@@ -44,27 +44,27 @@ export class MongoBaseRepository<T, D extends Document> implements IMongoReposit
 		return this.model.findByIdAndDelete(_id).exec();
 	}
 
-	async findAll(filter?: FilterQuery<D>, projection?: Record<string, any>): Promise<D[]> {
+	async findAll(filter?: FilterQuery<D>, projection?: Record<string, any>, sort?: Record<string, any>): Promise<D[]> {
 		await this.ensureConnected();
 		return this.model
 			.find(filter || {}, projection)
-			.sort({ _id: -1 })
+			.sort(sort || { _id: -1 })
 			.exec();
 	}
 
-	async findOne(filter: FilterQuery<D>, projection?: Record<string, any>): Promise<D | null> {
+	async findOne(filter: FilterQuery<D>, projection?: Record<string, any>, sort?: Record<string, any>): Promise<D | null> {
 		this.ensureConnected();
-		return this.model.findOne(filter, projection).exec();
+		return this.model.findOne(filter, projection).sort(sort).exec();
 	}
 
-	async findWithPagination(page: number, limit: number, filter?: FilterQuery<D>): Promise<PaginatedResult<D[]>> {
+	async findWithPagination(page: number, limit: number, filter?: FilterQuery<D>, sort?: Record<string, any>): Promise<PaginatedResult<D[]>> {
 		await this.ensureConnected();
 		const skip = (page - 1) * limit;
 		const total = await this.model.countDocuments(filter || {}).exec();
 		const data = total
 			? await this.model
 					.find(filter || {})
-					.sort({ _id: -1 })
+					.sort(sort || { _id: -1 })
 					.skip(skip)
 					.limit(limit)
 					.exec()

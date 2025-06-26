@@ -10,6 +10,7 @@ interface ICartContext {
 	loading: boolean;
 	fetchCart: () => Promise<void>;
 	handleRemove: (productId: string) => Promise<void>;
+	handleRemoveAll: () => Promise<void>;
 	handleQuantity: (productId: string, quantity: number) => Promise<void>;
 	handleAddToCart: (productId: string, quantity?: number) => Promise<void>;
 }
@@ -22,6 +23,7 @@ const CartContext = createContext<ICartContext>({
 	loading: false,
 	fetchCart: async () => {},
 	handleRemove: async () => {},
+	handleRemoveAll: async () => {},
 	handleQuantity: async () => {},
 	handleAddToCart: async () => {},
 });

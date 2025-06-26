@@ -3,10 +3,12 @@ import React, { memo } from 'react';
 import Table from '@/components/ui/table/Table';
 import styles from './Checkout.module.scss';
 import clsx from 'clsx';
-import { toLocalePrice } from '@/util';
+import { calcDiscountedPrice, toLocalePrice } from '@/util';
 import { IProduct } from '@/interfaces';
 import Link from 'next/link';
 import useLastStandingURL from '@/hooks/useLastStandingURL';
+import useAuthContext from '@/contexts/AuthContext/useAuthContext';
+import { useDeliveryInfoContext } from '@/contexts/DeliveryInfoContext/DeliveryInfoContextProvider';
 
 interface CartItem {
 	productId: string;
@@ -16,11 +18,11 @@ interface CartItem {
 interface CheckoutInfoProps {
 	items: CartItem[];
 	products: Record<string, IProduct | null>;
-	total: number;
+	subtotal: number;
 	vatAmount: number;
+	total: number;
 	loading: boolean;
 	isSubmitting: boolean;
-	submitable: boolean;
 	isAuthenticated: boolean;
 	onSubmitOrder: () => void;
 }
@@ -36,7 +38,7 @@ const OrderItems: React.FC<{
 					<p className={styles.itemName}>{products[item.productId]?.name || 'Sản phẩm'}</p>
 					<span className={styles.itemQuantity}>x {item.quantity}</span>
 					<span className={styles.itemPrice}>
-						{((products[item.productId]?.price || 0) * item.quantity).toLocaleString('vi-VN', {
+						{(calcDiscountedPrice(products[item.productId]?.price || 0, products[item.productId]?.discountPercent || 0, true) * item.quantity).toLocaleString('vi-VN', {
 							style: 'currency',
 							currency: 'VND',
 						})}
@@ -49,31 +51,34 @@ const OrderItems: React.FC<{
 OrderItems.displayName = 'OrderItems';
 
 const OrderSummary: React.FC<{
-	total: number;
+	subtotal: number;
 	vatAmount: number;
-}> = memo(({ total, vatAmount }) => {
+	total: number;
+}> = memo(({ subtotal, vatAmount, total }) => {
 	return (
 		<section className={styles.orderSummary}>
 			<div className={clsx(styles.orderSummaryItem, styles.orderSummarySubtotal)}>
 				<span className={styles.orderSummaryLabel}>Tạm tính</span>
-				<span className={styles.orderSummaryValue}>{toLocalePrice(total)}</span>
+				<span className={styles.orderSummaryValue}>{toLocalePrice(subtotal)}</span>
 			</div>
-			{vatAmount > 0 && (
-				<div className={clsx(styles.orderSummaryItem, styles.orderSummaryVat)}>
-					<span className={styles.orderSummaryLabel}>VAT</span>
-					<span className={styles.orderSummaryValue}>{toLocalePrice(vatAmount)}</span>
-				</div>
-			)}
+
+			<div className={clsx(styles.orderSummaryItem, styles.orderSummaryVat)}>
+				<span className={styles.orderSummaryLabel}>VAT</span>
+				<span className={styles.orderSummaryValue}>{toLocalePrice(vatAmount)}</span>
+			</div>
+
 			<div className={clsx(styles.orderSummaryItem, styles.orderSummaryTotal)}>
 				<span className={styles.orderSummaryLabel}>Tổng</span>
-				<span className={styles.orderSummaryValue}>{toLocalePrice(total + vatAmount)}</span>
+				<span className={styles.orderSummaryValue}>{toLocalePrice(total)}</span>
 			</div>
 		</section>
 	);
 });
 OrderSummary.displayName = 'OrderSummary';
 
-const CheckoutInfo: React.FC<CheckoutInfoProps> = memo(({ items, products, total, vatAmount, loading, isSubmitting, submitable, isAuthenticated, onSubmitOrder }) => {
+const CheckoutInfo: React.FC<CheckoutInfoProps> = memo(({ items, products, subtotal, vatAmount, total, loading, isSubmitting, isAuthenticated, onSubmitOrder }) => {
+	const { isLoading: isAuthLoading } = useAuthContext();
+	const { isGettingDeliveryInfo: isDeliveryInfoLoading } = useDeliveryInfoContext();
 	const { setLastStandingURL } = useLastStandingURL();
 	return (
 		<Table
@@ -83,16 +88,16 @@ const CheckoutInfo: React.FC<CheckoutInfoProps> = memo(({ items, products, total
 					children: (
 						<>
 							<OrderItems items={items} products={products} />
-							<OrderSummary total={total} vatAmount={vatAmount} />
+							<OrderSummary subtotal={subtotal} vatAmount={vatAmount} total={total} />
 						</>
 					),
 				},
 			]}
 			className={clsx(styles.orderTable, styles.table)}
-			loading={loading || isSubmitting}
+			loading={loading || isSubmitting || isAuthLoading || isDeliveryInfoLoading}
 			footer={
 				<>
-					<button className={`cta-button--primary ${submitable ? '' : ' disabled'}`} onClick={onSubmitOrder} disabled={!submitable || isSubmitting || loading || items.length === 0}>
+					<button className={`cta-button--primary`} onClick={onSubmitOrder} disabled={isAuthLoading || isDeliveryInfoLoading || isSubmitting || loading || items.length === 0}>
 						{isSubmitting ? 'Đang xử lý...' : 'Đặt hàng ngay'}
 					</button>
 					{!isAuthenticated && (

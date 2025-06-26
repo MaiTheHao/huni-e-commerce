@@ -14,6 +14,7 @@ import { HTTPStatus } from '@/enums/HttpStatus.enum';
 import ShippingAddressAddForm from './ShippingAddressAddForm';
 import ShippingAddressList from './ShippingAddressList';
 import { useDeliveryInfoContext } from '@/contexts/DeliveryInfoContext/DeliveryInfoContextProvider';
+import { addDeliveryAddress, updateDeliveryAddresses } from '../apis';
 
 interface Address {
 	id: string;
@@ -55,14 +56,11 @@ export default function AddressesPage() {
 
 			try {
 				const addAddressRequestData: IAddDeliveryAddressRequestData = { address: newAddress };
-				const response = await api.post('/user/delivery-info/address/add', addAddressRequestData);
-				const responseData: IResponse<IGetDeliveryInfoResponseData> = response.data;
+				const [error, data] = await addDeliveryAddress(addAddressRequestData);
 
-				if (response.status !== HTTPStatus.OK) {
-					throw new Error(responseData?.message || 'Không thể thêm địa chỉ giao hàng');
+				if (error) {
+					throw new Error(error);
 				}
-
-				if (isEmpty(responseData.data)) throw new Error('Thông tin giao hàng không hợp lệ');
 
 				await refetchDeliveryInfo();
 				Swal.fire({
@@ -100,15 +98,10 @@ export default function AddressesPage() {
 			};
 
 			try {
-				const response = await api.post('/user/delivery-info/address/update', updateData);
-				const responseData: IResponse<IGetDeliveryInfoResponseData> = response.data;
+				const [error, data] = await updateDeliveryAddresses(updateData);
 
-				if (isEmpty(responseData.data)) {
-					throw new Error('Thông tin giao hàng không hợp lệ');
-				}
-
-				if (response.status !== HTTPStatus.OK) {
-					throw new Error(responseData?.message || 'Không thể cập nhật địa chỉ giao hàng');
+				if (error) {
+					throw new Error(error);
 				}
 
 				await refetchDeliveryInfo();
@@ -140,15 +133,10 @@ export default function AddressesPage() {
 					}, []),
 				};
 
-				const response = await api.post('/user/delivery-info/address/update', updateData);
-				const responseData: IResponse<IGetDeliveryInfoResponseData> = response.data;
+				const [error, data] = await updateDeliveryAddresses(updateData);
 
-				if (isEmpty(responseData.data)) {
-					throw new Error('Không nhận được dữ liệu địa chỉ sau khi xóa');
-				}
-
-				if (response.status !== HTTPStatus.OK) {
-					throw new Error(responseData?.message || 'Không thể xóa địa chỉ giao hàng');
+				if (error) {
+					throw new Error(error);
 				}
 
 				await refetchDeliveryInfo();
@@ -182,15 +170,10 @@ export default function AddressesPage() {
 						[addresses[idx].value]
 					),
 				};
-				const response = await api.post('/user/delivery-info/address/update', updateData);
-				const responseData: IResponse<IGetDeliveryInfoResponseData> = response.data;
+				const [error, data] = await updateDeliveryAddresses(updateData);
 
-				if (isEmpty(responseData.data)) {
-					throw new Error('Thông tin giao hàng không hợp lệ');
-				}
-
-				if (response.status !== HTTPStatus.OK) {
-					throw new Error(responseData?.message || 'Không thể cập nhật địa chỉ giao hàng');
+				if (error) {
+					throw new Error(error);
 				}
 
 				await refetchDeliveryInfo();

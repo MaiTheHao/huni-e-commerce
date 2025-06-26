@@ -118,6 +118,7 @@ export default function AppHeaderProfile() {
 				aria-label={isAuthenticated ? 'Profile' : 'Login'}
 				className={`${styles['app-header__action']} ${styles['app-header__profile']} ${styles['app-header__action--clickable']}`}
 				onClick={toggleDropdown}
+				title={isAuthenticated ? 'Trang cá nhân' : 'Đăng nhập'}
 			>
 				{redirectLoading || isLoading ? <Spinner /> : <FontAwesomeIcon icon={faUser} />}
 			</div>

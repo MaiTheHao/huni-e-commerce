@@ -14,22 +14,22 @@ function AccountInfoActions() {
 		<div className={`${styles.part} ${styles['account-info-actions']}`}>
 			<h2 className={styles.part__title}>Thao tác</h2>
 			<ul className={styles['account-info-actions__list']}>
-				<li className={styles['account-info-actions__list__item']}>
-					<FontAwesomeIcon icon={faUserPen} />
-					<Link className={styles['account-info-actions__list__item__button']} href={'edit-profile'}>
-						Chỉnh sửa
+				<li>
+					<Link href={'edit-profile'} className={styles['account-info-actions__list__item']}>
+						<FontAwesomeIcon icon={faUserPen} />
+						<span className={styles['account-info-actions__list__item__button']}>Chỉnh sửa</span>
 					</Link>
 				</li>
-				<li className={styles['account-info-actions__list__item']}>
-					<FontAwesomeIcon icon={faKey} />
-					<Link className={styles['account-info-actions__list__item__button']} href={ROUTES.resetPassword.path}>
-						Đổi mật khẩu
+				<li>
+					<Link href={ROUTES.resetPassword.path} className={styles['account-info-actions__list__item']}>
+						<FontAwesomeIcon icon={faKey} />
+						<span className={styles['account-info-actions__list__item__button']}>Đổi mật khẩu</span>
 					</Link>
 				</li>
-				<li className={`${styles['account-info-actions__list__item']} ${clsx(styles['account-info-actions__list__item--danger'])}`}>
-					<FontAwesomeIcon icon={faDoorOpen} />
-					<button className={styles['account-info-actions__list__item__button']} onClick={() => logout()}>
-						Đăng xuất
+				<li>
+					<button onClick={() => logout()} className={`${styles['account-info-actions__list__item']} ${clsx(styles['account-info-actions__list__item--danger'])}`}>
+						<FontAwesomeIcon icon={faDoorOpen} />
+						<span className={styles['account-info-actions__list__item__button']}>Đăng xuất</span>
 					</button>
 				</li>
 			</ul>

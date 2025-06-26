@@ -1,5 +1,5 @@
 'use client';
-import React, { useCallback, useEffect, useReducer, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useReducer, useState } from 'react';
 import styles from './Checkout.module.scss';
 import { z } from 'zod';
 import Swal from 'sweetalert2';
@@ -9,8 +9,12 @@ import tax from '@/data/tax.json';
 import CheckoutForm from './CheckoutForm';
 import CheckoutInfo from './CheckoutInfo';
 import { useAuthGuard } from '@/hooks/useAuthGuard';
-import { toString } from '@/util';
 import { useDeliveryInfoContext } from '@/contexts/DeliveryInfoContext/DeliveryInfoContextProvider';
+import { ICreateOrderRequestData, IProduct, TErrorFirst } from '@/interfaces';
+import { anonymousCreateOrder, authedCreateOrder } from './apis';
+import { calcDiscountAmount, calcDiscountedPrice, calcVATAmount, toString } from '@/util';
+import { loggerService } from '@/services/logger.service';
+import { IOrderItem } from '@/interfaces/entity/order/order.entity';
 
 const checkoutValidate = z.object({
 	name: nameSchema,
@@ -30,10 +34,9 @@ type FormData = {
 
 type State = {
 	formData: FormData;
-	submitable: boolean;
 };
 
-type Action = { type: 'SET_FORM'; formData: Partial<FormData> } | { type: 'RESET' } | { type: 'SET_SUBMITABLE'; value: boolean };
+type Action = { type: 'SET_FORM'; formData: Partial<FormData> } | { type: 'RESET' };
 
 const initialFormData: FormData = {
 	name: '',
@@ -45,7 +48,6 @@ const initialFormData: FormData = {
 
 const initialState: State = {
 	formData: initialFormData,
-	submitable: false,
 };
 
 function reducer(state: State, action: Action): State {
@@ -55,8 +57,6 @@ function reducer(state: State, action: Action): State {
 				...state,
 				formData: { ...state.formData, ...action.formData },
 			};
-		case 'SET_SUBMITABLE':
-			return { ...state, submitable: action.value };
 		case 'RESET':
 			return initialState;
 		default:
@@ -70,12 +70,17 @@ function CheckoutPage() {
 	const { deliveryInfo, isGettingDeliveryInfo } = useDeliveryInfoContext();
 	const { isAuthenticated } = useAuthGuard({ immediate: false });
 	const [state, dispatch] = useReducer(reducer, initialState);
-	const { items, products, loading } = useCartContext();
+	const { items, products, loading: isCartLoading, handleRemoveAll } = useCartContext();
 	const [validateError, setValidateError] = useState<Record<string, string>>({});
 	const [isSubmitting, setIsSubmitting] = useState(false);
 
-	const total = items.reduce((sum, item) => sum + (products[item.productId]?.price || 0) * item.quantity, 0) || 0;
-	const vatAmount = total * VAT;
+	const subtotal = useMemo(() => {
+		return items.reduce((sum, item) => sum + (calcDiscountedPrice(products[item.productId]?.price || 0, products[item.productId]?.discountPercent || 0, true) || 0) * item.quantity, 0) || 0;
+	}, [items, products]);
+
+	const vatAmount = calcVATAmount(subtotal, VAT, true, 1000);
+
+	const total = subtotal + vatAmount;
 
 	const handleSubmitOrder = useCallback(async () => {
 		const result = checkoutValidate.safeParse(state.formData);
@@ -94,14 +99,54 @@ function CheckoutPage() {
 		setValidateError({});
 		setIsSubmitting(true);
 		try {
-			await new Promise((resolve) => setTimeout(resolve, 3000));
-			console.log('Order submitted', {
-				customerInfo: state.formData,
-				items: items,
-				total: total,
-				vatAmount: vatAmount,
-				totalWithVat: total + vatAmount,
+			let response: TErrorFirst<any, null>;
+			let orderSubtotalPrice = 0;
+
+			const orderItems: IOrderItem[] = items.map((item) => {
+				const product: IProduct = products[item.productId] as IProduct;
+				const discountedPrice: number = calcDiscountedPrice(product.price, product.discountPercent, true, 1000);
+				const discountAmount: number = calcDiscountAmount(product.price, product.discountPercent, true, 1000);
+				const subtotalPrice: number = discountedPrice * item.quantity;
+
+				orderSubtotalPrice += subtotalPrice;
+
+				return {
+					productId: toString(item.productId),
+					productName: toString(product.name),
+					productImage: toString(product.images[0]),
+					quantity: Number(item.quantity),
+					unitPrice: discountedPrice,
+					subtotalPrice: subtotalPrice,
+					discountAmount: discountAmount,
+				};
 			});
+
+			const orderVatAmount = calcVATAmount(orderSubtotalPrice, VAT, true, 1000);
+			const orderTotalPrice = orderSubtotalPrice + orderVatAmount;
+
+			const orderData: ICreateOrderRequestData = {
+				customerName: state.formData.name,
+				customerEmail: state.formData.email,
+				customerPhone: state.formData.phone,
+				customerAddress: state.formData.address,
+				additionalInfo: state.formData.additionalInfo,
+				items: orderItems,
+				subtotalPrice: orderSubtotalPrice,
+				vatAmount: orderVatAmount,
+				totalPrice: orderTotalPrice,
+			};
+
+			if (isAuthenticated) {
+				response = await authedCreateOrder(orderData);
+			} else {
+				response = await anonymousCreateOrder(orderData);
+			}
+
+			if (response[0]) {
+				Swal.fire('Đặt hàng thất bại', response[0], 'error');
+				return;
+			}
+			await handleRemoveAll();
 			Swal.fire('Đặt hàng thành công', 'Chúng tôi sẽ liên hệ xác nhận đơn hàng trong thời gian sớm nhất.', 'success');
 		} catch (error) {
 			console.error('Error submitting order:', error);
@@ -131,15 +176,7 @@ function CheckoutPage() {
 					[name]: error,
 				};
 
-				const updatedFormData = { ...state.formData, [name]: value };
-				const isSubmitable =
-					Object.keys(newValidateError).every((key) => !newValidateError[key]) &&
-					Object.entries(updatedFormData)
-						.filter(([key]) => key !== 'additionalInfo')
-						.every(([, val]) => toString(val)?.trim() !== '');
-
 				dispatch({ type: 'SET_FORM', formData: { [name]: value } as Partial<FormData> });
-				dispatch({ type: 'SET_SUBMITABLE', value: isSubmitable });
 				return newValidateError;
 			});
 		},
@@ -148,7 +185,6 @@ function CheckoutPage() {
 
 	useEffect(() => {
 		if (!deliveryInfo) return;
-		const isSubmitable = deliveryInfo.name && deliveryInfo.email && deliveryInfo.phone && deliveryInfo.addresses[0];
 		dispatch({
 			type: 'SET_FORM',
 			formData: {
@@ -158,20 +194,19 @@ function CheckoutPage() {
 				address: deliveryInfo.addresses[0],
 			},
 		});
-		dispatch({ type: 'SET_SUBMITABLE', value: !!isSubmitable });
 	}, [deliveryInfo]);
 
 	return (
 		<section className={styles.container}>
-			<CheckoutForm formData={state.formData} validateError={validateError} loading={loading || isGettingDeliveryInfo} onInputChange={handleInputChange} />
+			<CheckoutForm formData={state.formData} validateError={validateError} loading={isCartLoading || isGettingDeliveryInfo} onInputChange={handleInputChange} />
 			<CheckoutInfo
 				items={items}
 				products={products}
+				subtotal={subtotal}
 				total={total}
 				vatAmount={vatAmount}
-				loading={loading}
+				loading={isCartLoading}
 				isSubmitting={isSubmitting}
-				submitable={state.submitable}
 				isAuthenticated={isAuthenticated}
 				onSubmitOrder={handleSubmitOrder}
 			/>

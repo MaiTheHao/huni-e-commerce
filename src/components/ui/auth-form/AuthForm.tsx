@@ -25,7 +25,6 @@ function AuthForm({
 	onSubmit,
 }: AuthFormProps) {
 	const [formData, setFormData] = useState<Record<string, string>>({});
-	const [submitable, setSubmitable] = useState<boolean>(false);
 	const [validateError, setValidateError] = useState<Record<string, string>>({});
 
 	const handleInputChange = useCallback(
@@ -43,14 +42,6 @@ function AuthForm({
 
 				setFormData((prevFormData) => {
 					const newFormData = { ...prevFormData, [name]: value };
-
-					const isSubmitable =
-						Object.keys(newValidateError).every((key) => !newValidateError[key]) &&
-						Object.keys(newFormData).length === fields.length &&
-						Object.values(newFormData).every((val) => val.toString().trim() !== '');
-
-					setSubmitable(isSubmitable);
-
 					return newFormData;
 				});
 
@@ -102,7 +93,7 @@ function AuthForm({
 							)}
 						</ul>
 					)}
-					<AuthSubmitButton text={submitText} submitable={submitable && !submitDisabled} isLoading={isSending} />
+					<AuthSubmitButton text={submitText} submitable={true} isLoading={isSending} />
 				</form>
 				<AuthOAuthProviders providers={oauthProviders} />
 				<AuthBottomText text={bottomText} linkText={bottomLinkText} linkHref={bottomLinkHref} />

@@ -6,7 +6,7 @@ import clsx from 'clsx';
 import styles from './GlobalSearchResult.module.scss';
 import { IProduct, PaginatedResult } from '@/interfaces';
 import Spinner from '../spinner/Spinner';
-import { calcDiscountPrice, toLocalePrice, toNumber } from '@/util';
+import { calcDiscountedPrice, toLocalePrice, toNumber } from '@/util';
 
 interface GlobalSearchResultProps {
 	isShowable: boolean;
@@ -31,7 +31,7 @@ const GlobalSearchResult: React.FC<GlobalSearchResultProps> = ({ isShowable, res
 						<div className={styles['gs-results-item-info']}>
 							<h3 className={styles['gs-results-item-title']}>{item.name}</h3>
 							<p className={styles['gs-results-item-price']}>
-								<span className={styles['gs-results-item-price--cur']}>{toLocalePrice(calcDiscountPrice(item.price, item.discountPercent))}</span>
+								<span className={styles['gs-results-item-price--cur']}>{toLocalePrice(calcDiscountedPrice(item.price, item.discountPercent))}</span>
 								{toNumber(item.discountPercent) > 0 && <span className={styles['gs-results-item-price--old']}>{toLocalePrice(item.price)}</span>}
 							</p>
 						</div>

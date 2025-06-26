@@ -81,23 +81,46 @@ function CartContextProvider({ children }: CartContextProviderProps) {
 	const handleRemove = useCallback(
 		async (productId: string) => {
 			setLoading(true);
-			await fetch(`/api/v1/cart?productId=${productId}`, { method: 'DELETE' });
-			await fetchCart();
-			setLoading(false);
+			try {
+				await fetch(`/api/v1/cart?productId=${productId}`, { method: 'DELETE', cache: 'no-store' });
+				await fetchCart();
+			} catch (error) {
+				loggerService.error('Lỗi khi xóa sản phẩm khỏi giỏ hàng:', error);
+			} finally {
+				setLoading(false);
+			}
 		},
 		[fetchCart]
 	);
 
+	const handleRemoveAll = useCallback(async () => {
+		setLoading(true);
+		try {
+			await fetch('/api/v1/cart', { method: 'DELETE', cache: 'no-store' });
+			setItems([]);
+			setProducts({});
+		} catch (error) {
+			loggerService.error('Lỗi khi xóa tất cả sản phẩm khỏi giỏ hàng:', error);
+		} finally {
+			setLoading(false);
+		}
+	}, [fetchCart]);
+
 	const handleQuantity = useCallback(
 		async (productId: string, quantity: number) => {
 			if (quantity < MIN_ITEM_QUANTITY || quantity > MAX_ITEM_QUANTITY) return;
-			setItems((items) => items.map((item) => (item.productId === productId ? { ...item, quantity } : item)));
-			await fetch('/api/v1/cart', {
-				method: 'PUT',
-				headers: { 'Content-Type': 'application/json' },
-				body: JSON.stringify({ productId, quantity }),
-			});
-			await fetchCart();
+			try {
+				setItems((items) => items.map((item) => (item.productId === productId ? { ...item, quantity } : item)));
+				await fetch('/api/v1/cart', {
+					method: 'PUT',
+					headers: { 'Content-Type': 'application/json' },
+					body: JSON.stringify({ productId, quantity }),
+					cache: 'no-store',
+				});
+				await fetchCart();
+			} catch (error) {
+				loggerService.error('Lỗi khi cập nhật số lượng sản phẩm:', error);
+			}
 		},
 		[fetchCart]
 	);
@@ -111,6 +134,7 @@ function CartContextProvider({ children }: CartContextProviderProps) {
 						'Content-Type': 'application/json',
 					},
 					body: JSON.stringify({ productId: _id, quantity: quantity || 1 }),
+					cache: 'no-store',
 				});
 				if (!res.ok) {
 					throw new Error('Không thể thêm sản phẩm vào giỏ hàng');
@@ -134,12 +158,13 @@ function CartContextProvider({ children }: CartContextProviderProps) {
 			loading,
 			fetchCart,
 			handleRemove,
+			handleRemoveAll,
 			handleQuantity,
 			handleAddToCart,
 			setItems,
 			setProducts,
 		}),
-		[items, products, loading, fetchCart, handleRemove, handleQuantity, handleAddToCart, setItems, setProducts]
+		[items, products, loading, fetchCart, handleRemove, handleRemoveAll, handleQuantity, handleAddToCart, setItems, setProducts]
 	);
 
 	return <CartContext.Provider value={contextValue}>{children}</CartContext.Provider>;
