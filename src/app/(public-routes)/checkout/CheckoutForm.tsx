@@ -4,6 +4,8 @@ import LabelInput from '@/components/ui/label-input/LabelInput';
 import Table from '@/components/ui/table/Table';
 import styles from './Checkout.module.scss';
 import clsx from 'clsx';
+import { useDeliveryInfoContext } from '@/contexts/DeliveryInfoContext/DeliveryInfoContextProvider';
+import { useCartContext } from '@/contexts/CartContext/useCartContext';
 
 interface FormData {
 	name: string;
@@ -16,11 +18,14 @@ interface FormData {
 interface CheckoutFormProps {
 	formData: FormData;
 	validateError: Record<string, string>;
-	loading: boolean;
 	onInputChange: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
 }
 
-const CheckoutForm: React.FC<CheckoutFormProps> = memo(({ formData, validateError, loading, onInputChange }) => {
+const CheckoutForm: React.FC<CheckoutFormProps> = memo(({ formData, validateError, onInputChange }) => {
+	const { isGettingDeliveryInfo } = useDeliveryInfoContext();
+	const { loading: isCartLoading } = useCartContext();
+	const loading = isGettingDeliveryInfo || isCartLoading;
+
 	return (
 		<Table
 			sections={[

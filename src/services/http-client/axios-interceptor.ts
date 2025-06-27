@@ -97,6 +97,7 @@ api.interceptors.response.use(
 				// error Refresh token thất bại, đăng xuất
 				loggerService.error('Refresh token thất bại', refreshError);
 				dispatchAuthEvent(CUSTOM_EVENTS.LOGOUT);
+				processQueue(refreshError, null);
 				linkResponseErrorMessage(err);
 				return Promise.reject(err);
 			} finally {

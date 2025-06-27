@@ -69,8 +69,8 @@ const VAT: number = parseInt(tax.VAT, 10) / 100;
 function CheckoutPage() {
 	const { deliveryInfo, isGettingDeliveryInfo } = useDeliveryInfoContext();
 	const { isAuthenticated } = useAuthGuard({ immediate: false });
-	const [state, dispatch] = useReducer(reducer, initialState);
 	const { items, products, loading: isCartLoading, handleRemoveAll } = useCartContext();
+	const [state, dispatch] = useReducer(reducer, initialState);
 	const [validateError, setValidateError] = useState<Record<string, string>>({});
 	const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -198,14 +198,13 @@ function CheckoutPage() {
 
 	return (
 		<section className={styles.container}>
-			<CheckoutForm formData={state.formData} validateError={validateError} loading={isCartLoading || isGettingDeliveryInfo} onInputChange={handleInputChange} />
+			<CheckoutForm formData={state.formData} validateError={validateError} onInputChange={handleInputChange} />
 			<CheckoutInfo
 				items={items}
 				products={products}
 				subtotal={subtotal}
 				total={total}
 				vatAmount={vatAmount}
-				loading={isCartLoading}
 				isSubmitting={isSubmitting}
 				isAuthenticated={isAuthenticated}
 				onSubmitOrder={handleSubmitOrder}

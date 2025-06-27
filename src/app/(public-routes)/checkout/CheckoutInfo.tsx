@@ -9,6 +9,7 @@ import Link from 'next/link';
 import useLastStandingURL from '@/hooks/useLastStandingURL';
 import useAuthContext from '@/contexts/AuthContext/useAuthContext';
 import { useDeliveryInfoContext } from '@/contexts/DeliveryInfoContext/DeliveryInfoContextProvider';
+import { useCartContext } from '@/contexts/CartContext/useCartContext';
 
 interface CartItem {
 	productId: string;
@@ -21,7 +22,6 @@ interface CheckoutInfoProps {
 	subtotal: number;
 	vatAmount: number;
 	total: number;
-	loading: boolean;
 	isSubmitting: boolean;
 	isAuthenticated: boolean;
 	onSubmitOrder: () => void;
@@ -76,9 +76,10 @@ const OrderSummary: React.FC<{
 });
 OrderSummary.displayName = 'OrderSummary';
 
-const CheckoutInfo: React.FC<CheckoutInfoProps> = memo(({ items, products, subtotal, vatAmount, total, loading, isSubmitting, isAuthenticated, onSubmitOrder }) => {
+const CheckoutInfo: React.FC<CheckoutInfoProps> = memo(({ items, products, subtotal, vatAmount, total, isSubmitting, isAuthenticated, onSubmitOrder }) => {
 	const { isLoading: isAuthLoading } = useAuthContext();
 	const { isGettingDeliveryInfo: isDeliveryInfoLoading } = useDeliveryInfoContext();
+	const { loading: isCartLoading } = useCartContext();
 	const { setLastStandingURL } = useLastStandingURL();
 	return (
 		<Table
@@ -94,10 +95,10 @@ const CheckoutInfo: React.FC<CheckoutInfoProps> = memo(({ items, products, subto
 				},
 			]}
 			className={clsx(styles.orderTable, styles.table)}
-			loading={loading || isSubmitting || isAuthLoading || isDeliveryInfoLoading}
+			loading={isCartLoading || isSubmitting || isAuthLoading || isDeliveryInfoLoading}
 			footer={
 				<>
-					<button className={`cta-button--primary`} onClick={onSubmitOrder} disabled={isAuthLoading || isDeliveryInfoLoading || isSubmitting || loading || items.length === 0}>
+					<button className={`cta-button--primary`} onClick={onSubmitOrder} disabled={isAuthLoading || isDeliveryInfoLoading || isSubmitting || isCartLoading || items.length === 0}>
 						{isSubmitting ? 'Đang xử lý...' : 'Đặt hàng ngay'}
 					</button>
 					{!isAuthenticated && (

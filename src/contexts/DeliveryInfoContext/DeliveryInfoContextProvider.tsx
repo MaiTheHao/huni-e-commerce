@@ -2,6 +2,7 @@
 import React, { createContext, useContext, useEffect, useState, ReactNode, useCallback, useMemo, memo } from 'react';
 import { IGetDeliveryInfoResponseData } from '@/interfaces/api/user/get-delivery-info.interface';
 import { fetchUserDeliveryInfo } from './apis';
+import { loggerService } from '@/services/logger.service';
 
 type DeliveryInfoContextType = {
 	deliveryInfo: IGetDeliveryInfoResponseData | null;
@@ -25,20 +26,26 @@ function DeliveryInfoContextProvider({ children }: Props) {
 
 	const refetchDeliveryInfo = useCallback(async () => {
 		setIsGettingDeliveryInfo(true);
-		const data = await fetchUserDeliveryInfo();
-		setDeliveryInfo(data);
-		setIsGettingDeliveryInfo(false);
+		try {
+			const [error, data] = await fetchUserDeliveryInfo();
+			if (error) {
+				loggerService.error('Lấy thông tin giao hàng thất bại:', error);
+				setDeliveryInfo(null);
+			} else {
+				setDeliveryInfo(data);
+			}
+		} catch (error) {
+			loggerService.error('Lấy thông tin giao hàng thất bại:', error);
+			setDeliveryInfo(null);
+		} finally {
+			loggerService.info('Đã lấy thông tin giao hàng');
+			setIsGettingDeliveryInfo(false);
+		}
 	}, []);
 
 	useEffect(() => {
-		let isMounted = true;
-		refetchDeliveryInfo().finally(() => {
-			if (!isMounted) return;
-		});
-		return () => {
-			isMounted = false;
-		};
-	}, [refetchDeliveryInfo]);
+		refetchDeliveryInfo();
+	}, []);
 
 	const contextValue = useMemo(() => ({ deliveryInfo, isGettingDeliveryInfo, refetchDeliveryInfo }), [deliveryInfo, isGettingDeliveryInfo, refetchDeliveryInfo]);
 
