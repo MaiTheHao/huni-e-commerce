@@ -71,3 +71,17 @@ export async function getUserOrders(status?: TOrderStatus): Promise<TErrorFirst<
 		return [error?.response?.data?.message || 'Đã xảy ra lỗi khi lấy danh sách đơn hàng', null];
 	}
 }
+
+// info Lấy chi tiết đơn hàng theo orderId
+export async function getOrderDetail(orderId: string): Promise<TErrorFirst<any, IOrder>> {
+	try {
+		const response = await api.get<IResponse<IOrder>>(`/order/get/${orderId}`);
+		const responseData = response.data;
+		if (!responseData?.data) {
+			return ['Không tìm thấy đơn hàng', null];
+		}
+		return [null, responseData.data];
+	} catch (error: any) {
+		return [error?.response?.data?.message || 'Đã xảy ra lỗi khi lấy chi tiết đơn hàng', null];
+	}
+}
