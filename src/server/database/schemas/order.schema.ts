@@ -3,7 +3,7 @@ import { IOrderBase, ORDER_STATUS, ORDER_TYPES } from '@/interfaces/entity/order
 import OrderItemSchema from './sub-schemas/order-item.schema';
 
 const OrderSchema = new mongoose.Schema<IOrderBase>({
-	customerId: { type: String, required: true },
+	customerId: { type: String, required: false, default: null },
 	customerName: { type: String, required: true },
 	customerEmail: { type: String, required: true },
 	customerPhone: { type: String, required: true },

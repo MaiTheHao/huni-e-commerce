@@ -136,7 +136,6 @@ function CheckoutPage() {
 				totalPrice: orderTotalPrice,
 			};
 
-			loggerService.success('Is Authenticated:', isAuthenticated);
 			if (isAuthenticated) {
 				response = await authedCreateOrder(orderData);
 			} else {
