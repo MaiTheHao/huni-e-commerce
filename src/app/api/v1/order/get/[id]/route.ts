@@ -5,7 +5,7 @@ import { responseService } from '@/services/response.service';
 import { tokenService } from '@/services/token.service';
 import { NextRequest } from 'next/server';
 
-export async function GET(req: NextRequest, { params }: { params: { id: string } }) {
+export async function GET(req: NextRequest) {
 	const [error, token] = authService.extractBearerToken(req);
 	if (error || !token) {
 		loggerService.error('Authorization không hợp lệ', error);
@@ -18,13 +18,13 @@ export async function GET(req: NextRequest, { params }: { params: { id: string }
 		return responseService.unauthorized('Không được phép truy cập');
 	}
 
-	const orderId = params.id;
-	if (!orderId) {
+	const id = req.nextUrl.pathname.split('/').pop();
+	if (!id) {
 		return responseService.badRequest('Thiếu ID đơn hàng');
 	}
 
 	try {
-		const [getError, order] = await orderService.getById(orderId);
+		const [getError, order] = await orderService.getById(id);
 		if (getError) {
 			loggerService.error('Lỗi khi lấy thông tin đơn hàng:', getError);
 			return responseService.badRequest('Không thể lấy thông tin đơn hàng', getError);
