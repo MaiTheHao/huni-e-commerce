@@ -1,14 +1,15 @@
 'use client';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import styles from '../Profile.module.scss';
-import { IOrder, TOrderStatus } from '@/interfaces/entity/order/order.entity';
+import { IOrder, ORDER_STATUS, TOrderStatus } from '@/interfaces/entity/order/order.entity';
 import { getUserOrders } from '../apis';
 import { loggerService } from '@/services/logger.service';
-import { isEmpty } from '@/util';
+import { isEmpty, toLocalePrice } from '@/util';
 import Spinner from '@/components/ui/spinner/Spinner';
 import clsx from 'clsx';
 import Image from 'next/image';
 import { getOrderStatusText } from '@/util/enum-to-text.util';
+import Link from 'next/link';
 
 export default function OrdersPage() {
 	const cacheRef = useRef<{ [key in TOrderStatus | 'all']?: IOrder[] }>({});
@@ -97,18 +98,11 @@ export default function OrdersPage() {
 					<li onClick={() => handleStatusChange('all')} className={clsx(styles['orders-nav__item'], isActivated('all') ? styles['active'] : '')}>
 						Tất cả
 					</li>
-					<li onClick={() => handleStatusChange('pending')} className={clsx(styles['orders-nav__item'], isActivated('pending') ? styles['active'] : '')}>
-						Chờ xác nhận
-					</li>
-					<li onClick={() => handleStatusChange('shipped')} className={clsx(styles['orders-nav__item'], isActivated('shipped') ? styles['active'] : '')}>
-						Đang giao
-					</li>
-					<li onClick={() => handleStatusChange('delivered')} className={clsx(styles['orders-nav__item'], isActivated('delivered') ? styles['active'] : '')}>
-						Đã giao
-					</li>
-					<li onClick={() => handleStatusChange('cancelled')} className={clsx(styles['orders-nav__item'], isActivated('cancelled') ? styles['active'] : '')}>
-						Đã hủy
-					</li>
+					{ORDER_STATUS.map((s) => (
+						<li key={`order-nav--${s}`} onClick={() => handleStatusChange(s)} className={clsx(styles['orders-nav__item'], isActivated(s) ? styles['active'] : '')}>
+							{getOrderStatusText(s)}
+						</li>
+					))}
 				</ul>
 				<ul className={styles['orders-list']}>
 					{loading ? (
@@ -119,9 +113,9 @@ export default function OrdersPage() {
 						<p className={styles['part__empty-state']}>Chưa có đơn hàng nào.</p>
 					) : (
 						orders.map((order) => (
-							<li key={order._id} className={clsx(styles['orders-list__item'], styles['modern-card'])}>
-								<div className={styles['orders-list__header']}>
-									<span className={styles['orders-list__date']}>
+							<li key={order._id} className={clsx(styles['orders-item'], styles['modern-card'])}>
+								<div className={styles['orders-item__header']}>
+									<span className={styles['orders-item__header__date']}>
 										{new Date(order.createdAt).toLocaleString('vi-VN', {
 											day: '2-digit',
 											month: '2-digit',
@@ -131,40 +125,42 @@ export default function OrdersPage() {
 											hour12: false,
 										})}
 									</span>
-									<span className={clsx(styles['orders-list__status'], styles[`status--${order.status}`])}>{getOrderStatusText(order.status)}</span>
+									<span className={clsx(styles['orders-item__header__status'], styles[`status--${order.status}`])}>{getOrderStatusText(order.status)}</span>
 								</div>
-								<div className={styles['orders-list__products']}>
-									{order.items.map((item) => (
-										<div key={item.productId} className={styles['orders-list__product']}>
-											<div className={styles['orders-list__product-image']}>
-												<Image
-													src={item.productImage}
-													alt={item.productName}
-													width={80}
-													height={80}
-													style={{
-														objectFit: 'cover',
-														aspectRatio: '1 / 1',
-													}}
-													sizes='(max-width: 768px) 80px, 80px'
-												/>
-											</div>
-											<div className={styles['orders-list__product-info']}>
-												<div className={styles['orders-list__product-name']}>{item.productName}</div>
-												<div className={styles['orders-list__product-qty']}>
-													Số lượng: <b>{item.quantity}</b>
+								<div className={styles['orders-item__products']}>
+									{order.items.map((item, idx) => {
+										if (idx >= 3) return null;
+										return (
+											<div key={item.productId} className={styles['orders-item__products__product']}>
+												<div className={styles['orders-item__products__product-image']}>
+													<Image
+														src={item.productImage}
+														alt={item.productName}
+														width={80}
+														height={80}
+														style={{
+															objectFit: 'cover',
+															aspectRatio: '1 / 1',
+														}}
+														sizes='(max-width: 768px) 80px, 80px'
+													/>
+												</div>
+												<div className={styles['orders-item__products__product-info']}>
+													<div className={styles['orders-item__products__product-info__name']}>{item.productName}</div>
+													<div className={styles['orders-item__products__product-info__quantity']}>
+														Số lượng: <b>{item.quantity}</b>
+													</div>
 												</div>
 											</div>
-										</div>
-									))}
+										);
+									})}
+									{order.items.length > 3 && <div className={styles['orders-item__products__more']}>+ {order.items.length - 3} sản phẩm khác</div>}
 								</div>
-								<div className={styles['orders-list__footer']}>
-									<span className={styles['orders-list__total']}>
-										<b>{order.totalPrice.toLocaleString()}₫</b>
-									</span>
-									<a className={'cta-button--primary'} href={`/profile/orders/${order._id}`}>
+								<div className={styles['orders-item__footer']}>
+									<span className={styles['orders-item__footer__total']}>{toLocalePrice(order.totalPrice)}</span>
+									<Link className={`${styles['orders-item__footer__more']} cta-button--primary`} href={`/profile/orders/${order._id}`} prefetch={false}>
 										Xem chi tiết &rarr;
-									</a>
+									</Link>
 								</div>
 							</li>
 						))

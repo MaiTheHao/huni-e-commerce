@@ -527,29 +527,34 @@
 
 	&-nav {
 		display: flex;
-		flex-wrap: wrap;
 		gap: 0.5em;
-		margin-bottom: $spacing-16;
-		padding: 0;
+		padding-bottom: 0.25em;
+		border-bottom: 1px solid $black-200;
 		list-style: none;
+		overflow-x: auto;
+		&::-webkit-scrollbar {
+			display: none;
+		}
+		-ms-overflow-style: none;
+		scrollbar-width: none;
 
 		&__item {
 			cursor: pointer;
 			padding: 0.25em 1em;
-			border-radius: 0.25em;
+			border-bottom: 2px solid transparent;
 			color: $txt-secondary;
+			text-wrap: nowrap;
 			font-weight: $font-weight-regular;
-			transition: border-color 0.15s, color 0.15s, background 0.15s;
+			transition: border-color 0.15s, color 0.15s;
 
 			&:hover {
 				border-color: $accent-color;
 				color: $accent-color;
-				background: rgba($accent-color, 0.06);
 			}
 		}
 
 		.active {
-			background: rgba($accent-color, 0.12);
+			border-color: $accent-color;
 			color: $accent-color;
 			cursor: default;
 		}
@@ -558,152 +563,144 @@
 	&-list {
 		display: flex;
 		flex-direction: column;
-		gap: $spacing-16;
+		gap: 1em;
 		padding: 0;
-		list-style: none;
+		font-size: 1em;
+	}
 
-		&__item {
+	&-item {
+		display: flex;
+		flex-direction: column;
+		gap: 1em;
+		padding: 1.5em;
+		background-color: $white;
+		border-radius: 0.25em;
+		box-shadow: $box-shadow-card;
+		border: 1px solid $black-200;
+		font-size: 1em;
+		transition: box-shadow 0.15s, border 0.15s;
+
+		&:hover {
+			box-shadow: $box-shadow-hover;
+			border-color: $accent-color;
+		}
+
+		&__header {
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+
+			&__date {
+				color: $txt-tertiary;
+				font-size: $font-size-14;
+			}
+
+			&__status {
+				padding: $spacing-4 $spacing-12;
+				border-radius: 0.25em;
+				font-size: $font-size-14;
+				letter-spacing: 0.01em;
+				text-transform: capitalize;
+				background-color: $gray-200;
+				color: $txt-primary;
+
+				&.status--confirmed {
+					background-color: map.get($success, bg);
+					color: map.get($success, text);
+				}
+
+				&.status--pending {
+					background-color: map.get($warning, bg);
+					color: map.get($warning, text);
+				}
+				&.status--shipped {
+					background-color: map.get($info, bg);
+					color: map.get($info, text);
+				}
+				&.status--delivered {
+					background-color: map.get($success, bg);
+					color: map.get($success, text);
+				}
+				&.status--cancelled {
+					background-color: map.get($error, bg);
+					color: map.get($error, text);
+				}
+			}
+		}
+
+		&__products {
 			display: flex;
 			flex-direction: column;
-			gap: $spacing-12;
-			padding: $spacing-20 $spacing-32;
-			background-color: $white;
-			border-radius: $spacing-12;
-			box-shadow: $box-shadow-card;
-			border: 1px solid $black-200;
+			gap: 1em;
 			font-size: 1em;
-			transition: box-shadow 0.15s, border 0.15s;
 
-			&:hover {
-				box-shadow: $box-shadow-hover;
-				border-color: $accent-color;
-			}
-
-			.orders-list__header {
+			&__product {
 				display: flex;
-				justify-content: space-between;
-				align-items: center;
-				margin-bottom: $spacing-8;
+				gap: 1ch;
+				font-size: 1em;
 
-				.orders-list__status {
-					padding: $spacing-4 $spacing-12;
+				&-image {
+					width: 80px;
+					height: 80px;
 					border-radius: 0.25em;
-					font-size: $font-size-14;
-					letter-spacing: 0.01em;
-					text-transform: capitalize;
-					background-color: $gray-200;
-					color: $txt-primary;
+					overflow: hidden;
+					box-shadow: $box-shadow-card;
+					flex-shrink: 0;
 
-					&.status--confirmed {
-						background-color: map.get($success, bg);
-						color: map.get($success, text);
-					}
-
-					&.status--pending {
-						background-color: map.get($warning, bg);
-						color: map.get($warning, text);
-					}
-					&.status--shipped {
-						background-color: map.get($info, bg);
-						color: map.get($info, text);
-					}
-					&.status--delivered {
-						background-color: map.get($success, bg);
-						color: map.get($success, text);
-					}
-					&.status--cancelled {
-						background-color: map.get($error, bg);
-						color: map.get($error, text);
+					img {
+						width: 100%;
+						height: 100%;
+						object-fit: cover;
 					}
 				}
 
-				.orders-list__date {
-					color: $txt-tertiary;
-					font-size: $font-size-14;
-				}
-			}
-
-			.orders-list__products {
-				display: flex;
-				flex-direction: column;
-				gap: $spacing-8;
-				margin-bottom: $spacing-8;
-
-				.orders-list__product {
+				&-info {
 					display: flex;
-					align-items: center;
-					gap: $spacing-12;
+					flex-direction: column;
+					gap: 0.5ch;
+					font-size: 1em;
 
-					.orders-list__product-image {
-						width: 80px;
-						height: 80px;
-						border-radius: $spacing-12;
-						overflow: hidden;
-						box-shadow: $box-shadow-card;
-						background: $gray-200;
-						flex-shrink: 0;
-
-						img {
-							width: 100%;
-							height: 100%;
-							object-fit: cover;
-							border-radius: $spacing-12;
-						}
+					&__name {
+						font-size: 0.875em;
+						font-weight: $font-weight-semibold;
+						color: $txt-primary;
 					}
 
-					.orders-list__product-info {
-						display: flex;
-						flex-direction: column;
-						gap: $spacing-4;
-
-						.orders-list__product-name {
-							font-size: $font-size-16;
-							font-weight: $font-weight-semibold;
-							color: $txt-primary;
-							line-height: 1.2;
-						}
-
-						.orders-list__product-qty {
-							font-size: $font-size-14;
-							color: $txt-secondary;
-						}
+					&__quantity {
+						font-size: 0.75em;
+						color: $txt-secondary;
 					}
 				}
 			}
 
-			.orders-list__footer {
-				display: flex;
-				justify-content: space-between;
-				align-items: center;
+			&__more {
+				font-size: $font-size-14;
+				color: $txt-secondary;
+				font-weight: $font-weight-light;
 				margin-top: $spacing-8;
+			}
+		}
 
-				.orders-list__total {
-					font-size: $font-size-18;
-					font-weight: $font-weight-regular;
-					color: $secondary-color;
-				}
+		&__footer {
+			display: flex;
+			flex-wrap: wrap;
+			justify-content: space-between;
+			align-items: center;
+			font-size: 1em;
 
-				.orders-list__detail-btn {
-					display: inline-block;
-					padding: $spacing-4 $spacing-16;
-					border-radius: $spacing-8;
-					background: $accent-color;
-					color: $txt-white;
-					font-size: $font-size-14;
-					font-weight: $font-weight-semibold;
-					text-decoration: none;
-					transition: background 0.15s, color 0.15s, box-shadow 0.15s;
+			&__total {
+				font-size: 1.125em;
+				font-weight: $font-weight-semibold;
+				color: $secondary-color;
+			}
 
-					&:hover {
-						background: $primary-color;
-						color: $white;
-						box-shadow: $box-shadow-sm;
-					}
-				}
+			&__more {
+				font-size: 1em;
 			}
 		}
 	}
 }
+
 // Responsive for orders page
 
 @media screen and (max-width: $breakpoint-lg) {
@@ -815,34 +812,11 @@
 	}
 
 	// info ORDERS PAGE
-	.orders-nav {
-		gap: 0.25em;
-	}
-
-	.orders-list__item {
-		padding: $spacing-12 $spacing-8;
-	}
-
-	.orders-list__products {
-		gap: $spacing-6;
-	}
-
-	.orders-list__product {
-		gap: $spacing-8;
-
-		.orders-list__product-image {
-			width: 60px;
-			height: 60px;
+	.orders-item__footer {
+		&__total {
 		}
-	}
-
-	.orders-list__footer {
-		flex-direction: column;
-		align-items: flex-start;
-		gap: $spacing-8;
-
-		.orders-list__total {
-			font-size: $font-size-16;
+		&__more {
+			font-size: 0.875em;
 		}
 	}
 }
@@ -863,40 +837,27 @@
 		flex-direction: column-reverse;
 	}
 
-	// Responsive for orders page
-	.orders-list__item {
-		padding: $spacing-8 $spacing-4;
-		gap: $spacing-8;
+	// info ORDERS PAGE
+	.orders-item {
+		padding: 0.875em;
 	}
 
-	.orders-list__header {
-		flex-direction: column;
-		align-items: flex-start;
-		gap: $spacing-4;
-	}
-
-	.orders-list__products {
-		gap: $spacing-4;
-	}
-
-	.orders-list__product {
-		gap: $spacing-4;
-
-		.orders-list__product-image {
-			width: 48px;
-			height: 48px;
+	.orders-item__products {
+		font-size: 0.875em;
+		&__product {
+			&-image {
+				width: 60px;
+				height: 60px;
+			}
 		}
 	}
 
-	.orders-list__footer {
-		flex-direction: column;
-		align-items: flex-start;
-		gap: $spacing-6;
-
-		.orders-list__detail-btn {
-			width: 100%;
-			text-align: center;
-			padding: $spacing-6 $spacing-8;
+	.orders-item__footer {
+		&__total {
+			font-size: 1em;
+		}
+		&__more {
+			font-size: 0.75em;
 		}
 	}
 }
