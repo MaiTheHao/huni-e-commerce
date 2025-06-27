@@ -59,7 +59,7 @@ export default function OrdersPage() {
 				return;
 			}
 
-			const statuses: TOrderStatus[] = ['pending', 'shipped', 'delivered', 'cancelled'];
+			const statuses: TOrderStatus[] = ['pending', 'shipped', 'delivered', 'cancelled', 'confirmed'];
 
 			statuses.forEach((s) => {
 				if (!cacheRef.current[s]) {
