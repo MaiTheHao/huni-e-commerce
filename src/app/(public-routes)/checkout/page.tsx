@@ -67,7 +67,7 @@ function reducer(state: State, action: Action): State {
 const VAT: number = parseInt(tax.VAT, 10) / 100;
 
 function CheckoutPage() {
-	const { deliveryInfo, isGettingDeliveryInfo } = useDeliveryInfoContext();
+	const { deliveryInfo } = useDeliveryInfoContext();
 	const { isAuthenticated } = useAuthGuard({ immediate: false });
 	const { items, products, loading: isCartLoading, handleRemoveAll } = useCartContext();
 	const [state, dispatch] = useReducer(reducer, initialState);
@@ -136,6 +136,7 @@ function CheckoutPage() {
 				totalPrice: orderTotalPrice,
 			};
 
+			loggerService.success('Is Authenticated:', isAuthenticated);
 			if (isAuthenticated) {
 				response = await authedCreateOrder(orderData);
 			} else {

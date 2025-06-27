@@ -150,6 +150,15 @@ function AuthContextProvider({ children }: AuthContextProviderProps) {
 
 	// info Lấy thông tin người dùng khi component mount
 	useEffect(() => {
+		const accessToken = localStorage.getItem(LOCAL_STORAGE_KEYS.ACCESS_TOKEN);
+		// info Nếu không có access token, không cần gọi API
+		if (!accessToken) {
+			setIsLoading(false);
+			setIsAuthenticated(false);
+			loggerService.info('Không có access token, không cần gọi API lấy thông tin người dùng');
+			return;
+		}
+
 		fetchUserProfile(true);
 	}, [fetchUserProfile]);
 
