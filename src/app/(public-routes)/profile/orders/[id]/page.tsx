@@ -13,7 +13,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faLocationDot } from '@fortawesome/free-solid-svg-icons';
 import { ORDER_STATUS_TEXT_MAP } from '@/consts/map-value';
 import { ROUTES } from '@/consts/routes.setting';
-import OrderItem from '../OrderItem';
+import OrderItem from '../OrderProduct';
 
 const OrderDetailPage = () => {
 	const { id } = useParams<{ id: string }>();

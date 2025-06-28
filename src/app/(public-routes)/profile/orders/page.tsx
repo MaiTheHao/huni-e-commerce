@@ -9,7 +9,7 @@ import Spinner from '@/components/ui/spinner/Spinner';
 import clsx from 'clsx';
 import Link from 'next/link';
 import { ORDER_STATUS_TEXT_MAP } from '@/consts/map-value';
-import OrderItem from './OrderItem';
+import OrderItem from './OrderProduct';
 
 export default function OrdersPage() {
 	const cacheRef = useRef<{ [key in TOrderStatus | 'all']?: IOrder[] }>({});

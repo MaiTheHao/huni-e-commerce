@@ -2,15 +2,10 @@
 import React, { useCallback } from 'react';
 import styles from '../Profile.module.scss';
 import Swal from 'sweetalert2';
-import api from '@/services/http-client/axios-interceptor';
 import { loggerService } from '@/services/logger.service';
-import { IResponse } from '@/interfaces';
-import { IGetDeliveryInfoResponseData } from '@/interfaces/api/user/get-delivery-info.interface';
 import { IUpdateDeliveryInfoRequestData } from '@/interfaces/api/user/update-delivery-info.interface';
 import Spinner from '@/components/ui/spinner/Spinner';
 import { IAddDeliveryAddressRequestData } from '@/interfaces/api/user/add-delivery-address.interface';
-import { isEmpty } from '@/util';
-import { HTTPStatus } from '@/enums/HttpStatus.enum';
 import ShippingAddressAddForm from './ShippingAddressAddForm';
 import ShippingAddressList from './ShippingAddressList';
 import { useDeliveryInfoContext } from '@/contexts/DeliveryInfoContext/DeliveryInfoContextProvider';
