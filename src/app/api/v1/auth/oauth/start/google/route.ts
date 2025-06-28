@@ -1,4 +1,4 @@
-import { COOKIE_KEYS } from '@/consts/keys';
+import { COOKIE_KEYS_MAP } from '@/consts/map-value';
 import { cookieService } from '@/services/cookie.service';
 import crypto from 'crypto';
 import { NextRequest, NextResponse } from 'next/server';
@@ -18,7 +18,7 @@ export async function GET(request: NextRequest) {
 	)}&response_type=code&scope=email%20profile&state=${state}`;
 
 	const response = NextResponse.redirect(authUrl);
-	response.cookies.set(COOKIE_KEYS.OAUTH_STATE, state, {
+	response.cookies.set(COOKIE_KEYS_MAP.OAUTH_STATE, state, {
 		httpOnly: true,
 		path: '/',
 		maxAge: 600, // 10 phút

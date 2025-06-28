@@ -2,7 +2,7 @@
 import api from '@/services/http-client/axios-interceptor';
 import React, { useEffect, useState, useCallback, useMemo, memo } from 'react';
 import { AuthContext, IAuthContextUser } from './AuthContext';
-import { CUSTOM_EVENTS, LOCAL_STORAGE_KEYS } from '@/consts/keys';
+import { CUSTOM_EVENTS_MAP, LOCAL_STORAGE_KEYS_MAP } from '@/consts/map-value';
 import { loggerService } from '@/services/logger.service';
 import { tokenService } from '@/services/token.service';
 import { IResponse } from '@/interfaces';
@@ -21,15 +21,15 @@ function AuthContextProvider({ children }: AuthContextProviderProps) {
 
 	// info Hàm lấy thông tin người dùng từ API hoặc localStorage
 	const fetchUserProfile = useCallback(async (forceRefresh = false) => {
-		const lastFetchTime = parseInt(localStorage.getItem(LOCAL_STORAGE_KEYS.LAST_PROFILE_FETCH) || '0');
+		const lastFetchTime = parseInt(localStorage.getItem(LOCAL_STORAGE_KEYS_MAP.LAST_PROFILE_FETCH) || '0');
 		const now = Date.now();
 		const milisecondsSinceLastFetch = now - lastFetchTime;
 
 		// note Kiểm tra xem có cần làm mới dữ liệu người dùng không
 		// note Điều kiện là nếu forceRefresh là true hoặc thời gian trôi qua chưa đủ CACHE_DURATION phút
 		if (!forceRefresh && milisecondsSinceLastFetch < CACHE_DURATION) {
-			const storedUser = localStorage.getItem(LOCAL_STORAGE_KEYS.USER_DATA);
-			const accessToken = localStorage.getItem(LOCAL_STORAGE_KEYS.ACCESS_TOKEN);
+			const storedUser = localStorage.getItem(LOCAL_STORAGE_KEYS_MAP.USER_DATA);
+			const accessToken = localStorage.getItem(LOCAL_STORAGE_KEYS_MAP.ACCESS_TOKEN);
 			const [decodeError, decodedUser] = tokenService.decodeAccessToken(accessToken || '');
 
 			if (storedUser && !decodeError) {
@@ -69,14 +69,14 @@ function AuthContextProvider({ children }: AuthContextProviderProps) {
 			// success Lấy user profile thành công, cập nhật localStorage
 			setUser(user);
 			setIsAuthenticated(true);
-			localStorage.setItem(LOCAL_STORAGE_KEYS.USER_DATA, JSON.stringify(user));
-			localStorage.setItem(LOCAL_STORAGE_KEYS.LAST_PROFILE_FETCH, Date.now().toString());
+			localStorage.setItem(LOCAL_STORAGE_KEYS_MAP.USER_DATA, JSON.stringify(user));
+			localStorage.setItem(LOCAL_STORAGE_KEYS_MAP.LAST_PROFILE_FETCH, Date.now().toString());
 		} catch (error) {
 			// error Lỗi khi gọi API lấy user profile
 			loggerService.error('Lỗi khi gọi API lấy dữ liệu người dùng:', error);
-			localStorage.removeItem(LOCAL_STORAGE_KEYS.USER_DATA);
-			localStorage.removeItem(LOCAL_STORAGE_KEYS.ACCESS_TOKEN);
-			localStorage.removeItem(LOCAL_STORAGE_KEYS.LAST_PROFILE_FETCH);
+			localStorage.removeItem(LOCAL_STORAGE_KEYS_MAP.USER_DATA);
+			localStorage.removeItem(LOCAL_STORAGE_KEYS_MAP.ACCESS_TOKEN);
+			localStorage.removeItem(LOCAL_STORAGE_KEYS_MAP.LAST_PROFILE_FETCH);
 		} finally {
 			setIsLoading(false);
 		}
@@ -89,14 +89,14 @@ function AuthContextProvider({ children }: AuthContextProviderProps) {
 			// error Không decode được access token
 			if (error || !decodedUser) {
 				loggerService.error('Không thể decode token:', error);
-				localStorage.removeItem(LOCAL_STORAGE_KEYS.ACCESS_TOKEN);
-				localStorage.removeItem(LOCAL_STORAGE_KEYS.USER_DATA);
-				localStorage.removeItem(LOCAL_STORAGE_KEYS.LAST_PROFILE_FETCH);
+				localStorage.removeItem(LOCAL_STORAGE_KEYS_MAP.ACCESS_TOKEN);
+				localStorage.removeItem(LOCAL_STORAGE_KEYS_MAP.USER_DATA);
+				localStorage.removeItem(LOCAL_STORAGE_KEYS_MAP.LAST_PROFILE_FETCH);
 				setIsAuthenticated(false);
 				setUser(null);
 				return;
 			}
-			localStorage.setItem(LOCAL_STORAGE_KEYS.ACCESS_TOKEN, accessToken);
+			localStorage.setItem(LOCAL_STORAGE_KEYS_MAP.ACCESS_TOKEN, accessToken);
 			fetchUserProfile(true);
 		},
 		[fetchUserProfile]
@@ -105,9 +105,9 @@ function AuthContextProvider({ children }: AuthContextProviderProps) {
 	// info Hàm đăng xuất người dùng
 	const logout = useCallback(async (disableAlert: boolean = false) => {
 		setIsLoading(true);
-		localStorage.removeItem(LOCAL_STORAGE_KEYS.USER_DATA);
-		localStorage.removeItem(LOCAL_STORAGE_KEYS.ACCESS_TOKEN);
-		localStorage.removeItem(LOCAL_STORAGE_KEYS.LAST_PROFILE_FETCH);
+		localStorage.removeItem(LOCAL_STORAGE_KEYS_MAP.USER_DATA);
+		localStorage.removeItem(LOCAL_STORAGE_KEYS_MAP.ACCESS_TOKEN);
+		localStorage.removeItem(LOCAL_STORAGE_KEYS_MAP.LAST_PROFILE_FETCH);
 		try {
 			const response = await api.post('/auth/logout');
 			// success Đăng xuất API thành công
@@ -142,15 +142,15 @@ function AuthContextProvider({ children }: AuthContextProviderProps) {
 		setUser((prev) => {
 			if (!prev) return null;
 			const merged = { ...prev, ...updated };
-			localStorage.setItem(LOCAL_STORAGE_KEYS.USER_DATA, JSON.stringify(merged));
-			localStorage.setItem(LOCAL_STORAGE_KEYS.LAST_PROFILE_FETCH, Date.now().toString());
+			localStorage.setItem(LOCAL_STORAGE_KEYS_MAP.USER_DATA, JSON.stringify(merged));
+			localStorage.setItem(LOCAL_STORAGE_KEYS_MAP.LAST_PROFILE_FETCH, Date.now().toString());
 			return merged;
 		});
 	}, []);
 
 	// info Lấy thông tin người dùng khi component mount
 	useEffect(() => {
-		const accessToken = localStorage.getItem(LOCAL_STORAGE_KEYS.ACCESS_TOKEN);
+		const accessToken = localStorage.getItem(LOCAL_STORAGE_KEYS_MAP.ACCESS_TOKEN);
 		// info Nếu không có access token, không cần gọi API
 		if (!accessToken) {
 			setIsLoading(false);
@@ -169,7 +169,7 @@ function AuthContextProvider({ children }: AuthContextProviderProps) {
 			const customEvent = event as CustomEvent<{ accessToken: string }>;
 			const newToken = customEvent.detail?.accessToken;
 			if (newToken) {
-				localStorage.removeItem(LOCAL_STORAGE_KEYS.LAST_PROFILE_FETCH);
+				localStorage.removeItem(LOCAL_STORAGE_KEYS_MAP.LAST_PROFILE_FETCH);
 				fetchUserProfile(true);
 			}
 		};
@@ -189,12 +189,12 @@ function AuthContextProvider({ children }: AuthContextProviderProps) {
 		};
 
 		// info Đăng ký lắng nghe sự kiện token-refreshed và logout
-		window.addEventListener(CUSTOM_EVENTS.TOKEN_REFRESHED, handleTokenRefreshed as EventListener);
-		window.addEventListener(CUSTOM_EVENTS.LOGOUT, handleTokenRemoved);
+		window.addEventListener(CUSTOM_EVENTS_MAP.TOKEN_REFRESHED, handleTokenRefreshed as EventListener);
+		window.addEventListener(CUSTOM_EVENTS_MAP.LOGOUT, handleTokenRemoved);
 
 		return () => {
-			window.removeEventListener(CUSTOM_EVENTS.TOKEN_REFRESHED, handleTokenRefreshed as EventListener);
-			window.removeEventListener(CUSTOM_EVENTS.LOGOUT, handleTokenRemoved);
+			window.removeEventListener(CUSTOM_EVENTS_MAP.TOKEN_REFRESHED, handleTokenRefreshed as EventListener);
+			window.removeEventListener(CUSTOM_EVENTS_MAP.LOGOUT, handleTokenRemoved);
 		};
 	}, [fetchUserProfile]);
 

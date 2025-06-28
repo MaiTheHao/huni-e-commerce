@@ -4,6 +4,7 @@ export interface IOrderItem {
 	productId: string;
 	productName: string;
 	productImage: string;
+	productCategory: string;
 	quantity: number;
 	unitPrice: number; // Giá đơn vị sau khi áp dụng giảm giá
 	subtotalPrice: number; // Tổng giá cho mặt hàng này (quantity * unitPrice)
@@ -24,6 +25,9 @@ export type TOrderType = (typeof ORDER_TYPES)[number];
 export const ORDER_STATUS = ['pending', 'confirmed', 'shipped', 'delivered', 'cancelled'] as const;
 export type TOrderStatus = (typeof ORDER_STATUS)[number];
 
+export const ORDER_PAYMENT_METHODS = ['cod', 'bank', 'cash'] as const;
+export type TOrderPaymentMethod = (typeof ORDER_PAYMENT_METHODS)[number];
+
 export interface IOrderBase {
 	customerId: string;
 	customerName: string;
@@ -38,6 +42,7 @@ export interface IOrderBase {
 	shippingFee?: number; // Thêm phí vận chuyển nếu cần
 	totalPrice: number; // Tổng giá cuối cùng đã bao gồm thuế, giảm giá, phí ship
 	status: TOrderStatus;
+	paymentMethod: TOrderPaymentMethod;
 	type: TOrderType;
 	createdAt: Date;
 	updatedAt: Date;
@@ -57,6 +62,7 @@ export interface ICreateOrderData {
 	customerAddress: string;
 	additionalInfo?: string;
 	items: IOrderItem[];
+	paymentMethod: TOrderPaymentMethod;
 	subtotalPrice: number;
 	vatAmount?: number;
 	discountAmount?: number;

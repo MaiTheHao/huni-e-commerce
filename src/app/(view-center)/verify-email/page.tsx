@@ -1,6 +1,6 @@
 'use client';
 import AuthForm from '@/components/ui/auth-form/AuthForm';
-import { LOCAL_STORAGE_KEYS } from '@/consts/keys';
+import { LOCAL_STORAGE_KEYS_MAP } from '@/consts/map-value';
 import { IResponse, TErrorFirst } from '@/interfaces';
 import { isEmpty } from '@/util';
 import { emailSchema } from '@/util/validate-input.util';
@@ -45,7 +45,7 @@ function VerifyEmailPage() {
 	const [countdown, setCountdown] = useState<number>(0);
 
 	useLayoutEffect(() => {
-		const storedIat = localStorage.getItem(LOCAL_STORAGE_KEYS.VERIFY_EMAIL_COUNTDOWN);
+		const storedIat = localStorage.getItem(LOCAL_STORAGE_KEYS_MAP.VERIFY_EMAIL_COUNTDOWN);
 		if (storedIat) {
 			const iat = parseInt(storedIat, 10);
 			const now = Date.now();
@@ -55,7 +55,7 @@ function VerifyEmailPage() {
 				setCountdown(remainingTime);
 				setSubmitDisabled(true);
 			} else {
-				localStorage.removeItem(LOCAL_STORAGE_KEYS.VERIFY_EMAIL_COUNTDOWN);
+				localStorage.removeItem(LOCAL_STORAGE_KEYS_MAP.VERIFY_EMAIL_COUNTDOWN);
 			}
 		}
 	}, []);
@@ -63,7 +63,7 @@ function VerifyEmailPage() {
 	const handleSubmit = async (formData: any) => {
 		if (isLoading || submitDisabled) return;
 		setIsLoading(true);
-		localStorage.setItem(LOCAL_STORAGE_KEYS.VERIFY_EMAIL_COUNTDOWN, Date.now().toString());
+		localStorage.setItem(LOCAL_STORAGE_KEYS_MAP.VERIFY_EMAIL_COUNTDOWN, Date.now().toString());
 		try {
 			const [error, result] = await fetchVerifyEmail(formData.email);
 			if (error) {
@@ -109,7 +109,7 @@ function VerifyEmailPage() {
 			}, 1000);
 		} else if (countdown === 0 && submitDisabled) {
 			setSubmitDisabled(false);
-			localStorage.removeItem(LOCAL_STORAGE_KEYS.VERIFY_EMAIL_COUNTDOWN);
+			localStorage.removeItem(LOCAL_STORAGE_KEYS_MAP.VERIFY_EMAIL_COUNTDOWN);
 		}
 
 		return () => {

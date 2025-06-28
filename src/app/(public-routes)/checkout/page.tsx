@@ -13,8 +13,7 @@ import { useDeliveryInfoContext } from '@/contexts/DeliveryInfoContext/DeliveryI
 import { ICreateOrderRequestData, IProduct, TErrorFirst } from '@/interfaces';
 import { anonymousCreateOrder, authedCreateOrder } from './apis';
 import { calcDiscountAmount, calcDiscountedPrice, calcVATAmount, toString } from '@/util';
-import { loggerService } from '@/services/logger.service';
-import { IOrderItem } from '@/interfaces/entity/order/order.entity';
+import { IOrderItem, TOrderPaymentMethod } from '@/interfaces/entity/order/order.entity';
 
 const checkoutValidate = z.object({
 	name: nameSchema,
@@ -82,79 +81,88 @@ function CheckoutPage() {
 
 	const total = subtotal + vatAmount;
 
-	const handleSubmitOrder = useCallback(async () => {
-		const result = checkoutValidate.safeParse(state.formData);
-		if (!result.success) {
-			const errors: Record<string, string> = {};
-			result.error.errors.forEach((error: z.ZodIssue) => {
-				if (error.path[0]) {
-					errors[error.path[0] as string] = error.message;
-				}
-			});
-			setValidateError(errors);
-			Swal.fire('Thông tin không hợp lệ', 'Vui lòng kiểm tra lại thông tin đã nhập.', 'error');
-			return;
-		}
-
-		setValidateError({});
-		setIsSubmitting(true);
-		try {
-			let response: TErrorFirst<any, null>;
-			let orderSubtotalPrice = 0;
-
-			const orderItems: IOrderItem[] = items.map((item) => {
-				const product: IProduct = products[item.productId] as IProduct;
-				const discountedPrice: number = calcDiscountedPrice(product.price, product.discountPercent, true, 1000);
-				const discountAmount: number = calcDiscountAmount(product.price, product.discountPercent, true, 1000);
-				const subtotalPrice: number = discountedPrice * item.quantity;
-
-				orderSubtotalPrice += subtotalPrice;
-
-				return {
-					productId: toString(item.productId),
-					productName: toString(product.name),
-					productImage: toString(product.images[0]),
-					quantity: Number(item.quantity),
-					unitPrice: discountedPrice,
-					subtotalPrice: subtotalPrice,
-					discountAmount: discountAmount,
-				};
-			});
-
-			const orderVatAmount = calcVATAmount(orderSubtotalPrice, VAT, true, 1000);
-			const orderTotalPrice = orderSubtotalPrice + orderVatAmount;
-
-			const orderData: ICreateOrderRequestData = {
-				customerName: state.formData.name,
-				customerEmail: state.formData.email,
-				customerPhone: state.formData.phone,
-				customerAddress: state.formData.address,
-				additionalInfo: state.formData.additionalInfo,
-				items: orderItems,
-				subtotalPrice: orderSubtotalPrice,
-				vatAmount: orderVatAmount,
-				totalPrice: orderTotalPrice,
-			};
-
-			if (isAuthenticated) {
-				response = await authedCreateOrder(orderData);
-			} else {
-				response = await anonymousCreateOrder(orderData);
-			}
-
-			if (response[0]) {
-				Swal.fire('Đặt hàng thất bại', response[0], 'error');
+	const handleSubmitOrder = useCallback(
+		async (paymentMethod: TOrderPaymentMethod) => {
+			const result = checkoutValidate.safeParse(state.formData);
+			if (!result.success) {
+				const errors: Record<string, string> = {};
+				result.error.errors.forEach((error: z.ZodIssue) => {
+					if (error.path[0]) {
+						errors[error.path[0] as string] = error.message;
+					}
+				});
+				setValidateError(errors);
+				Swal.fire('Thông tin không hợp lệ', 'Vui lòng kiểm tra lại thông tin đã nhập.', 'error');
 				return;
 			}
-			await handleRemoveAll();
-			Swal.fire('Đặt hàng thành công', 'Chúng tôi sẽ liên hệ xác nhận đơn hàng trong thời gian sớm nhất.', 'success');
-		} catch (error) {
-			console.error('Error submitting order:', error);
-			Swal.fire('Đặt hàng thất bại', 'Đã có lỗi xảy ra khi đặt hàng. Vui lòng thử lại sau.', 'error');
-		} finally {
-			setIsSubmitting(false);
-		}
-	}, [state.formData, items, total, vatAmount]);
+
+			setValidateError({});
+			setIsSubmitting(true);
+			try {
+				let response: TErrorFirst<any, null>;
+				let orderSubtotalPrice = 0;
+
+				const orderItems: IOrderItem[] = items.map((item) => {
+					const product: IProduct = products[item.productId] as IProduct;
+					const discountedPrice: number = calcDiscountedPrice(product.price, product.discountPercent, true, 1000);
+					const discountAmount: number = calcDiscountAmount(product.price, product.discountPercent, true, 1000);
+					const subtotalPrice: number = discountedPrice * item.quantity;
+
+					orderSubtotalPrice += subtotalPrice;
+
+					return {
+						productId: toString(item.productId),
+						productName: toString(product.name),
+						productImage: toString(product.images[0]),
+						productCategory: toString(product.productType),
+						quantity: Number(item.quantity),
+						unitPrice: discountedPrice,
+						subtotalPrice: subtotalPrice,
+						discountAmount: discountAmount,
+					};
+				});
+
+				const orderDiscountAmount = 0;
+				const shippingFee = 0;
+				const orderVatAmount = calcVATAmount(orderSubtotalPrice, VAT, true, 1000);
+				const orderTotalPrice = orderSubtotalPrice + orderVatAmount;
+
+				const orderData: ICreateOrderRequestData = {
+					customerName: state.formData.name,
+					customerEmail: state.formData.email,
+					customerPhone: state.formData.phone,
+					customerAddress: state.formData.address,
+					additionalInfo: state.formData.additionalInfo,
+					items: orderItems,
+					paymentMethod: paymentMethod,
+					subtotalPrice: orderSubtotalPrice,
+					vatAmount: orderVatAmount,
+					discountAmount: orderDiscountAmount,
+					shippingFee: shippingFee,
+					totalPrice: orderTotalPrice,
+				};
+
+				if (isAuthenticated) {
+					response = await authedCreateOrder(orderData);
+				} else {
+					response = await anonymousCreateOrder(orderData);
+				}
+
+				if (response[0]) {
+					Swal.fire('Đặt hàng thất bại', response[0], 'error');
+					return;
+				}
+				await handleRemoveAll();
+				Swal.fire('Đặt hàng thành công', 'Chúng tôi sẽ liên hệ xác nhận đơn hàng trong thời gian sớm nhất.', 'success');
+			} catch (error) {
+				console.error('Error submitting order:', error);
+				Swal.fire('Đặt hàng thất bại', 'Đã có lỗi xảy ra khi đặt hàng. Vui lòng thử lại sau.', 'error');
+			} finally {
+				setIsSubmitting(false);
+			}
+		},
+		[state.formData, items, total, vatAmount]
+	);
 
 	const validateField = useCallback((name: string, value: string) => {
 		const fieldSchema = checkoutValidate.shape[name as keyof typeof checkoutValidate.shape];

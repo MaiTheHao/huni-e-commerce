@@ -1,4 +1,4 @@
-import { CUSTOM_EVENTS, LOCAL_STORAGE_KEYS } from '@/consts/keys';
+import { CUSTOM_EVENTS_MAP, LOCAL_STORAGE_KEYS_MAP } from '@/consts/map-value';
 import { dispatchAuthEvent } from '@/util/custom-event.util';
 import axios, { AxiosError } from 'axios';
 import { loggerService } from '@/services/logger.service';
@@ -52,7 +52,7 @@ const linkResponseErrorMessage = (error: AxiosError<IResponse>) => {
 
 // info Interceptor cho request: thêm access token nếu có
 api.interceptors.request.use((config) => {
-	const accessToken = localStorage.getItem(LOCAL_STORAGE_KEYS.ACCESS_TOKEN);
+	const accessToken = localStorage.getItem(LOCAL_STORAGE_KEYS_MAP.ACCESS_TOKEN);
 	if (isExcluded(config.url)) return config;
 	if (accessToken) config.headers.Authorization = `Bearer ${accessToken}`;
 	return config;
@@ -84,19 +84,19 @@ api.interceptors.response.use(
 					loggerService.error('Không lấy được access token mới khi refresh token');
 					linkResponseErrorMessage(err);
 					processQueue(err, null);
-					dispatchAuthEvent(CUSTOM_EVENTS.LOGOUT);
-					localStorage.removeItem(LOCAL_STORAGE_KEYS.ACCESS_TOKEN);
+					dispatchAuthEvent(CUSTOM_EVENTS_MAP.LOGOUT);
+					localStorage.removeItem(LOCAL_STORAGE_KEYS_MAP.ACCESS_TOKEN);
 					return Promise.reject(err);
 				}
-				localStorage.setItem(LOCAL_STORAGE_KEYS.ACCESS_TOKEN, newAccessToken);
-				dispatchAuthEvent(CUSTOM_EVENTS.TOKEN_REFRESHED, { accessToken: newAccessToken });
+				localStorage.setItem(LOCAL_STORAGE_KEYS_MAP.ACCESS_TOKEN, newAccessToken);
+				dispatchAuthEvent(CUSTOM_EVENTS_MAP.TOKEN_REFRESHED, { accessToken: newAccessToken });
 				processQueue(null, newAccessToken);
 				reqConfig.headers.Authorization = `Bearer ${newAccessToken}`;
 				return api(reqConfig);
 			} catch (refreshError: any) {
 				// error Refresh token thất bại, đăng xuất
 				loggerService.error('Refresh token thất bại', refreshError);
-				dispatchAuthEvent(CUSTOM_EVENTS.LOGOUT);
+				dispatchAuthEvent(CUSTOM_EVENTS_MAP.LOGOUT);
 				processQueue(refreshError, null);
 				linkResponseErrorMessage(err);
 				return Promise.reject(err);

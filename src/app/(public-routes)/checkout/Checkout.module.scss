@@ -103,6 +103,13 @@
 	}
 }
 
+.payment-methods {
+	display: flex;
+	flex-direction: column;
+	gap: 0.5em;
+	font-size: 1em;
+}
+
 .orderFooterNote {
 	font-size: 0.875em;
 	color: $txt-secondary;

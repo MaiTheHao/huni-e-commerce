@@ -580,526 +580,239 @@
 		font-size: 1em;
 		transition: box-shadow 0.15s, border 0.15s;
 
-		&:hover {
-			box-shadow: $box-shadow-hover;
-			border-color: $accent-color;
-		}
-
 		&__header {
 			display: flex;
 			justify-content: space-between;
 			align-items: center;
-
-			&__date {
-				color: $txt-tertiary;
-				font-size: $font-size-14;
-			}
-
-			&__status {
-				padding: $spacing-4 $spacing-12;
-				border-radius: 0.25em;
-				font-size: $font-size-14;
-				letter-spacing: 0.01em;
-				text-transform: capitalize;
-				background-color: $gray-200;
-				color: $txt-primary;
-
-				&.status--confirmed {
-					background-color: map.get($success, bg);
-					color: map.get($success, text);
-				}
-
-				&.status--pending {
-					background-color: map.get($warning, bg);
-					color: map.get($warning, text);
-				}
-				&.status--shipped {
-					background-color: map.get($info, bg);
-					color: map.get($info, text);
-				}
-				&.status--delivered {
-					background-color: map.get($success, bg);
-					color: map.get($success, text);
-				}
-				&.status--cancelled {
-					background-color: map.get($error, bg);
-					color: map.get($error, text);
-				}
-			}
 		}
 
-		&__products {
+		&__price {
 			display: flex;
-			flex-direction: column;
-			gap: 1em;
-			font-size: 1em;
-
-			&__product {
-				display: flex;
-				gap: 1ch;
-				font-size: 1em;
-
-				&-image {
-					width: 80px;
-					height: 80px;
-					border-radius: 0.25em;
-					overflow: hidden;
-					box-shadow: $box-shadow-card;
-					flex-shrink: 0;
-
-					img {
-						width: 100%;
-						height: 100%;
-						object-fit: cover;
-					}
-				}
-
-				&-info {
-					display: flex;
-					flex-direction: column;
-					gap: 0.5ch;
-					font-size: 1em;
-
-					&__name {
-						font-size: 0.875em;
-						font-weight: $font-weight-semibold;
-						color: $txt-primary;
-					}
-
-					&__quantity {
-						font-size: 0.75em;
-						color: $txt-secondary;
-					}
-				}
-			}
-
-			&__more {
-				font-size: $font-size-14;
-				color: $txt-secondary;
-				font-weight: $font-weight-light;
-				margin-top: $spacing-8;
-			}
-		}
-
-		&__footer {
-			display: flex;
-			flex-wrap: wrap;
-			justify-content: space-between;
+			justify-content: flex-end;
 			align-items: center;
+			gap: 0.5em;
 			font-size: 1em;
+			&__label {
+				font-size: 1em;
+				color: $txt-secondary;
+			}
 
-			&__total {
+			&__value {
 				font-size: 1.125em;
 				font-weight: $font-weight-semibold;
 				color: $secondary-color;
 			}
+		}
 
-			&__more {
-				font-size: 1em;
-			}
+		&:hover {
+			box-shadow: $box-shadow-hover;
+			border-color: $accent-color;
+		}
+	}
+}
+
+.order-products {
+	display: flex;
+	flex-direction: column;
+	gap: 1em;
+	font-size: 1em;
+
+	&__more {
+		font-size: 0.875em;
+		color: $txt-secondary;
+		font-weight: $font-weight-light;
+		margin-top: 0.5em;
+	}
+}
+
+.order-product {
+	position: relative;
+	display: flex;
+	gap: 1ch;
+	font-size: 1em;
+
+	&-image {
+		width: 80px;
+		height: 80px;
+		border-radius: 0.25em;
+		overflow: hidden;
+		box-shadow: $box-shadow-card;
+		flex-shrink: 0;
+
+		img {
+			width: 100%;
+			height: 100%;
+			object-fit: cover;
+		}
+	}
+
+	&-info {
+		position: relative;
+		width: 100%;
+		display: flex;
+		flex-direction: column;
+		gap: 0.5ch;
+		font-size: 1em;
+		overflow-x: hidden;
+
+		&__name {
+			width: 100%;
+			font-size: 0.875em;
+			font-weight: $font-weight-semibold;
+			color: $txt-primary;
+			white-space: nowrap;
+			overflow-x: hidden;
+			text-overflow: ellipsis;
+			white-space: nowrap;
+		}
+
+		&__price {
+			font-size: 0.75em;
+			color: $txt-secondary;
 		}
 	}
 }
 
 // info ORDER DETAIL PAGE
 .order-detail {
+	position: relative;
 	display: flex;
 	flex-direction: column;
-	gap: $spacing-24; // Tăng khoảng cách giữa các section
-	padding: $spacing-24; // Thêm padding lớn hơn cho không gian thoáng
+	gap: 1em;
 	font-size: 1em;
-	max-width: $app-max-width;
-	margin: 0 auto;
-	background: none;
-
-	> *:not(:last-child) {
-		// Thêm đường phân cách giữa các section
-		padding-bottom: $spacing-16;
-		border-bottom: 1px solid $black-200;
-	}
-
-	@media (max-width: $breakpoint-md) {
-		padding: $spacing-16 $spacing-8; // Giảm padding trên mobile nhưng vẫn đủ thoáng
-		gap: $spacing-16;
-	}
 }
 
 .order-detail__header {
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
-	flex-wrap: wrap;
-	gap: $spacing-16;
+}
+
+.order-detail__price {
+	display: flex;
+	flex-direction: column;
+	gap: 0.5em;
 	font-size: 1em;
-	background-color: $gray-100; // Thêm nền nhẹ để nổi bật
-	padding: $spacing-16; // Tăng padding cho không gian
-	border-radius: 0.25em;
 
-	@media (max-width: $breakpoint-md) {
-		flex-direction: column;
-		align-items: flex-start;
-		gap: $spacing-12;
-		padding: $spacing-12;
-	}
-
-	&__info {
+	&__row {
 		display: flex;
-		gap: $spacing-16;
-		align-items: center;
-		font-size: 1em;
-
-		&__date {
-			font-size: $font-size-16; // Tăng kích thước font cho dễ đọc
-			color: $txt-tertiary;
-		}
-
-		&__status {
-			padding: $spacing-6 $spacing-12;
-			border-radius: 0.25em;
-			font-size: $font-size-16; // Tăng kích thước font
-			font-weight: $font-weight-semibold;
-			letter-spacing: 0.01em;
-			text-transform: capitalize;
-			background-color: $gray-200;
-			color: $txt-primary;
-
-			&.status--confirmed {
-				background-color: map.get($success, bg);
-				color: map.get($success, text);
-			}
-			&.status--pending {
-				background-color: map.get($warning, bg);
-				color: map.get($warning, text);
-			}
-			&.status--shipped {
-				background-color: map.get($info, bg);
-				color: map.get($info, text);
-			}
-			&.status--delivered {
-				background-color: map.get($success, bg);
-				color: map.get($success, text);
-			}
-			&.status--cancelled {
-				background-color: map.get($error, bg);
-				color: map.get($error, text);
-			}
-		}
-	}
-
-	&__meta {
-		display: flex;
-		gap: $spacing-16;
+		justify-content: space-between;
 		align-items: center;
 		font-size: 1em;
 	}
 
-	&__id {
-		font-size: $font-size-16; // Tăng kích thước font
-		font-weight: $font-weight-semibold;
-		color: $txt-primary;
-		b {
-			color: $primary-color; // Làm nổi bật mã đơn hàng
-		}
-	}
-
-	&__actions {
-		display: flex;
-		gap: $spacing-8;
-
-		button,
-		.order-detail__header__action {
-			padding: $spacing-12 $spacing-24; // Tăng padding cho nút
-			border: 1px solid $black-200;
-			border-radius: 0.25em;
-			background: none;
-			cursor: pointer;
-			font-size: $font-size-16;
-			transition: background 0.15s;
-
-			&:hover {
-				background-color: $gray-100;
-			}
-		}
-	}
-}
-
-.order-detail__customer {
-	display: flex;
-	flex-direction: column;
-	gap: $spacing-16;
-	font-size: 1em;
-
-	h2 {
-		font-size: $font-size-24; // Tăng kích thước tiêu đề
-		margin-bottom: $spacing-12;
-		color: $accent-color;
-		font-weight: $font-weight-semibold;
-	}
-
-	&__contact,
-	&__delivery {
-		h3 {
-			font-size: $font-size-18; // Thêm tiêu đề phụ cho rõ ràng
-			margin-bottom: $spacing-8;
-			color: $txt-primary;
-		}
-
-		dl {
-			display: grid;
-			grid-template-columns: max-content 1fr;
-			gap: $spacing-8 $spacing-16;
-			font-size: $font-size-16; // Tăng kích thước font cho dễ đọc
-			background-color: $gray-100; // Thêm nền nhẹ
-			padding: $spacing-12;
-			border-radius: 0.25em;
-		}
-
-		dt {
-			font-weight: $font-weight-bold;
-			color: $txt-primary; // Đậm hơn để nổi bật
-		}
-
-		dd {
-			margin: 0;
-			color: $txt-secondary;
-
-			details {
-				summary {
-					cursor: pointer;
-					font-size: $font-size-16;
-					color: $primary-color;
-				}
-				p {
-					margin-top: $spacing-8;
-					color: $txt-secondary;
-				}
-			}
-		}
-	}
-
-	@media (max-width: $breakpoint-md) {
-		&__contact,
-		&__delivery {
-			dl {
-				grid-template-columns: 1fr;
-				font-size: $font-size-16;
-			}
-		}
-	}
-}
-
-.order-detail__products {
-	display: flex;
-	flex-direction: column;
-	gap: $spacing-16;
-	font-size: 1em;
-
-	h2 {
-		font-size: $font-size-24; // Tăng kích thước tiêu đề
-		margin-bottom: $spacing-12;
-		color: $accent-color;
-		font-weight: $font-weight-semibold;
-	}
-
-	&__header {
-		display: none;
-		@media (min-width: $breakpoint-md) {
-			display: grid;
-			grid-template-columns: 80px 2fr 1fr 1fr 1fr 1fr;
-			gap: $spacing-16;
-			font-weight: $font-weight-semibold;
-			padding: $spacing-8 0;
-			border-bottom: 1px solid $black-200;
-			color: $txt-secondary;
-			font-size: $font-size-16; // Tăng kích thước font
-			background-color: $gray-100; // Thêm nền nhẹ
-		}
-	}
-
-	.order-detail__product {
-		display: flex;
-		flex-direction: column;
-		gap: $spacing-8;
-		padding: $spacing-16 0;
-		border-bottom: 1px solid $black-200;
-		font-size: 1em;
-
-		&:last-child {
-			border-bottom: none; // Loại bỏ đường viền dưới cho sản phẩm cuối
-		}
-
-		@media (min-width: $breakpoint-md) {
-			display: grid;
-			grid-template-columns: 80px 2fr 1fr 1fr 1fr 1fr;
-			align-items: center;
-			gap: $spacing-16;
-			padding: $spacing-16 0;
-			flex-direction: unset;
-		}
-
-		.order-detail__product-image {
-			grid-column: 1;
-			width: 80px;
-			height: 80px;
-			border-radius: 0.25em;
-			overflow: hidden;
-			box-shadow: $box-shadow-card;
-			border: 1px solid $black-200; // Thêm viền nhẹ
-			flex-shrink: 0;
-
-			img {
-				width: 100%;
-				height: 100%;
-				object-fit: cover;
-				border-radius: 0.25em;
-			}
-		}
-
-		.order-detail__product-info {
-			grid-column: 2;
-			display: flex;
-			flex-direction: column;
-			gap: $spacing-8;
-			font-size: 1em;
-
-			.order-detail__product-name {
-				font-weight: $font-weight-semibold;
-				color: $txt-primary;
-				font-size: $font-size-18; // Tăng kích thước tên sản phẩm
-			}
-
-			> div {
-				font-size: $font-size-16;
-				color: $txt-secondary;
-
-				b {
-					color: $primary-color; // Làm nổi bật giá trị
-				}
-			}
-		}
-
-		.order-detail__product-quantity {
-			grid-column: 3;
-		}
-		.order-detail__product-unit-price {
-			grid-column: 4;
-		}
-		.order-detail__product-discount {
-			grid-column: 5;
-		}
-		.order-detail__product-subtotal {
-			grid-column: 6;
-		}
-	}
-
-	@media (max-width: $breakpoint-md) {
-		.order-detail__product {
-			padding: $spacing-12 0;
-			.order-detail__product-image {
-				width: 100%;
-				max-width: 120px;
-				height: auto;
-				margin-bottom: $spacing-8;
-			}
-			.order-detail__product-info > div {
-				display: flex;
-				justify-content: space-between;
-				margin-bottom: $spacing-8;
-			}
-		}
-	}
-}
-
-.order-detail__summary {
-	font-size: 1em;
-
-	h2 {
-		font-size: $font-size-24; // Tăng kích thước tiêu đề
-		margin-bottom: $spacing-12;
-		color: $accent-color;
-		font-weight: $font-weight-semibold;
-	}
-
-	dl {
-		display: grid;
-		grid-template-columns: max-content 1fr;
-		gap: $spacing-8 $spacing-16;
-		font-size: $font-size-16; // Tăng kích thước font
-		padding: $spacing-12;
-		background-color: $gray-100; // Thêm nền nhẹ
-		border-radius: 0.25em;
-	}
-
-	dt {
-		font-weight: $font-weight-bold;
-		color: $txt-primary; // Đậm hơn để nổi bật
-	}
-
-	dd {
-		text-align: right;
+	&__label {
 		color: $txt-secondary;
-		margin: 0;
+		font-size: 0.875em;
 	}
 
-	&__total-label,
+	&__value {
+		font-weight: $font-weight-semibold;
+		color: $secondary-color;
+		font-size: 0.95em;
+	}
+
 	&__total {
-		font-size: $font-size-20; // Tăng kích thước font cho tổng tiền
-		font-weight: $font-weight-bold;
-		color: $primary-color;
-	}
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		margin-top: 0.5em;
+		padding-top: 0.5em;
+		border-top: 1px solid $secondary-color;
 
-	@media (max-width: $breakpoint-md) {
-		dl {
-			grid-template-columns: 1fr;
+		&__label {
+			color: $txt-primary;
+			font-size: 1.125em;
+			font-weight: $font-weight-semibold;
 		}
-		dd {
-			text-align: left;
+
+		&__value {
+			color: $secondary-color;
+			font-size: 1.125em;
+			font-weight: $font-weight-semibold;
 		}
 	}
 }
 
-.order-detail__actions {
+.order-detail__additional {
 	display: flex;
-	gap: $spacing-12;
-	justify-content: flex-end;
-	font-size: 1em;
+	flex-direction: column;
+	gap: 1em;
 
-	.cta-button--primary {
-		padding: $spacing-12 $spacing-24; // Tăng kích thước nút
-		background-color: $primary-color;
-		color: $txt-white;
-		border-radius: 0.25em;
-		text-decoration: none;
-		font-size: $font-size-16; // Tăng kích thước font
-		border: none;
-		transition: background 0.15s;
-
-		&:hover {
-			background-color: color.adjust($primary-color, $lightness: -10%);
-		}
-	}
-
-	.order-detail__action--secondary,
-	&__action--secondary {
-		padding: $spacing-12 $spacing-24;
-		background: none;
-		border: 1px solid $black-200;
-		border-radius: 0.25em;
-		cursor: pointer;
-		font-size: $font-size-16;
+	&__shipping {
+		display: flex;
+		align-items: center;
+		gap: 0.5em;
 		color: $txt-secondary;
-		transition: background 0.15s;
+		font-size: 1em;
 
-		&:hover {
-			background-color: $gray-100;
+		svg {
+			aspect-ratio: 1;
+			color: $accent-color;
+			font-size: 1.1em;
+		}
+
+		span {
+			font-size: 0.875em;
 		}
 	}
 
-	@media (max-width: $breakpoint-md) {
-		flex-direction: column;
-		align-items: stretch;
-		gap: $spacing-8;
+	&__note {
+		padding: 0.5em 1em;
+		background-color: $gray-100;
+		border-radius: 0.25em;
+		color: $txt-secondary;
+		font-size: 0.875em;
+		font-style: italic;
 	}
+}
+
+// info REUSEABLE STYLES
+.status {
+	font-size: 1em;
+	padding: 0.5em 0.75em;
+	border-radius: 0.25em;
+	font-weight: $font-weight-semibold;
+	text-transform: capitalize;
+	white-space: nowrap;
+	background-color: $gray-200;
+	color: $txt-primary;
+}
+
+.status--confirmed {
+	@extend .status;
+	background-color: map.get($success, bg);
+	color: map.get($success, text);
+}
+
+.status--pending {
+	@extend .status;
+	background-color: map.get($warning, bg);
+	color: map.get($warning, text);
+}
+
+.status--shipped {
+	@extend .status;
+	background-color: map.get($info, bg);
+	color: map.get($info, text);
+}
+
+.status--delivered {
+	@extend .status;
+	background-color: map.get($success, bg);
+	color: map.get($success, text);
+}
+
+.status--cancelled {
+	@extend .status;
+	background-color: map.get($error, bg);
+	color: map.get($error, text);
+}
+
+.date {
+	font-size: $font-size-14;
+	color: $txt-tertiary;
+	font-weight: $font-weight-regular;
 }
 
 // Responsive for orders page
@@ -1220,6 +933,11 @@
 			font-size: 0.875em;
 		}
 	}
+
+	// info STATUS STYLES
+	.status {
+		font-size: 0.875em;
+	}
 }
 
 @media screen and (max-width: $breakpoint-sm) {
@@ -1245,11 +963,12 @@
 
 	.orders-item__products {
 		font-size: 0.875em;
-		&__product {
-			&-image {
-				width: 60px;
-				height: 60px;
-			}
+	}
+
+	.order-product {
+		&-image {
+			width: 60px;
+			height: 60px;
 		}
 	}
 
@@ -1260,5 +979,10 @@
 		&__more {
 			font-size: 0.75em;
 		}
+	}
+
+	// info STATUS STYLES
+	.status {
+		font-size: 0.75em;
 	}
 }

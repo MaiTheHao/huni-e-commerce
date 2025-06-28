@@ -2,7 +2,7 @@
 import { useEffect, useState } from 'react';
 import { NotificationPage } from '@/components/ui/notification-page/NotificationPage';
 import { useAuthContext } from '@/contexts/AuthContext/useAuthContext';
-import { COOKIE_KEYS } from '@/consts/keys';
+import { COOKIE_KEYS_MAP } from '@/consts/map-value';
 import { loggerService } from '@/services/logger.service';
 
 export default function OAuthSuccessPage() {
@@ -19,7 +19,7 @@ export default function OAuthSuccessPage() {
 					return acc;
 				}, {} as Record<string, string>);
 
-				const tmpAccessToken = cookies[COOKIE_KEYS.TMP_ACCESS_TOKEN];
+				const tmpAccessToken = cookies[COOKIE_KEYS_MAP.TMP_ACCESS_TOKEN];
 
 				if (!tmpAccessToken) {
 					throw new Error('Không tìm thấy access token từ OAuth');
@@ -33,7 +33,7 @@ export default function OAuthSuccessPage() {
 				}
 
 				// Xóa temporary cookie
-				document.cookie = `${COOKIE_KEYS.TMP_ACCESS_TOKEN}=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT`;
+				document.cookie = `${COOKIE_KEYS_MAP.TMP_ACCESS_TOKEN}=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT`;
 
 				// Đăng nhập bằng access token
 				login(accessToken);

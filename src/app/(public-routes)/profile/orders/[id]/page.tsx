@@ -3,13 +3,17 @@ import { useEffect, useState, useCallback } from 'react';
 import { useParams } from 'next/navigation';
 import styles from '../../Profile.module.scss';
 import { IOrder, IOrderItem } from '@/interfaces/entity/order/order.entity';
-import { getOrderStatusText } from '@/util/enum-to-text.util';
 import { toLocalePrice } from '@/util';
 import Spinner from '@/components/ui/spinner/Spinner';
 import clsx from 'clsx';
 import Image from 'next/image';
 import Link from 'next/link';
 import { getOrderDetail } from '../../apis';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faLocationDot } from '@fortawesome/free-solid-svg-icons';
+import { ORDER_STATUS_TEXT_MAP } from '@/consts/map-value';
+import { ROUTES } from '@/consts/routes.setting';
+import OrderItem from '../OrderItem';
 
 const OrderDetailPage = () => {
 	const { id } = useParams<{ id: string }>();
@@ -50,13 +54,11 @@ const OrderDetailPage = () => {
 		);
 	}
 
-	if (!order) {
+	const isOrderValid = order && order.items.length > 0;
+	if (!isOrderValid) {
 		return (
 			<div className={styles.part}>
 				<p className={styles['part__empty-state']}>Không tìm thấy đơn hàng.</p>
-				<Link href='/profile/orders' className='cta-button--primary' prefetch={false}>
-					Quay lại danh sách đơn hàng
-				</Link>
 			</div>
 		);
 	}
@@ -71,132 +73,58 @@ const OrderDetailPage = () => {
 	});
 
 	return (
-		<div className={styles['part']}>
-			<h2 className={styles['part__title']}>Chi tiết đơn hàng</h2>
-
-			<div className={styles['order-detail']}>
-				<header className={styles['order-detail__header']}>
-					<div className={styles['order-detail__header__info']}>
-						<span className={styles['order-detail__header__info__date']}>{formattedDate}</span>
-						<span className={clsx(styles['order-detail__header__info__status'], styles[`status--${order.status}`])}>{getOrderStatusText(order.status)}</span>
-					</div>
-					<div className={styles['order-detail__header__meta']}>
-						<div className={styles['order-detail__header__id']}>
-							Mã đơn hàng: <b>{order._id}</b>
-						</div>
-					</div>
-				</header>
-
-				<article className={styles['order-detail__customer']}>
-					<h2>Thông tin khách hàng</h2>
-					<div className={styles['order-detail__customer__contact']}>
-						<h3>Thông tin liên hệ</h3>
-						<dl>
-							<dt>Khách hàng:</dt>
-							<dd>{order.customerName}</dd>
-							<dt>Email:</dt>
-							<dd>{order.customerEmail}</dd>
-							<dt>Điện thoại:</dt>
-							<dd>{order.customerPhone}</dd>
-						</dl>
-					</div>
-					<div className={styles['order-detail__customer__delivery']}>
-						<h3>Địa chỉ giao hàng</h3>
-						<dl>
-							<dt>Địa chỉ:</dt>
-							<dd>{order.customerAddress}</dd>
-							{order.additionalInfo && (
-								<>
-									<dt>Ghi chú:</dt>
-									<dd>
-										<details>
-											<summary>Xem ghi chú</summary>
-											<p>{order.additionalInfo}</p>
-										</details>
-									</dd>
-								</>
-							)}
-						</dl>
-					</div>
-				</article>
-
-				<section className={styles['order-detail__products']}>
-					<h2>Sản phẩm</h2>
-					<div className={styles['order-detail__products__header']}>
-						<span>Tên sản phẩm</span>
-						<span>Số lượng</span>
-						<span>Đơn giá</span>
-						<span>Giảm giá</span>
-						<span>Tạm tính</span>
-					</div>
-					{order.items.map((item: IOrderItem) => (
-						<article key={item.productId} className={styles['order-detail__product']}>
-							<div className={styles['order-detail__product-image']}>
-								<Image
-									src={item.productImage}
-									alt={item.productName}
-									width={80}
-									height={80}
-									style={{ objectFit: 'cover', aspectRatio: '1 / 1' }}
-									sizes='(max-width: 768px) 80px, 80px'
-								/>
-							</div>
-							<div className={styles['order-detail__product-info']}>
-								<div className={styles['order-detail__product-name']}>{item.productName}</div>
-								<div className={styles['order-detail__product-quantity']}>
-									Số lượng: <b>{item.quantity}</b>
-								</div>
-								<div className={styles['order-detail__product-unit-price']}>
-									Đơn giá: <b>{toLocalePrice(item.unitPrice)}</b>
-								</div>
-								{item.discountAmount && (
-									<div className={styles['order-detail__product-discount']}>
-										Giảm giá: <b>{toLocalePrice(item.discountAmount)}</b>
-									</div>
-								)}
-								<div className={styles['order-detail__product-subtotal']}>
-									Tạm tính: <b>{toLocalePrice(item.subtotalPrice)}</b>
-								</div>
-							</div>
-						</article>
-					))}
-				</section>
-
-				<section className={styles['order-detail__summary']}>
-					<h2>Thanh toán</h2>
-					<dl className={styles['order-detail__summary__list']}>
-						<dt>Tạm tính:</dt>
-						<dd>{toLocalePrice(order.subtotalPrice)}</dd>
-						{order.vatAmount && (
-							<>
-								<dt>VAT:</dt>
-								<dd>{toLocalePrice(order.vatAmount)}</dd>
-							</>
-						)}
-						{order.discountAmount && (
-							<>
-								<dt>Giảm giá:</dt>
-								<dd>{toLocalePrice(order.discountAmount)}</dd>
-							</>
-						)}
-						{order.shippingFee && (
-							<>
-								<dt>Phí vận chuyển:</dt>
-								<dd>{toLocalePrice(order.shippingFee)}</dd>
-							</>
-						)}
-						<dt className={styles['order-detail__summary__total-label']}>Thành tiền:</dt>
-						<dd className={styles['order-detail__summary__total']}>{toLocalePrice(order.totalPrice)}</dd>
-					</dl>
-				</section>
-
-				<nav className={styles['order-detail__actions']}>
-					<Link href='/profile/orders' className='cta-button--primary' prefetch={false}>
-						← Quay lại danh sách đơn hàng
-					</Link>
-				</nav>
+		<>
+			<div className={styles['part']}>
+				<div className={styles['order-detail']}>
+					<header className={styles['order-detail__header']}>
+						<span className={styles.date}>{formattedDate}</span>
+						<span className={clsx(styles['order-detail__header__status'], styles[`status--${order.status}`])}>{ORDER_STATUS_TEXT_MAP[order.status]}</span>
+					</header>
+				</div>
 			</div>
-		</div>
+			<div className={styles['part']}>
+				<p className={styles['part__title']}>Danh sách sản phẩm</p>
+				<div className={styles['order-items']}>
+					<ul className={clsx(styles['order-products'])}>
+						{order.items.map((item: IOrderItem) => {
+							return <OrderItem key={item.productId} item={item} redirectable />;
+						})}
+					</ul>
+				</div>
+			</div>
+
+			<div className={styles['part']}>
+				<p className={styles['part__title']}>Giá trị đơn hàng</p>
+				<div className={styles['order-detail__price']}>
+					<div className={styles['order-detail__price__row']}>
+						<span className={styles['order-detail__price__label']}>Tạm tính:</span>
+						<span>{toLocalePrice(order.subtotalPrice)}</span>
+					</div>
+					{order.vatAmount !== undefined && order.vatAmount > 0 && (
+						<div className={styles['order-detail__price__row']}>
+							<span className={styles['order-detail__price__label']}>Thuế (VAT):</span>
+							<span>{toLocalePrice(order.vatAmount)}</span>
+						</div>
+					)}
+					{order.discountAmount !== undefined && order.discountAmount > 0 && (
+						<div className={styles['order-detail__price__row']}>
+							<span className={styles['order-detail__price__label']}>Giảm giá:</span>
+							<span>-{toLocalePrice(order.discountAmount)}</span>
+						</div>
+					)}
+					{order.shippingFee !== undefined && order.shippingFee > 0 && (
+						<div className={styles['order-detail__price__row']}>
+							<span className={styles['order-detail__price__label']}>Phí vận chuyển:</span>
+							<span>{toLocalePrice(order.shippingFee)}</span>
+						</div>
+					)}
+					<div className={clsx(styles['order-detail__price__row'], styles['order-detail__price__total'])}>
+						<span className={styles['order-detail__price__total__label']}>Tổng cộng:</span>
+						<span className={styles['order-detail__price__total__value']}>{toLocalePrice(order.totalPrice)}</span>
+					</div>
+				</div>
+			</div>
+		</>
 	);
 };
 

@@ -7,9 +7,9 @@ import { loggerService } from '@/services/logger.service';
 import { isEmpty, toLocalePrice } from '@/util';
 import Spinner from '@/components/ui/spinner/Spinner';
 import clsx from 'clsx';
-import Image from 'next/image';
-import { getOrderStatusText } from '@/util/enum-to-text.util';
 import Link from 'next/link';
+import { ORDER_STATUS_TEXT_MAP } from '@/consts/map-value';
+import OrderItem from './OrderItem';
 
 export default function OrdersPage() {
 	const cacheRef = useRef<{ [key in TOrderStatus | 'all']?: IOrder[] }>({});
@@ -90,6 +90,16 @@ export default function OrdersPage() {
 
 	const isActivated = useCallback((curStatus: TOrderStatus | 'all') => curStatus === status, [status]);
 
+	const formatDate = (dateString: Date) =>
+		new Date(dateString).toLocaleString('vi-VN', {
+			day: '2-digit',
+			month: '2-digit',
+			year: 'numeric',
+			hour: '2-digit',
+			minute: '2-digit',
+			hour12: false,
+		});
+
 	return (
 		<div className={styles.part}>
 			<div className={styles.part__title}>Đơn hàng của tôi</div>
@@ -100,7 +110,7 @@ export default function OrdersPage() {
 					</li>
 					{ORDER_STATUS.map((s) => (
 						<li key={`order-nav--${s}`} onClick={() => handleStatusChange(s)} className={clsx(styles['orders-nav__item'], isActivated(s) ? styles['active'] : '')}>
-							{getOrderStatusText(s)}
+							{ORDER_STATUS_TEXT_MAP[s]}
 						</li>
 					))}
 				</ul>
@@ -112,58 +122,29 @@ export default function OrdersPage() {
 					) : orders.length === 0 ? (
 						<p className={styles['part__empty-state']}>Chưa có đơn hàng nào.</p>
 					) : (
-						orders.map((order) => (
-							<li key={order._id} className={clsx(styles['orders-item'], styles['modern-card'])}>
-								<div className={styles['orders-item__header']}>
-									<span className={styles['orders-item__header__date']}>
-										{new Date(order.createdAt).toLocaleString('vi-VN', {
-											day: '2-digit',
-											month: '2-digit',
-											year: 'numeric',
-											hour: '2-digit',
-											minute: '2-digit',
-											hour12: false,
-										})}
-									</span>
-									<span className={clsx(styles['orders-item__header__status'], styles[`status--${order.status}`])}>{getOrderStatusText(order.status)}</span>
-								</div>
-								<div className={styles['orders-item__products']}>
-									{order.items.map((item, idx) => {
-										if (idx >= 3) return null;
-										return (
-											<div key={item.productId} className={styles['orders-item__products__product']}>
-												<div className={styles['orders-item__products__product-image']}>
-													<Image
-														src={item.productImage}
-														alt={item.productName}
-														width={80}
-														height={80}
-														style={{
-															objectFit: 'cover',
-															aspectRatio: '1 / 1',
-														}}
-														sizes='(max-width: 768px) 80px, 80px'
-													/>
-												</div>
-												<div className={styles['orders-item__products__product-info']}>
-													<div className={styles['orders-item__products__product-info__name']}>{item.productName}</div>
-													<div className={styles['orders-item__products__product-info__quantity']}>
-														Số lượng: <b>{item.quantity}</b>
-													</div>
-												</div>
-											</div>
-										);
-									})}
-									{order.items.length > 3 && <div className={styles['orders-item__products__more']}>+ {order.items.length - 3} sản phẩm khác</div>}
-								</div>
-								<div className={styles['orders-item__footer']}>
-									<span className={styles['orders-item__footer__total']}>{toLocalePrice(order.totalPrice)}</span>
-									<Link className={`${styles['orders-item__footer__more']} cta-button--primary`} href={`/profile/orders/${order._id}`} prefetch={false}>
-										Xem chi tiết &rarr;
-									</Link>
-								</div>
-							</li>
-						))
+						orders.map((order) => {
+							return (
+								<Link key={order._id} href={`/profile/orders/${order._id}`} prefetch={false}>
+									<li className={clsx(styles['orders-item'], styles['modern-card'])}>
+										<div className={styles['orders-item__header']}>
+											<span className={styles.date}>{formatDate(order.createdAt)}</span>
+											<span className={clsx(styles[`status--${order.status}`])}>{ORDER_STATUS_TEXT_MAP[order.status]}</span>
+										</div>
+										<ul className={styles['order-products']}>
+											{order.items.map((item, idx) => {
+												if (idx >= 3) return null;
+												return <OrderItem key={item.productId} item={item} />;
+											})}
+											{order.items.length > 3 && <div className={styles['order-products__more']}>+ {order.items.length - 3} sản phẩm khác</div>}
+										</ul>
+										<div className={styles['orders-item__price']}>
+											<span className={styles['orders-item__price__label']}>Tổng:</span>
+											<span className={styles['orders-item__price__value']}>{toLocalePrice(order.totalPrice)}</span>
+										</div>
+									</li>
+								</Link>
+							);
+						})
 					)}
 				</ul>
 			</div>

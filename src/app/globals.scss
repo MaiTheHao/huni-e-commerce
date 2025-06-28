@@ -9,6 +9,7 @@
 	scrollbar-color: $gray-400 $gray-100;
 	line-height: 1.5;
 	font-family: inherit;
+	font-size: 1em;
 }
 
 *::-webkit-scrollbar {
@@ -128,6 +129,28 @@ $link-underline-offset: -0.5ch !default;
 		vertical-align: middle;
 		opacity: 0.7;
 		font-size: 1.1em;
+	}
+}
+
+// ERROR
+.error {
+	color: map.get($error, icon);
+	background-color: map.get($error, bg);
+	border: 1px solid map.get($error, border);
+	border-radius: 0.25em;
+	padding: 0.5em 1em;
+	font-size: 0.875em;
+	animation: error-fade-in 0.3s ease-in-out;
+}
+
+@keyframes error-fade-in {
+	0% {
+		opacity: 0;
+		transform: translateY(-10px);
+	}
+	100% {
+		opacity: 1;
+		transform: translateY(0);
 	}
 }
 

@@ -1,6 +1,6 @@
 'use client';
 
-import { LOCAL_STORAGE_KEYS } from '@/consts/keys';
+import { LOCAL_STORAGE_KEYS_MAP } from '@/consts/map-value';
 import { useEffect, useState } from 'react';
 
 interface UseLastStandingURLReturn {
@@ -14,7 +14,7 @@ export default function useLastStandingURL(): UseLastStandingURLReturn {
 	const setLastStandingURL = (url: string | null) => {
 		setLastStandingURLState(url);
 		if (typeof window !== 'undefined') {
-			localStorage.setItem(LOCAL_STORAGE_KEYS.LAST_STANDING_URL, url || '');
+			localStorage.setItem(LOCAL_STORAGE_KEYS_MAP.LAST_STANDING_URL, url || '');
 		}
 	};
 
@@ -22,7 +22,7 @@ export default function useLastStandingURL(): UseLastStandingURLReturn {
 
 	useEffect(() => {
 		if (typeof window !== 'undefined') {
-			const storedURL = localStorage.getItem(LOCAL_STORAGE_KEYS.LAST_STANDING_URL) || null;
+			const storedURL = localStorage.getItem(LOCAL_STORAGE_KEYS_MAP.LAST_STANDING_URL) || null;
 			setLastStandingURLState(storedURL);
 		}
 	}, []);

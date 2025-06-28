@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-import { IOrderBase, ORDER_STATUS, ORDER_TYPES } from '@/interfaces/entity/order/order.entity';
+import { IOrderBase, ORDER_PAYMENT_METHODS, ORDER_STATUS, ORDER_TYPES } from '@/interfaces/entity/order/order.entity';
 import OrderItemSchema from './sub-schemas/order-item.schema';
 
 const OrderSchema = new mongoose.Schema<IOrderBase>({
@@ -16,6 +16,7 @@ const OrderSchema = new mongoose.Schema<IOrderBase>({
 	shippingFee: { type: Number, required: false },
 	totalPrice: { type: Number, required: true },
 	status: { type: String, enum: ORDER_STATUS, default: 'pending' },
+	paymentMethod: { type: String, enum: ORDER_PAYMENT_METHODS, required: true },
 	type: { type: String, enum: ORDER_TYPES, default: 'normal' },
 	createdAt: { type: Date, default: Date.now },
 	updatedAt: { type: Date, default: Date.now },

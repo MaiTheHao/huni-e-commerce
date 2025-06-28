@@ -1,5 +1,5 @@
 'use client';
-import React, { memo } from 'react';
+import React, { memo, useState } from 'react';
 import Table from '@/components/ui/table/Table';
 import styles from './Checkout.module.scss';
 import clsx from 'clsx';
@@ -10,6 +10,9 @@ import useLastStandingURL from '@/hooks/useLastStandingURL';
 import useAuthContext from '@/contexts/AuthContext/useAuthContext';
 import { useDeliveryInfoContext } from '@/contexts/DeliveryInfoContext/DeliveryInfoContextProvider';
 import { useCartContext } from '@/contexts/CartContext/useCartContext';
+import Checkbox from '@/components/ui/checkbox/Checkbox';
+import { TOrderPaymentMethod } from '@/interfaces/entity/order/order.entity';
+import { PAYMENT_METHOD_TEXT_MAP } from '@/consts/map-value';
 
 interface CartItem {
 	productId: string;
@@ -24,7 +27,7 @@ interface CheckoutInfoProps {
 	total: number;
 	isSubmitting: boolean;
 	isAuthenticated: boolean;
-	onSubmitOrder: () => void;
+	onSubmitOrder: (paymentMethod: TOrderPaymentMethod) => void;
 }
 
 const OrderItems: React.FC<{
@@ -77,10 +80,24 @@ const OrderSummary: React.FC<{
 OrderSummary.displayName = 'OrderSummary';
 
 const CheckoutInfo: React.FC<CheckoutInfoProps> = memo(({ items, products, subtotal, vatAmount, total, isSubmitting, isAuthenticated, onSubmitOrder }) => {
+	const [paymentMethod, setPaymentMethod] = useState<TOrderPaymentMethod | null>(null);
+	const [paymentMethodError, setPaymentMethodError] = useState<string | null>(null);
 	const { isLoading: isAuthLoading } = useAuthContext();
 	const { isGettingDeliveryInfo: isDeliveryInfoLoading } = useDeliveryInfoContext();
 	const { loading: isCartLoading } = useCartContext();
 	const { setLastStandingURL } = useLastStandingURL();
+
+	const handleSubmitOrder = () => {
+		if (!paymentMethod) {
+			setPaymentMethodError('Vui lòng chọn phương thức thanh toán');
+			return;
+		} else {
+			setPaymentMethodError(null);
+		}
+
+		onSubmitOrder(paymentMethod);
+	};
+
 	return (
 		<Table
 			sections={[
@@ -93,12 +110,23 @@ const CheckoutInfo: React.FC<CheckoutInfoProps> = memo(({ items, products, subto
 						</>
 					),
 				},
+				{
+					title: 'Phương thức thanh toán',
+					children: (
+						<div className={styles['payment-methods']}>
+							<Checkbox label={PAYMENT_METHOD_TEXT_MAP['cod']} id='payment-method-cod' onChange={() => setPaymentMethod('cod')} checked={paymentMethod === 'cod'} />
+							<Checkbox label={PAYMENT_METHOD_TEXT_MAP['bank']} id='payment-method-bank' onChange={() => setPaymentMethod('bank')} checked={paymentMethod === 'bank'} />
+							<Checkbox label={PAYMENT_METHOD_TEXT_MAP['cash']} id='payment-method-cash' onChange={() => setPaymentMethod('cash')} checked={paymentMethod === 'cash'} />
+							{paymentMethodError && <span className={'error'}>{paymentMethodError}</span>}
+						</div>
+					),
+				},
 			]}
 			className={clsx(styles.orderTable, styles.table)}
 			loading={isCartLoading || isSubmitting || isAuthLoading || isDeliveryInfoLoading}
 			footer={
 				<>
-					<button className={`cta-button--primary`} onClick={onSubmitOrder} disabled={isAuthLoading || isDeliveryInfoLoading || isSubmitting || isCartLoading || items.length === 0}>
+					<button className={`cta-button--primary`} onClick={handleSubmitOrder} disabled={isAuthLoading || isDeliveryInfoLoading || isSubmitting || isCartLoading || items.length === 0}>
 						{isSubmitting ? 'Đang xử lý...' : 'Đặt hàng ngay'}
 					</button>
 					{!isAuthenticated && (

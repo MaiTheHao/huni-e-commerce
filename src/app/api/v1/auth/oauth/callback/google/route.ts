@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { loggerService } from '@/services/logger.service';
 import { IGoogleOAuthUserData } from '@/interfaces/oauth/google-oauth.interface';
-import { COOKIE_KEYS } from '@/consts/keys';
+import { COOKIE_KEYS_MAP } from '@/consts/map-value';
 import { responseService } from '@/services/response.service';
 import { authService } from '@/services/auth/auth.service';
 import { tokenService } from '@/services/token.service';
@@ -64,7 +64,7 @@ export async function GET(request: NextRequest) {
 	// Tích hợp với logic xác thực của hệ thống
 	const [authErr, user] = await authService.authWithGoogleOAuthUserData(userData);
 	// Xóa cookie state để bảo vệ chống tấn công CSRF
-	request.cookies.delete(COOKIE_KEYS.OAUTH_STATE);
+	request.cookies.delete(COOKIE_KEYS_MAP.OAUTH_STATE);
 
 	if (authErr || !user) {
 		loggerService.error('Lỗi xác thực với Google OAuth', authErr);
@@ -89,7 +89,7 @@ export async function GET(request: NextRequest) {
 	await cookieService.setRefreshToken(refreshToken);
 
 	// Lưu access token vào temporary cookie (5 phút)
-	await cookieService.setJson(COOKIE_KEYS.TMP_ACCESS_TOKEN, accessToken, {
+	await cookieService.setJson(COOKIE_KEYS_MAP.TMP_ACCESS_TOKEN, accessToken, {
 		httpOnly: false,
 		maxAge: 5 * 60, // 5 phút
 	});

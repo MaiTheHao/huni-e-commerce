@@ -26,7 +26,7 @@ function LabelInput({ label, name, required = false, type = 'text', placeholder,
 			) : (
 				<input className={styles.input} type={type} name={name} required={required} placeholder={placeholder} value={value || ''} onChange={onChange} />
 			)}
-			{isValidateError && <span className={styles.validateError}>{validateError}</span>}
+			{isValidateError && <span className={`${styles.validateError} error`}>{validateError}</span>}
 		</label>
 	);
 }
