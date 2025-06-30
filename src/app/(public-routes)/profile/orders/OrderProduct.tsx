@@ -41,7 +41,7 @@ function OrderItem({ item, redirectable }: { item: IOrderItem; redirectable?: bo
 
 	if (redirectable) {
 		return (
-			<Link key={item.productId} className={styles['order-product']} href={`/${item.productCategory}/${item.productId}`} prefetch={false}>
+			<Link key={item.productId} className={styles['order-product']} href={`/${item.productCategory}/${item.productId}`}>
 				{OrderItemBody}
 			</Link>
 		);

@@ -32,7 +32,7 @@ export default function ProfileNavbar() {
 		<ul className={`${styles['left__actions']} ${styles['left-item']} ${styles.part}`}>
 			{menuItems.map((item) => (
 				<li key={item.href}>
-					<Link href={item.href} className={clsx(styles['left__actions__btn'], { [styles['left__actions__btn--active']]: isActive(item.href) })} prefetch={false}>
+					<Link href={item.href} className={clsx(styles['left__actions__btn'], { [styles['left__actions__btn--active']]: isActive(item.href) })}>
 						<div className={styles['left__actions__btn__icon']}>
 							<FontAwesomeIcon icon={item.icon} />
 						</div>

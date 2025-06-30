@@ -6,15 +6,10 @@ import { IOrder, IOrderItem } from '@/interfaces/entity/order/order.entity';
 import { toLocalePrice } from '@/util';
 import Spinner from '@/components/ui/spinner/Spinner';
 import clsx from 'clsx';
-import Image from 'next/image';
-import Link from 'next/link';
 import { getOrderDetail } from '../../apis';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faLocationDot } from '@fortawesome/free-solid-svg-icons';
-import { ORDER_STATUS_TEXT_MAP } from '@/consts/map-value';
-import { ROUTES } from '@/consts/routes.setting';
 import OrderItem from '../OrderProduct';
 import { formatDateToVietnameseString } from '@/util/date';
+import OrderStatus from '@/components/ui/order-status/OrderStatus';
 
 const OrderDetailPage = () => {
 	const { id } = useParams<{ id: string }>();
@@ -70,7 +65,7 @@ const OrderDetailPage = () => {
 				<div className={styles['order-detail']}>
 					<header className={styles['order-detail__header']}>
 						<span className={styles.date}>{formatDateToVietnameseString(order.createdAt)}</span>
-						<span className={clsx(styles['order-detail__header__status'], styles[`status--${order.status}`])}>{ORDER_STATUS_TEXT_MAP[order.status]}</span>
+						<OrderStatus status={order.status} className={styles['order-detail__header__status']} />
 					</header>
 				</div>
 			</div>
