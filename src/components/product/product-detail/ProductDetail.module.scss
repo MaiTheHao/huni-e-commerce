@@ -7,9 +7,9 @@
 	gap: $spacing-16;
 }
 
-.detail,
-.moreInfo {
-	border-radius: $spacing-8;
+.part {
+	height: max-content;
+	border-radius: 0.5em;
 	background-color: $white;
 }
 
@@ -293,83 +293,144 @@
 
 .moreInfo {
 	position: relative;
-	padding: $spacing-24;
 
-	&__pages {
+	// &__pages {
+	// 	display: flex;
+	// 	gap: $spacing-8;
+	// 	margin-bottom: $spacing-8;
+	// 	overflow-x: auto;
+
+	// 	@media screen and (max-width: $breakpoint-md) {
+	// 		flex-direction: column;
+	// 		gap: $spacing-4;
+	// 		padding: 0;
+	// 	}
+	// }
+
+	// &__page {
+	// 	cursor: pointer;
+	// 	padding: $spacing-8 $spacing-20;
+	// 	color: $white;
+	// 	background: transparent;
+	// 	transition: background 0.18s cubic-bezier(0.4, 0, 0.2, 1), color 0.18s cubic-bezier(0.4, 0, 0.2, 1);
+	// 	user-select: none;
+	// 	position: relative;
+	// 	font-size: $font-size-16;
+	// 	font-weight: $font-weight-semibold;
+	// 	text-wrap: nowrap;
+	// 	background-color: rgba($accent-color, 0.2);
+	// 	letter-spacing: 0.02em;
+
+	// 	&:hover,
+	// 	&--active {
+	// 		background: $accent-color;
+	// 	}
+
+	// 	@media screen and (max-width: $breakpoint-md) {
+	// 		font-size: $font-size-14;
+	// 		padding: $spacing-8 $spacing-16;
+	// 	}
+	// }
+
+	// &__content {
+	// 	position: relative;
+	// 	font-size: $font-size-16;
+	// 	margin-top: $spacing-24;
+
+	// 	&.specs {
+	// 		ul {
+	// 			list-style: none;
+	// 			padding: 0;
+	// 			display: flex;
+	// 			flex-direction: column;
+
+	// 			li {
+	// 				display: flex;
+	// 				align-items: center;
+	// 				border-bottom: 1px solid $txt-tertiary;
+	// 				padding: $spacing-8 0;
+	// 				color: $txt-secondary;
+	// 				strong {
+	// 					flex: 0 0 25%;
+	// 				}
+	// 			}
+	// 		}
+	// 	}
+
+	// 	@media screen and (max-width: $breakpoint-md) {
+	// 		font-size: $font-size-14;
+
+	// 		&.specs {
+	// 			ul {
+	// 				li {
+	// 					font-size: $font-size-14;
+	// 					strong {
+	// 						flex: 0 0 40%;
+	// 					}
+	// 				}
+	// 			}
+	// 		}
+	// 	}
+	// }
+
+	&__parallelWrapper {
 		display: flex;
-		gap: $spacing-8;
-		margin-bottom: $spacing-8;
-		overflow-x: auto;
+		gap: 1em;
 
-		@media screen and (max-width: $breakpoint-md) {
-			flex-direction: column;
-			gap: $spacing-4;
-			padding: 0;
-		}
-	}
-
-	&__page {
-		cursor: pointer;
-		padding: $spacing-8 $spacing-20;
-		color: $white;
-		background: transparent;
-		transition: background 0.18s cubic-bezier(0.4, 0, 0.2, 1), color 0.18s cubic-bezier(0.4, 0, 0.2, 1);
-		user-select: none;
-		position: relative;
-		font-size: $font-size-16;
-		font-weight: $font-weight-semibold;
-		text-wrap: nowrap;
-		background-color: rgba($accent-color, 0.2);
-		letter-spacing: 0.02em;
-
-		&:hover,
-		&--active {
-			background: $accent-color;
+		&__title {
+			font-size: 1.5em;
+			font-weight: $font-weight-semibold;
+			color: $txt-accent;
+			margin-bottom: 1em;
 		}
 
-		@media screen and (max-width: $breakpoint-md) {
-			font-size: $font-size-14;
-			padding: $spacing-8 $spacing-16;
+		.part {
+			padding: 1em;
 		}
-	}
 
-	&__content {
-		position: relative;
-		font-size: $font-size-16;
-		margin-top: $spacing-24;
+		&__description {
+			flex: 6.5;
+			font-size: 0.875em;
+		}
 
-		&.specs {
+		&__specs {
+			flex: 3.5;
+			font-size: 0.875em;
 			ul {
-				list-style: none;
 				padding: 0;
 				display: flex;
 				flex-direction: column;
 
 				li {
 					display: flex;
-					align-items: center;
 					border-bottom: 1px solid $txt-tertiary;
-					padding: $spacing-8 0;
+					padding: 0.5em 0;
+					margin: 0;
 					color: $txt-secondary;
 					strong {
-						flex: 0 0 25%;
+						flex: 0 0 12ch;
+						margin-right: 1ch;
+						font-weight: $font-weight-semibold;
 					}
+				}
+
+				li:last-child {
+					border-bottom: none;
+					padding-bottom: 0;
 				}
 			}
 		}
 
 		@media screen and (max-width: $breakpoint-md) {
-			font-size: $font-size-14;
+			flex-direction: column;
 
-			&.specs {
-				ul {
-					li {
-						font-size: $font-size-14;
-						strong {
-							flex: 0 0 40%;
-						}
-					}
-				}
+			&__title {
+				font-size: 1.25em;
+			}
+
+			&__description,
+			&__specs {
+				font-size: 0.875em;
 			}
 		}
 	}

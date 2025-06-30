@@ -439,7 +439,7 @@ $link-underline-offset: -0.5ch !default;
 	h4,
 	h5,
 	h6 {
-		color: $accent-color;
+		color: $txt-primary;
 		font-weight: $font-weight-semibold;
 	}
 	h1 {
@@ -465,6 +465,7 @@ $link-underline-offset: -0.5ch !default;
 		font-size: 1em;
 		color: $txt-secondary;
 		line-height: 1.6;
+		letter-spacing: 0.01em;
 		margin-bottom: 1em;
 	}
 
@@ -489,7 +490,7 @@ $link-underline-offset: -0.5ch !default;
 	}
 
 	strong {
-		color: $accent-color;
+		color: $txt-primary;
 		font-weight: $font-weight-bold;
 	}
 
@@ -498,12 +499,12 @@ $link-underline-offset: -0.5ch !default;
 	}
 
 	blockquote {
-		border-left: 4px solid $accent-color;
+		border-left: 4px solid $txt-primary;
 		padding-left: 1em;
 		color: $txt-secondary;
 		margin: 1em 0;
 		font-style: italic;
-		background: color.adjust($accent-color, $alpha: -0.9);
+		background: color.adjust($txt-primary, $alpha: -0.9);
 	}
 
 	code,

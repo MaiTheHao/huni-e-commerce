@@ -1,3 +1,4 @@
+/*
 'use client';
 import React, { useEffect, useState } from 'react';
 import styles from './ProductDetail.module.scss';
@@ -78,3 +79,58 @@ function ProductDetailMoreInfo({ productId }: ProductDetailMoreInfoProps) {
 }
 
 export default ProductDetailMoreInfo;
+*/
+
+// Component mới: Hiển thị song song cả 2 trang
+import React, { useEffect, useState } from 'react';
+import styles from './ProductDetail.module.scss';
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
+import clsx from 'clsx';
+import { IProductDetailMarkdown } from '@/interfaces';
+
+type ProductDetailMoreInfoParallelProps = {
+	productId: string;
+};
+
+const fetchProductDetailMarkdown = async (productId: string): Promise<IProductDetailMarkdown> => {
+	try {
+		const response = await fetch(`/api/v1/product/detail/markdown/${productId}`);
+		if (!response || response.status !== 200) {
+			throw new Error('Không thể lấy thông tin markdown');
+		}
+		const { data } = await response.json();
+		return data;
+	} catch (error) {
+		throw error;
+	}
+};
+
+function ProductDetailMoreInfoParallel({ productId }: ProductDetailMoreInfoParallelProps) {
+	const [content, setContent] = useState<IProductDetailMarkdown | null>(null);
+
+	useEffect(() => {
+		fetchProductDetailMarkdown(productId)
+			.then(setContent)
+			.catch(() => setContent(null));
+	}, [productId]);
+
+	return (
+		<section className={`${styles.moreInfo}`}>
+			<div className={styles.moreInfo__parallelWrapper}>
+				{/* Description Part */}
+				<div className={clsx(styles.part, styles.moreInfo__parallelWrapper__description, 'markdown', 'mobile-not-border-radius')}>
+					<div className={styles.moreInfo__parallelWrapper__title}>Mô tả</div>
+					<ReactMarkdown remarkPlugins={[remarkGfm]}>{content?.description || 'Thông tin không có sẵn'}</ReactMarkdown>
+				</div>
+				{/* Specs Part */}
+				<div className={clsx(styles.part, styles.moreInfo__parallelWrapper__specs, 'markdown', 'mobile-not-border-radius')}>
+					<div className={styles.moreInfo__parallelWrapper__title}>Thông số kỹ thuật</div>
+					<ReactMarkdown remarkPlugins={[remarkGfm]}>{content?.specifications || 'Thông tin không có sẵn'}</ReactMarkdown>
+				</div>
+			</div>
+		</section>
+	);
+}
+
+export default ProductDetailMoreInfoParallel;

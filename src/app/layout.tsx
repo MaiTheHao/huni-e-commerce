@@ -1,9 +1,15 @@
 import type { Metadata } from 'next';
-import { Be_Vietnam_Pro } from 'next/font/google';
+import { Be_Vietnam_Pro, Montserrat } from 'next/font/google';
 import './globals.scss';
 
 const beVietnamPro = Be_Vietnam_Pro({
 	variable: '--font-be-vietnam-pro',
+	subsets: ['latin', 'vietnamese'],
+	weight: ['100', '200', '300', '400', '500', '600', '700', '800', '900'],
+});
+
+const montSerrat = Montserrat({
+	variable: '--font-montserrat',
 	subsets: ['latin', 'vietnamese'],
 	weight: ['100', '200', '300', '400', '500', '600', '700', '800', '900'],
 });
@@ -29,7 +35,7 @@ export default function RootLayout({
 }>) {
 	return (
 		<html lang='vi'>
-			<body className={`${beVietnamPro.variable}`}>{children}</body>
+			<body className={`${beVietnamPro.variable} ${montSerrat.variable}`}>{children}</body>
 		</html>
 	);
 }

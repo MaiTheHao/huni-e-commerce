@@ -115,7 +115,7 @@ function ProductDetailMain<T extends IProduct>({ productId, attrs, fetchProductB
 
 	return (
 		<>
-			<section className={`${styles.detail} mobile-not-border-radius`}>
+			<section className={`${styles.detail} ${styles.part} mobile-not-border-radius`}>
 				<ProductDetailMainVisual
 					images={(state.product as any)?.images || []}
 					productName={(state.product as any)?.name || ''}
