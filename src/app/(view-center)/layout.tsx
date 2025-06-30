@@ -1,3 +1,4 @@
+import AuthContextProvider from '@/contexts/AuthContext/AuthContextProvider';
 import styles from './NotificationLayout.module.scss';
 
 export default function AuthLayout({
@@ -5,5 +6,9 @@ export default function AuthLayout({
 }: Readonly<{
 	children: React.ReactNode;
 }>) {
-	return <main className={styles.NotificationLayout}>{children}</main>;
+	return (
+		<AuthContextProvider>
+			<main className={styles.NotificationLayout}>{children}</main>
+		</AuthContextProvider>
+	);
 }

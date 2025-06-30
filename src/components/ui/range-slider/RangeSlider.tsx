@@ -22,15 +22,7 @@ const snapToStep = (value: number, min: number, step: number = 0) => {
 	return Math.round((value - min) / step) * step + min;
 };
 
-function RangeSlider({
-	min,
-	max,
-	step = 0,
-	currentRange = [min, max],
-	onChange,
-	debounceTime = 250,
-	className = '',
-}: RangeSliderProps) {
+function RangeSlider({ min, max, step = 0, currentRange = [min, max], onChange, debounceTime = 250, className = '' }: RangeSliderProps) {
 	const [range, setRange] = useState<[number, number]>(currentRange);
 	const trackRef = useRef<HTMLDivElement>(null);
 	const debounceRef = useRef<NodeJS.Timeout | null>(null);
@@ -86,26 +78,14 @@ function RangeSlider({
 		<div className={`${styles.rangeSlider} ${className}`}>
 			<div className={styles.rangeSlider__track} ref={trackRef}>
 				<div
-					className={styles.rangeSlider__track__hightlight}
+					className={styles.rangeSlider__track__highlight}
 					style={{
 						left: `${percentMin}%`,
 						width: `${percentMax - percentMin}%`,
 					}}
 				/>
-				<div
-					className={styles.rangeSlider__track__thumb}
-					style={{ left: `${percentMin}%` }}
-					tabIndex={0}
-					onMouseDown={handleThumbMove(0)}
-					onTouchStart={handleThumbMove(0)}
-				/>
-				<div
-					className={styles.rangeSlider__track__thumb}
-					style={{ left: `${percentMax}%` }}
-					tabIndex={0}
-					onMouseDown={handleThumbMove(1)}
-					onTouchStart={handleThumbMove(1)}
-				/>
+				<div className={styles.rangeSlider__track__thumb} style={{ left: `${percentMin}%` }} tabIndex={0} onMouseDown={handleThumbMove(0)} onTouchStart={handleThumbMove(0)} />
+				<div className={styles.rangeSlider__track__thumb} style={{ left: `${percentMax}%` }} tabIndex={0} onMouseDown={handleThumbMove(1)} onTouchStart={handleThumbMove(1)} />
 			</div>
 		</div>
 	);

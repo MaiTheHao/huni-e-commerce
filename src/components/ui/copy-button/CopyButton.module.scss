@@ -1,0 +1,68 @@
+@use '../../../app/vars' as *;
+@use 'sass:map';
+
+.copy-button {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.25em;
+	padding: 0.25em 0.5em;
+	background: $white;
+	color: $txt-primary;
+	border: 1px solid $gray-300;
+	border-radius: 0.25em;
+	font-size: 0.875em;
+	font-weight: $font-weight-regular;
+	cursor: pointer;
+	box-shadow: $box-shadow-none;
+	transition: background 0.15s, color 0.15s, border-color 0.15s;
+
+	&__icon {
+		font-size: 1em;
+		color: $primary-color;
+		transition: color 0.15s;
+	}
+
+	&__text {
+		user-select: none;
+	}
+
+	&:hover {
+		background: $gray-100;
+		color: $primary-color;
+		border-color: $primary-color;
+
+		.copy-button__icon {
+			color: $primary-color;
+		}
+	}
+
+	&:active {
+		background: $gray-200;
+		color: $accent-color;
+		border-color: $accent-color;
+
+		.copy-button__icon {
+			color: $accent-color;
+		}
+	}
+
+	&--copied {
+		animation: pop-up 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+
+		.copy-button__icon {
+			color: map.get($success, icon);
+		}
+	}
+}
+
+@keyframes pop-up {
+	0% {
+		transform: scale(1) rotate(0deg);
+	}
+	50% {
+		transform: scale(1.25) rotate(8deg);
+	}
+	100% {
+		transform: scale(1) rotate(0deg);
+	}
+}

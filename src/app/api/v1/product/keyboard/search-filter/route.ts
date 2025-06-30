@@ -2,6 +2,23 @@ import { keyboardRepository } from '@/server/repositories';
 import { responseService } from '@/services/response.service';
 import { NextRequest } from 'next/server';
 import { ISearchFilterKeyboardRequest, ISearchFilterKeyboardsResponse } from '@/interfaces';
+import { loggerService } from '@/services/logger.service';
+import { productFilterRepository } from '@/server/repositories';
+import { convertDocumentToObject } from '@/util/convert';
+
+export async function GET(req: NextRequest) {
+	try {
+		const response = await productFilterRepository.findByProductType('keyboard');
+		if (!response) {
+			return responseService.notFound('Không tìm thấy bộ lọc bàn phím');
+		}
+		const data = convertDocumentToObject(response);
+		return responseService.success(data, 'Lấy bộ lọc bàn phím thành công');
+	} catch (error) {
+		loggerService.error('Lỗi khi lấy bộ lọc bàn phím', error);
+		return responseService.internalServerError('Lỗi khi lấy bộ lọc bàn phím', error);
+	}
+}
 
 export async function POST(req: NextRequest) {
 	try {

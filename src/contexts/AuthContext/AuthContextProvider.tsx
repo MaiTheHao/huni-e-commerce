@@ -148,6 +148,21 @@ function AuthContextProvider({ children }: AuthContextProviderProps) {
 		});
 	}, []);
 
+	// info validate admin
+	const validAdmin = useCallback(async (): Promise<boolean> => {
+		setIsLoading(true);
+		try {
+			const response = await api.get('/admin/valid');
+			const data: IResponse = response.data;
+			return !data.error;
+		} catch (error) {
+			loggerService.error('Lỗi khi kiểm tra quyền admin:', error);
+			return false;
+		} finally {
+			setIsLoading(false);
+		}
+	}, []);
+
 	// info Lấy thông tin người dùng khi component mount
 	useEffect(() => {
 		const accessToken = localStorage.getItem(LOCAL_STORAGE_KEYS_MAP.ACCESS_TOKEN);
@@ -206,6 +221,7 @@ function AuthContextProvider({ children }: AuthContextProviderProps) {
 			login,
 			logout,
 			updateUser,
+			validAdmin,
 			refreshProfile: () => fetchUserProfile(true),
 		}),
 		[user, isAuthenticated, isLoading, login, logout, updateUser, fetchUserProfile]

@@ -1,5 +1,5 @@
 import { NextRequest } from 'next/server';
-import { productCRUDService } from '@/services/productCRUD.service';
+import { productService } from '@/services/product.service';
 import { responseService } from '@/services/response.service';
 import { IProduct } from '@/interfaces';
 
@@ -13,7 +13,7 @@ export async function POST(req: NextRequest) {
 	try {
 		const products = await Promise.all(
 			ids.map(async (id) => {
-				return await productCRUDService.findProductById<IProduct>(id);
+				return await productService.findProductById<IProduct>(id);
 			})
 		);
 

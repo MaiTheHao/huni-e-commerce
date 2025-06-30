@@ -30,6 +30,35 @@ class AuthService {
 		return [null, parts[1]];
 	}
 
+	async validUser(req: NextRequest): Promise<TErrorFirst<any, any>> {
+		let [error, token] = this.extractBearerToken(req);
+		if (error || !token) {
+			return [error || 'Không tìm thấy access token', null];
+		}
+		const [verifyError, decoded] = await tokenService.verifyAccessToken(token);
+		if (verifyError || !decoded) {
+			return [verifyError || 'Access token không hợp lệ', null];
+		}
+		return [null, decoded];
+	}
+
+	async validAdmin(req: NextRequest): Promise<TErrorFirst<any, any>> {
+		const [error, decoded] = await this.validUser(req);
+		if (error || !decoded) {
+			return [error || 'Không xác thực được người dùng', null];
+		}
+		const userId = decoded.uid;
+		const [userError, user] = await userService.getById(userId, { roles: 1 });
+		if (userError || !user) {
+			return [userError || 'Không tìm thấy người dùng', null];
+		}
+		const isAdmin = user.roles?.includes('admin');
+		if (!isAdmin) {
+			return ['Không có quyền truy cập admin', null];
+		}
+		return [null, decoded];
+	}
+
 	async signup(user: ISignUpRequest): Promise<TErrorFirst<any, IUserDocument>> {
 		if (isEmpty(user.email) || isEmpty(user.name) || isEmpty(user.password) || isEmpty(user.confirmPassword)) {
 			return ['Chưa nhập đủ thông tin', null];

@@ -5,13 +5,17 @@ import { cookies } from 'next/headers';
 
 class CookieService {
 	private static instance: CookieService;
+
 	private constructor() {}
+
 	static async getInstance(): Promise<CookieService> {
 		if (!CookieService.instance) {
 			CookieService.instance = new CookieService();
 		}
 		return CookieService.instance;
 	}
+
+	// CREATE/SET METHODS
 
 	async set(
 		name: string,
@@ -36,38 +40,8 @@ class CookieService {
 		});
 	}
 
-	async get(name: string): Promise<string | undefined> {
-		const cookieStore = await cookies();
-		return cookieStore.get(name)?.value;
-	}
-
-	async getAll() {
-		const cookieStore = await cookies();
-		return cookieStore.getAll();
-	}
-
-	async delete(name: string) {
-		const cookieStore = await cookies();
-		cookieStore.delete(name);
-	}
-
-	async has(name: string): Promise<boolean> {
-		const cookieStore = await cookies();
-		return cookieStore.has(name);
-	}
-
 	async setJson(name: string, value: any, options?: Parameters<CookieService['set']>[2]) {
 		await this.set(name, JSON.stringify(value), options);
-	}
-
-	async getJson<T = any>(name: string): Promise<T | null> {
-		const value = await this.get(name);
-		if (!value) return null;
-		try {
-			return JSON.parse(value);
-		} catch {
-			return null;
-		}
 	}
 
 	async setRefreshToken(token: string): Promise<void> {
@@ -83,6 +57,41 @@ class CookieService {
 		}
 	}
 
+	async setAccessToken(token: string): Promise<void> {
+		try {
+			await this.setJson(COOKIE_KEYS_MAP.ACCESS_TOKEN, token, {
+				maxAge: 1800,
+				httpOnly: false,
+				path: '/',
+				sameSite: 'lax',
+			});
+		} catch (error) {
+			loggerService.error('Không thể lưu access token:', error);
+		}
+	}
+
+	// READ/GET METHODS
+
+	async get(name: string): Promise<string | undefined> {
+		const cookieStore = await cookies();
+		return cookieStore.get(name)?.value;
+	}
+
+	async getJson<T = any>(name: string): Promise<T | null> {
+		const value = await this.get(name);
+		if (!value) return null;
+		try {
+			return JSON.parse(value);
+		} catch {
+			return null;
+		}
+	}
+
+	async getAll() {
+		const cookieStore = await cookies();
+		return cookieStore.getAll();
+	}
+
 	async getRefreshToken(): Promise<TErrorFirst<any, string | null>> {
 		try {
 			const token = await this.getJson<string>(COOKIE_KEYS_MAP.REFRESH_TOKEN);
@@ -93,12 +102,62 @@ class CookieService {
 		}
 	}
 
+	async getAccessToken(): Promise<TErrorFirst<any, string | null>> {
+		try {
+			const token = await this.getJson<string>(COOKIE_KEYS_MAP.ACCESS_TOKEN);
+			return token ? [null, token] : [null, null];
+		} catch (error) {
+			loggerService.error('Không thể lấy access token:', error);
+			return [error instanceof Error ? error.message : 'Đã xảy ra lỗi', null];
+		}
+	}
+
+	// DELETE METHODS
+
+	async delete(name: string) {
+		const cookieStore = await cookies();
+		cookieStore.delete(name);
+	}
+
 	async deleteRefreshToken(): Promise<void> {
 		try {
 			await this.delete(COOKIE_KEYS_MAP.REFRESH_TOKEN);
 		} catch (error) {
 			loggerService.error('Không thể xóa refresh token:', error);
 		}
+	}
+
+	async deleteAccessToken(): Promise<void> {
+		try {
+			await this.delete(COOKIE_KEYS_MAP.ACCESS_TOKEN);
+		} catch (error) {
+			loggerService.error('Không thể xóa access token:', error);
+		}
+	}
+
+	// UTILITY METHODS
+
+	async quickSetAuthToken(accessToken: string, refreshToken: string): Promise<void> {
+		try {
+			await this.setAccessToken(accessToken);
+			await this.setRefreshToken(refreshToken);
+		} catch (error) {
+			loggerService.error('Không thể thiết lập token:', error);
+		}
+	}
+
+	async quickDeleteAuthToken(): Promise<void> {
+		try {
+			await this.deleteAccessToken();
+			await this.deleteRefreshToken();
+		} catch (error) {
+			loggerService.error('Không thể xóa token:', error);
+		}
+	}
+
+	async has(name: string): Promise<boolean> {
+		const cookieStore = await cookies();
+		return cookieStore.has(name);
 	}
 }
 

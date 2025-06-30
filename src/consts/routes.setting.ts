@@ -19,6 +19,10 @@ export const ROUTES: Record<string, AppRoute> = {
 		path: '/logout',
 		title: 'Đăng xuất',
 	},
+	admin: {
+		path: '/admin',
+		title: 'Trang quản trị',
+	},
 	resetPassword: {
 		path: '/reset-password',
 		title: 'Đặt lại mật khẩu',

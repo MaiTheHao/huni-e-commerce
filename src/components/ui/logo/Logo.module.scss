@@ -1,0 +1,22 @@
+@use '../../../app/vars' as *;
+
+.logo {
+	position: relative;
+	aspect-ratio: 1;
+	display: flex;
+	width: 40px;
+	justify-content: center;
+	align-items: center;
+
+	img {
+		transition: color 0.3s ease, transform 0.3s ease;
+	}
+
+	&:hover img {
+		color: $txt-primary;
+		transform: scale(1.1);
+	}
+	&:active img {
+		transform: scale(1);
+	}
+}

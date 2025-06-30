@@ -24,12 +24,7 @@ const OrderSchema = new mongoose.Schema<IOrderBase>({
 
 OrderSchema.index({ customerId: 1 });
 OrderSchema.index({ customerId: 1, status: 1 });
-OrderSchema.index({ createdAt: -1 });
 OrderSchema.index({ items: 1, status: 1 });
-
-OrderSchema.pre<IOrderBase>('save', function (next) {
-	next();
-});
 
 export const OrderModel = mongoose.models.Order || mongoose.model('Order', OrderSchema);
 export default OrderModel;

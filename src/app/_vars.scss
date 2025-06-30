@@ -17,9 +17,9 @@ $gray-600: #a2abae;
 $gray-700: #8c9497;
 $gray-800: #71787a;
 $gray-900: #575c5e;
-$primary-color: #255f38;
-$secondary-color: #3f7d58;
-$accent-color: #194026;
+$primary-color: #2f6c4c;
+$secondary-color: #5e9e7b;
+$accent-color: #1e4d35;
 $body-bg-color: $gray-100;
 $white: #ffffff;
 $txt-primary: $black-800;
@@ -59,6 +59,12 @@ $question: (
 	icon: #6c757d,
 	text: #495057,
 	border: #dee2e6,
+);
+$highlight: (
+	bg: #fff9e6,
+	icon: #ffe066,
+	text: #ccae00,
+	border: #ffe9a1,
 );
 
 $unit: 0.25rem;

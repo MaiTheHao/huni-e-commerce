@@ -1,0 +1,50 @@
+@use '../../../app/vars' as *;
+@use 'sass:map';
+
+@mixin status-variant($bg, $text) {
+	background-color: $bg;
+	color: $text;
+}
+
+.status {
+	font-size: 0.875em;
+	padding: 0.5em 0.75em;
+	border-radius: 0.25em;
+	font-weight: $font-weight-semibold;
+	text-transform: capitalize;
+	white-space: nowrap;
+	background-color: $gray-200;
+	color: $txt-primary;
+	display: inline-block;
+}
+
+.status--confirmed {
+	@extend .status;
+	@include status-variant(map.get($success, bg), map.get($success, text));
+}
+
+.status--pending {
+	@extend .status;
+	@include status-variant(map.get($warning, bg), map.get($warning, text));
+}
+
+.status--shipped {
+	@extend .status;
+	@include status-variant(map.get($info, bg), map.get($info, text));
+}
+
+.status--delivered {
+	@extend .status;
+	@include status-variant(map.get($success, bg), map.get($success, text));
+}
+
+.status--cancelled {
+	@extend .status;
+	@include status-variant(map.get($error, bg), map.get($error, text));
+}
+
+@media (max-width: $breakpoint-md) {
+	.status {
+		font-size: 0.75em;
+	}
+}

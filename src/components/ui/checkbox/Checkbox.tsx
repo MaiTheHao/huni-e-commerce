@@ -22,9 +22,10 @@ type CheckboxProps = {
 	preventUncheck?: boolean;
 	className?: string;
 	onChange?: () => void;
+	onUncheck?: () => void;
 };
 
-function Checkbox({ id = 'checkbox', label, checked = false, disabled = false, preventUncheck = false, className, onChange }: CheckboxProps) {
+function Checkbox({ id = 'checkbox', label, checked = false, disabled = false, preventUncheck = false, className, onChange, onUncheck }: CheckboxProps) {
 	const [isChecked, setIsChecked] = useState(checked);
 
 	useEffect(() => {
@@ -39,8 +40,12 @@ function Checkbox({ id = 'checkbox', label, checked = false, disabled = false, p
 			return;
 		}
 
-		setIsChecked(e.target.checked);
+		const nextChecked = e.target.checked;
+		setIsChecked(nextChecked);
 		onChange?.();
+		if (!nextChecked) {
+			onUncheck?.();
+		}
 	};
 
 	return (

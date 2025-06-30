@@ -14,6 +14,11 @@ const UserSchema = new mongoose.Schema<IUserBase>(
 		oauthProviders: [OAuthProviderSchema],
 		roles: { type: [String], enum: USER_ROLES, required: true, default: ['user'] },
 		isEmailVerified: { type: Boolean, default: false },
+		metrics: {
+			totalOrders: { type: Number, default: 0 },
+			totalAmountSpent: { type: Number, default: 0 },
+			lastOrderDate: { type: Date, default: null },
+		},
 	},
 	{
 		timestamps: true,
@@ -24,5 +29,8 @@ UserSchema.index({ email: 1, isEmailVerified: 1 });
 UserSchema.index({ roles: 1, createdAt: -1 });
 UserSchema.index({ phone: 1 });
 UserSchema.index({ 'oauthProviders.providerName': 1, 'oauthProviders.providerId': 1 });
+
+UserSchema.index({ 'metrics.totalOrders': -1, 'metrics.totalAmountSpent': -1 });
+UserSchema.index({ 'metrics.lastOrderDate': -1 });
 
 export const UserModel = mongoose.models.User || mongoose.model('User', UserSchema);

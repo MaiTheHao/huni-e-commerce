@@ -10,7 +10,6 @@ import { loggerService } from '@/services/logger.service';
 import useSearchFilterCriteriaContext from '@/contexts/SearchFilterCriteriaContext/useSearchFilterCriteriaContext';
 import AppSortFilter from '@/components/navigation/app-sort-filter/AppSortFilter';
 import { IProductFilter } from '@/interfaces';
-import Swal from 'sweetalert2';
 
 type KeyboardsClientTableProps = {
 	initialKeyboards: ProductCartProps[];
@@ -30,6 +29,7 @@ async function fetchKeyboardsApi(page: number, limit: number, filterCriteria: IS
 			sort: sortCriteria,
 		} as ISearchFilterKeyboardRequest),
 		signal,
+		cache: 'no-store',
 	});
 	return response;
 }
@@ -96,7 +96,6 @@ function KeyboardsClientTable({ initialKeyboards, initialPagination, initialFilt
 		if (initialKeyboards.length === 0 || initialPagination.total === 0) {
 			fetchKeyboards(1, initialPagination.limit);
 		}
-		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
 	// Lấy lại dữ liệu khi filter/sort thay đổi (bỏ qua lần render đầu)

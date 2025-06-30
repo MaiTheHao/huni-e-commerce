@@ -114,9 +114,9 @@ const CheckoutInfo: React.FC<CheckoutInfoProps> = memo(({ items, products, subto
 					title: 'Phương thức thanh toán',
 					children: (
 						<div className={styles['payment-methods']}>
-							<Checkbox label={PAYMENT_METHOD_TEXT_MAP['cod']} id='payment-method-cod' onChange={() => setPaymentMethod('cod')} checked={paymentMethod === 'cod'} />
-							<Checkbox label={PAYMENT_METHOD_TEXT_MAP['bank']} id='payment-method-bank' onChange={() => setPaymentMethod('bank')} checked={paymentMethod === 'bank'} />
-							<Checkbox label={PAYMENT_METHOD_TEXT_MAP['cash']} id='payment-method-cash' onChange={() => setPaymentMethod('cash')} checked={paymentMethod === 'cash'} />
+							<Checkbox label={PAYMENT_METHOD_TEXT_MAP['cod']} id='payment-method-cod' preventUncheck onChange={() => setPaymentMethod('cod')} checked={paymentMethod === 'cod'} />
+							<Checkbox label={PAYMENT_METHOD_TEXT_MAP['bank']} id='payment-method-bank' preventUncheck onChange={() => setPaymentMethod('bank')} checked={paymentMethod === 'bank'} />
+							<Checkbox label={PAYMENT_METHOD_TEXT_MAP['cash']} id='payment-method-cash' preventUncheck onChange={() => setPaymentMethod('cash')} checked={paymentMethod === 'cash'} />
 							{paymentMethodError && <span className={'error'}>{paymentMethodError}</span>}
 						</div>
 					),

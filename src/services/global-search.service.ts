@@ -1,5 +1,5 @@
 import { TSortCriteria } from '@/interfaces';
-import { productCRUDService } from './productCRUD.service';
+import { productService } from './product.service';
 
 class GlobalSearchService {
 	private static instance: GlobalSearchService;
@@ -12,7 +12,7 @@ class GlobalSearchService {
 	}
 
 	async searchProducts(keyword: string, page: number = 1, limit: number = 10, sort?: TSortCriteria, projection?: Record<string, any>) {
-		return productCRUDService.search(keyword, page, limit, sort, projection);
+		return productService.search(keyword, page, limit, sort, projection);
 	}
 }
 

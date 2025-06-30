@@ -11,6 +11,7 @@ export interface IAuthContextProps {
 	login: (accessToken: string) => void;
 	logout: () => Promise<boolean>;
 	updateUser: (user: Partial<IAuthContextUser>) => void;
+	validAdmin: () => Promise<boolean>;
 	refreshProfile: () => void;
 }
 

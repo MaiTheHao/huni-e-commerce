@@ -1,10 +1,10 @@
 'use client';
-import Image from 'next/image';
 import Link from 'next/link';
 import styles from './AppHeader.module.scss';
 import clsx from 'clsx';
 import AppHeaderMenuModal from './AppHeaderMenuModal';
 import { useNavbarRoutes } from '@/hooks/useNavbarRoutes';
+import Logo from '@/components/ui/logo/Logo';
 
 export default function AppHeaderLeftSide() {
 	const navbarRoutes = useNavbarRoutes();
@@ -15,9 +15,7 @@ export default function AppHeaderLeftSide() {
 			<AppHeaderMenuModal navbarRoutes={navbarRoutes} />
 
 			{/* Icon Section */}
-			<Link href={'/home'} role='img' aria-label='logo' className={styles['app-header__logo']}>
-				<Image src='/svgs/huni_icon.svg' alt='logo' width={37} height={40} />
-			</Link>
+			<Logo />
 			{/* Navigation Section */}
 			<nav className={styles['app-header__nav']}>
 				{navbarRoutes.map((route) => (

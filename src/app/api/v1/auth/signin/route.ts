@@ -20,7 +20,7 @@ export async function POST(req: NextRequest) {
 
 		const { accessToken, refreshToken } = result;
 
-		await cookieService.setRefreshToken(refreshToken);
+		await cookieService.quickSetAuthToken(accessToken, refreshToken);
 
 		const response = responseService.success({ accessToken }, 'Đăng nhập thành công');
 

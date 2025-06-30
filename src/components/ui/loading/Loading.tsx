@@ -23,14 +23,7 @@ function Loading({ loadingText }: LoadingProps) {
 		<div className={styles['loading__container']}>
 			<div className={styles['loading__content']}>
 				<div className={styles['loading__logo-container']}>
-					<Image
-						src={config.logo.src}
-						alt={config.logo.alt}
-						width={config.logo.width}
-						height={config.logo.height}
-						priority
-						className={styles['loading__logo-image']}
-					/>
+					<Image src={config.logo.src} alt={config.logo.alt} width={config.logo.width} height={config.logo.height} priority className={styles['loading__logo-image']} />
 				</div>
 
 				<div className={styles['loading__bar-wrapper']}>

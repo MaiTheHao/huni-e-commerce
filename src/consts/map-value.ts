@@ -10,6 +10,7 @@ export const LOCAL_STORAGE_KEYS_MAP = {
 
 export const COOKIE_KEYS_MAP = {
 	OAUTH_STATE: 'oauth_state',
+	ACCESS_TOKEN: 'access_token',
 	REFRESH_TOKEN: 'refresh_token',
 	TMP_ACCESS_TOKEN: 'tmp_access_token',
 };

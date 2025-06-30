@@ -10,6 +10,8 @@ import clsx from 'clsx';
 import Link from 'next/link';
 import { ORDER_STATUS_TEXT_MAP } from '@/consts/map-value';
 import OrderItem from './OrderProduct';
+import { formatDateToVietnameseString } from '@/util/date';
+import OrderStatus from '@/components/ui/order-status/OrderStatus';
 
 export default function OrdersPage() {
 	const cacheRef = useRef<{ [key in TOrderStatus | 'all']?: IOrder[] }>({});
@@ -90,16 +92,6 @@ export default function OrdersPage() {
 
 	const isActivated = useCallback((curStatus: TOrderStatus | 'all') => curStatus === status, [status]);
 
-	const formatDate = (dateString: Date) =>
-		new Date(dateString).toLocaleString('vi-VN', {
-			day: '2-digit',
-			month: '2-digit',
-			year: 'numeric',
-			hour: '2-digit',
-			minute: '2-digit',
-			hour12: false,
-		});
-
 	return (
 		<div className={styles.part}>
 			<div className={styles.part__title}>Đơn hàng của tôi</div>
@@ -127,8 +119,8 @@ export default function OrdersPage() {
 								<Link key={order._id} href={`/profile/orders/${order._id}`} prefetch={false}>
 									<li className={clsx(styles['orders-item'], styles['modern-card'])}>
 										<div className={styles['orders-item__header']}>
-											<span className={styles.date}>{formatDate(order.createdAt)}</span>
-											<span className={clsx(styles[`status--${order.status}`])}>{ORDER_STATUS_TEXT_MAP[order.status]}</span>
+											<span className={styles.date}>{formatDateToVietnameseString(order.createdAt)}</span>
+											<OrderStatus status={order.status} className={styles[`status--${order.status}`]} />
 										</div>
 										<ul className={styles['order-products']}>
 											{order.items.map((item, idx) => {

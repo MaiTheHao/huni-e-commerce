@@ -14,6 +14,7 @@ import { faLocationDot } from '@fortawesome/free-solid-svg-icons';
 import { ORDER_STATUS_TEXT_MAP } from '@/consts/map-value';
 import { ROUTES } from '@/consts/routes.setting';
 import OrderItem from '../OrderProduct';
+import { formatDateToVietnameseString } from '@/util/date';
 
 const OrderDetailPage = () => {
 	const { id } = useParams<{ id: string }>();
@@ -63,21 +64,12 @@ const OrderDetailPage = () => {
 		);
 	}
 
-	const formattedDate = new Date(order.createdAt).toLocaleString('vi-VN', {
-		day: '2-digit',
-		month: '2-digit',
-		year: 'numeric',
-		hour: '2-digit',
-		minute: '2-digit',
-		hour12: false,
-	});
-
 	return (
 		<>
 			<div className={styles['part']}>
 				<div className={styles['order-detail']}>
 					<header className={styles['order-detail__header']}>
-						<span className={styles.date}>{formattedDate}</span>
+						<span className={styles.date}>{formatDateToVietnameseString(order.createdAt)}</span>
 						<span className={clsx(styles['order-detail__header__status'], styles[`status--${order.status}`])}>{ORDER_STATUS_TEXT_MAP[order.status]}</span>
 					</header>
 				</div>

@@ -2,14 +2,16 @@
 
 import useAuthContext from '@/contexts/AuthContext/useAuthContext';
 import styles from './AppHeader.module.scss';
-import { faChevronRight, faDoorOpen, faUser } from '@fortawesome/free-solid-svg-icons';
+import { faChevronRight, faDoorOpen, faUser, faUserShield } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Link from 'next/link';
 import Spinner from '@/components/ui/spinner/Spinner';
 import { useState, memo, useEffect, useCallback } from 'react';
 import { ROUTES } from '@/consts/routes.setting';
 
-const ProfileDropdownActions = memo(function ProfileDropdownActions({ isAuthenticated, onLogout, onRedirecting }: { isAuthenticated: boolean; onLogout: () => void; onRedirecting: () => void }) {
+const ProfileDropdownActions = memo(function ProfileDropdownActions({ onRedirecting }: { onRedirecting: () => void }) {
+	const { user, isAuthenticated, logout } = useAuthContext();
+	const isAdmin = isAuthenticated && user?.roles?.includes('admin');
 	const actions = isAuthenticated
 		? [
 				{
@@ -20,7 +22,7 @@ const ProfileDropdownActions = memo(function ProfileDropdownActions({ isAuthenti
 				},
 				{
 					type: 'button',
-					onClick: onLogout,
+					onClick: logout,
 					icon: faDoorOpen,
 					label: 'Đăng xuất',
 				},
@@ -41,9 +43,21 @@ const ProfileDropdownActions = memo(function ProfileDropdownActions({ isAuthenti
 					onClick: onRedirecting,
 				},
 		  ];
-
 	return (
 		<ul className={styles['app-header__profile-dropdown-actions']}>
+			{isAdmin && (
+				<li className={styles['app-header__profile-dropdown-actions__item']}>
+					<Link href={ROUTES.admin.path} className={styles['app-header__profile-dropdown-actions__link']}>
+						<div className={styles['app-header__profile-dropdown-actions__icon']}>
+							<FontAwesomeIcon icon={faUserShield} />
+						</div>
+						<span className={styles['app-header__profile-dropdown-actions__label']}>Trang quản trị</span>
+						<div className={styles['app-header__profile-dropdown-actions__arrow']}>
+							<FontAwesomeIcon icon={faChevronRight} />
+						</div>
+					</Link>
+				</li>
+			)}
 			{actions.map((action, idx) => (
 				<li key={idx} className={styles['app-header__profile-dropdown-actions__item']}>
 					{action.type === 'link' ? (
@@ -131,7 +145,7 @@ export default function AppHeaderProfile() {
 						<span className={`${styles['app-header__profile-dropdown__user__name']}`}>{user?.name || 'Khách'}</span>
 					</div>
 					<div className={`${styles['app-header__profile-dropdown__spread-line']}`}></div>
-					<ProfileDropdownActions isAuthenticated={isAuthenticated} onLogout={logout} onRedirecting={handleRedirectLoading} />
+					<ProfileDropdownActions onRedirecting={handleRedirectLoading} />
 				</div>
 			)}
 		</>

@@ -3,7 +3,6 @@
 // Variables
 $block-padding-y: $spacing-16;
 $block-padding-x: $spacing-44;
-$logo-size: $unit * 10;
 
 // Container
 .app-header {
@@ -45,28 +44,6 @@ $logo-size: $unit * 10;
 	justify-content: flex-start;
 	align-items: center;
 	gap: $spacing-32;
-}
-
-// Header Logo
-.app-header__logo {
-	position: relative;
-	aspect-ratio: 1;
-	display: flex;
-	width: $logo-size;
-	justify-content: center;
-	align-items: center;
-
-	img {
-		transition: color 0.3s ease, transform 0.3s ease;
-	}
-
-	&:hover img {
-		color: $txt-primary;
-		transform: scale(1.1);
-	}
-	&:active img {
-		transform: scale(1);
-	}
 }
 
 // Header Navigation

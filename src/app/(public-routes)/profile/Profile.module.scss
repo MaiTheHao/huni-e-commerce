@@ -768,47 +768,6 @@
 }
 
 // info REUSEABLE STYLES
-.status {
-	font-size: 1em;
-	padding: 0.5em 0.75em;
-	border-radius: 0.25em;
-	font-weight: $font-weight-semibold;
-	text-transform: capitalize;
-	white-space: nowrap;
-	background-color: $gray-200;
-	color: $txt-primary;
-}
-
-.status--confirmed {
-	@extend .status;
-	background-color: map.get($success, bg);
-	color: map.get($success, text);
-}
-
-.status--pending {
-	@extend .status;
-	background-color: map.get($warning, bg);
-	color: map.get($warning, text);
-}
-
-.status--shipped {
-	@extend .status;
-	background-color: map.get($info, bg);
-	color: map.get($info, text);
-}
-
-.status--delivered {
-	@extend .status;
-	background-color: map.get($success, bg);
-	color: map.get($success, text);
-}
-
-.status--cancelled {
-	@extend .status;
-	background-color: map.get($error, bg);
-	color: map.get($error, text);
-}
-
 .date {
 	font-size: $font-size-14;
 	color: $txt-tertiary;
