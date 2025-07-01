@@ -42,7 +42,14 @@ function AdminCustomersTable({ users, emptyMessage = 'Không có người dùng 
 							<CopyButton value={user._id} />
 						</div>,
 						user.name,
-						user.email,
+						<span>
+							{user.email}
+							{!user.isEmailVerified && (
+								<span title='Email chưa xác thực' style={{ color: 'red', marginLeft: 4 }}>
+									(chưa xác thực)
+								</span>
+							)}
+						</span>,
 						user.phone,
 						user?.roles?.join(', ') || 'Chưa xác định',
 						user.metrics?.totalOrders ?? 0,
