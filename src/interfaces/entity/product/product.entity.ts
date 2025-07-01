@@ -19,7 +19,7 @@ export interface IProduct extends IProductBase {
 	_id: string;
 }
 
-export const PRODUCT_SEARCHABLE_FIELDS = ['name', 'description', 'tags'] as const;
+export const PRODUCT_SEARCHABLE_FIELDS = ['_id', 'name', 'description', 'tags'] as const;
 export type ProductSearchableFields = (typeof PRODUCT_SEARCHABLE_FIELDS)[number];
 
 export const PRODUCT_SORTABLE_FIELDS = ['name', 'price', 'discountPercent'] as const;

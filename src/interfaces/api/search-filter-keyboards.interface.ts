@@ -1,12 +1,12 @@
-import { IKeyboard, KeyboardFilterCriteria, KeyboardSearchCriteria, KeyboardSortCriteria } from '../entity';
+import { IKeyboard, TKeyboardFilterCriteria, TKeyboardSearchCriteria, TKeyboardSortCriteria } from '../entity';
 import { IPagination } from '../ui';
 
 export interface ISearchFilterKeyboardRequest {
 	page: number;
 	limit: number;
-	keyword: KeyboardSearchCriteria;
-	criteria: KeyboardFilterCriteria;
-	sort?: KeyboardSortCriteria;
+	keyword: TKeyboardSearchCriteria;
+	criteria: TKeyboardFilterCriteria;
+	sort?: TKeyboardSortCriteria;
 }
 
 export interface ISearchFilterKeyboardsResponse {

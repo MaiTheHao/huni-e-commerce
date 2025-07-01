@@ -1,4 +1,4 @@
-import { IUserDocument, TErrorFirst } from '@/interfaces';
+import { IAccessTokenPayload, IUserDocument, TErrorFirst } from '@/interfaces';
 import { ISignUpRequest } from '@/interfaces/api/auth/sign-up.interface';
 import { userService } from '../entity/user.service';
 import { isEmpty, toString } from '@/util';
@@ -30,7 +30,7 @@ class AuthService {
 		return [null, parts[1]];
 	}
 
-	async validUser(req: NextRequest): Promise<TErrorFirst<any, any>> {
+	async validUser(req: NextRequest): Promise<TErrorFirst<any, IAccessTokenPayload>> {
 		let [error, token] = this.extractBearerToken(req);
 		if (error || !token) {
 			return [error || 'Không tìm thấy access token', null];
@@ -42,21 +42,26 @@ class AuthService {
 		return [null, decoded];
 	}
 
-	async validAdmin(req: NextRequest): Promise<TErrorFirst<any, any>> {
+	async validAdmin(req: NextRequest): Promise<TErrorFirst<any, IAccessTokenPayload>> {
 		const [error, decoded] = await this.validUser(req);
 		if (error || !decoded) {
 			return [error || 'Không xác thực được người dùng', null];
 		}
-		const userId = decoded.uid;
-		const [userError, user] = await userService.getById(userId, { roles: 1 });
-		if (userError || !user) {
-			return [userError || 'Không tìm thấy người dùng', null];
+
+		const roles = decoded.roles;
+		if (Array.isArray(roles) && roles?.includes('admin')) {
+			const userId = decoded.uid;
+			const [userError, user] = await userService.getById(userId, { roles: 1 });
+			if (userError || !user) {
+				return [userError || 'Không tìm thấy người dùng', null];
+			}
+			const isAdmin = user.roles?.includes('admin');
+			if (!isAdmin) {
+				return ['Không có quyền truy cập admin', null];
+			}
+			return [null, decoded];
 		}
-		const isAdmin = user.roles?.includes('admin');
-		if (!isAdmin) {
-			return ['Không có quyền truy cập admin', null];
-		}
-		return [null, decoded];
+		return ['Không có quyền truy cập admin', null];
 	}
 
 	async signup(user: ISignUpRequest): Promise<TErrorFirst<any, IUserDocument>> {

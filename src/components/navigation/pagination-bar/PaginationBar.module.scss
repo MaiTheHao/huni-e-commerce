@@ -1,0 +1,85 @@
+@use '../../../app/vars' as *;
+
+.PaginationBar {
+	.PaginationInfo {
+		display: flex;
+		justify-content: flex-end;
+		align-items: center;
+		padding: 0.75em 1.25em;
+		font-size: 1em;
+		color: $txt-secondary;
+
+		span {
+			display: flex;
+			gap: 0.5em;
+			b {
+				color: $primary-color;
+				font-weight: $font-weight-bold;
+			}
+		}
+
+		@media screen and (max-width: $breakpoint-md) {
+			justify-content: center;
+			padding: 0.75em 0;
+		}
+	}
+
+	.PaginationList {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		gap: 1em;
+
+		.PaginationButton {
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			padding: 0.5em;
+			color: $primary-color;
+			border: 0.15em solid $primary-color;
+			border-radius: 50%;
+			font-size: 1em;
+
+			&:not(:disabled) {
+				cursor: pointer;
+			}
+
+			&:disabled {
+				cursor: not-allowed;
+				color: $txt-tertiary;
+				border-color: $txt-tertiary;
+			}
+
+			svg {
+				aspect-ratio: 1;
+				font-size: 1em;
+			}
+
+			transition: color 0.2s, border-color 0.2s, background-color 0.2s, transform 0.15s;
+
+			&:hover:not(:disabled) {
+				background-color: $primary-color;
+				color: $white;
+				transform: scale(1.08);
+			}
+			&:active:not(:disabled) {
+				transform: scale(0.96);
+			}
+
+			@media screen and (max-width: $breakpoint-md) {
+				font-size: 0.75em;
+			}
+		}
+
+		.PaginationItem {
+			color: $txt-tertiary;
+			font-size: 1em;
+			font-weight: $font-weight-semibold;
+
+			&.active {
+				color: $primary-color;
+				font-weight: $font-weight-bold;
+			}
+		}
+	}
+}

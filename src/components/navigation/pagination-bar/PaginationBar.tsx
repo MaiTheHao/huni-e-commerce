@@ -1,15 +1,18 @@
 'use client';
 import React, { memo } from 'react';
-import styles from './Keyboards.module.scss';
+import styles from './PaginationBar.module.scss';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAngleLeft, faAngleRight } from '@fortawesome/free-solid-svg-icons';
 import { IPagination } from '@/interfaces';
 
-type KeyboardsPaginationProps = IPagination & {
+type PaginationBarProps = IPagination & {
 	onPageChange: (page: number) => void;
+	itemType?: string; // ví dụ: 'sản phẩm', 'đơn hàng'
+	ariaLabel?: string; // ví dụ: 'Phân trang', 'Phân trang đơn hàng'
+	className?: string; // để thêm class tùy chỉnh nếu cần
 };
 
-function KeyboardsPagination({ page, total, totalPages, onPageChange }: KeyboardsPaginationProps) {
+function PaginationBar({ page, total, totalPages, onPageChange, itemType = 'sản phẩm', ariaLabel = 'Phân trang', className }: PaginationBarProps) {
 	const handlePageChange = (newPage: number) => {
 		if (newPage !== page && newPage > 0 && newPage <= totalPages) {
 			onPageChange(newPage);
@@ -34,10 +37,10 @@ function KeyboardsPagination({ page, total, totalPages, onPageChange }: Keyboard
 	const shouldShowLastEllipsis = page < totalPages - 2;
 
 	return (
-		<nav className={styles.KeyboardsPagination} aria-label='Phân trang'>
+		<nav className={`${styles.PaginationBar} ${className}`} aria-label={ariaLabel}>
 			<div className={styles.PaginationInfo}>
 				<span>
-					Tổng <b>{total}</b> sản phẩm | Trang <b>{page}</b>/<b>{totalPages}</b>
+					Tổng <b>{total}</b> {itemType} | Trang <b>{page}</b>/<b>{totalPages}</b>
 				</span>
 			</div>
 			<ul className={styles.PaginationList}>
@@ -76,4 +79,4 @@ function KeyboardsPagination({ page, total, totalPages, onPageChange }: Keyboard
 	);
 }
 
-export default memo(KeyboardsPagination);
+export default memo(PaginationBar);

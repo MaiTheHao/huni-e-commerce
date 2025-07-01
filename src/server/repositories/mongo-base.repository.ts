@@ -134,7 +134,7 @@ export class MongoBaseRepository<T, D extends Document> implements IMongoReposit
 		}
 
 		// Thực hiện truy vấn với điều kiện đã kết hợp
-		const query = this.model.aggregate([{ $match: filterableCriteria }, ...generateSortPipeline(sort), { $skip: skip }, { $limit: limit }]);
+		const query = this.model.aggregate([{ $match: finalQuery }, ...generateSortPipeline(sort), { $skip: skip }, { $limit: limit }]);
 
 		const data = total ? await query.exec() : [];
 		const pagination = getPagination(page, limit, total);

@@ -22,15 +22,7 @@ type SelectProps = {
 	};
 };
 
-function Select({
-	options,
-	placeholder = 'Select',
-	onSelect,
-	selectedValue = null,
-	searchable = false,
-	customFaIcon,
-	customClassName,
-}: SelectProps) {
+function Select({ options, placeholder = 'Select', onSelect, selectedValue = null, searchable = false, customFaIcon, customClassName }: SelectProps) {
 	const [isOpen, setIsOpen] = useState(false);
 	const [searchTerm, setSearchTerm] = useState('');
 	const [filteredOptions, setFilteredOptions] = useState(options);
@@ -38,9 +30,7 @@ function Select({
 	const selectRef = useRef<HTMLDivElement>(null);
 	const dropdownRef = useRef<HTMLUListElement>(null);
 	const isFirstRender = useRef(true);
-	const optimalHorizontalPosition: 'left' | 'right' = calcOptimalPosition(selectRef, dropdownRef, 'right') as
-		| 'left'
-		| 'right';
+	const optimalHorizontalPosition: 'left' | 'right' = calcOptimalPosition(selectRef, dropdownRef, 'right') as 'left' | 'right';
 
 	const handleOptionClick = (value: string | null) => {
 		setSelectedOption(value);
@@ -57,8 +47,9 @@ function Select({
 	};
 
 	useEffect(() => {
-		options.unshift({ value: null, label: 'Mặc định' });
-		setFilteredOptions(options);
+		const hasDefault = options.some((option) => option.value === null && option.label === 'Mặc định');
+		const newOptions = hasDefault ? [...options] : [{ value: null, label: 'Mặc định' }, ...options];
+		setFilteredOptions(newOptions);
 	}, [options]);
 
 	useEffect(() => {
@@ -95,24 +86,10 @@ function Select({
 
 	const selectedLabel = selectedOption ? options.find((opt) => opt.value === selectedOption)?.label : placeholder;
 	return (
-		<div
-			ref={selectRef}
-			className={clsx(styles.select, customClassName?.select)}
-			aria-label={`Select ${placeholder}`}
-		>
-			<button
-				type='button'
-				className={clsx(styles.trigger, { [styles.null]: !selectedOption }, customClassName?.trigger)}
-				onClick={toggleDropdown}
-				aria-expanded={isOpen}
-			>
+		<div ref={selectRef} className={clsx(styles.select, customClassName?.select)} aria-label={`Select ${placeholder}`} title={`${placeholder}`}>
+			<button type='button' className={clsx(styles.trigger, { [styles.null]: !selectedOption }, customClassName?.trigger)} onClick={toggleDropdown} aria-expanded={isOpen}>
 				{selectedLabel}
-				{customFaIcon || (
-					<FontAwesomeIcon
-						icon={faChevronDown}
-						className={`${styles.chevron} ${isOpen ? styles.rotated : null}`}
-					/>
-				)}
+				{customFaIcon || <FontAwesomeIcon icon={faChevronDown} className={`${styles.chevron} ${isOpen ? styles.rotated : null}`} />}
 			</button>
 
 			<ul
@@ -129,10 +106,10 @@ function Select({
 					</li>
 				)}
 				{filteredOptions.map(
-					(option) =>
+					(option, idx) =>
 						option.value !== selectedOption && (
 							<li
-								key={option.value}
+								key={`option-${idx}-${option.label}-${placeholder}-${customClassName}`}
 								className={clsx(styles.item, customClassName?.item)}
 								onClick={() => handleOptionClick(option.value)}
 							>

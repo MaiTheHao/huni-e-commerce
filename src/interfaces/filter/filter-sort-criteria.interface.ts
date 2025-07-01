@@ -1,5 +1,3 @@
-import { FilterQuery } from 'mongoose';
-
 export type TFilterCriteria<Keys extends string | number | symbol = string> = Partial<
 	Record<
 		Keys,

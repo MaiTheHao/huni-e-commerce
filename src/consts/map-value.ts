@@ -1,4 +1,4 @@
-import { TOrderPaymentMethod, TOrderStatus } from '../interfaces/entity/order/order.entity';
+import { TOrderPaymentMethod, TOrderStatus, TOrderType } from '../interfaces/entity/order/order.entity';
 
 export const LOCAL_STORAGE_KEYS_MAP = {
 	VERIFY_EMAIL_COUNTDOWN: 'verify_email_countdown_iat',
@@ -26,6 +26,11 @@ export const ORDER_STATUS_TEXT_MAP: Record<TOrderStatus, string> = {
 	shipped: 'Đang giao hàng',
 	delivered: 'Đã nhận hàng',
 	cancelled: 'Đã hủy',
+};
+
+export const ORDER_TYPE_TEXT_MAP: Record<TOrderType, string> = {
+	normal: 'Đơn hàng thường',
+	anonymous: 'Đơn hàng ẩn danh',
 };
 
 export const PAYMENT_METHOD_TEXT_MAP: Record<TOrderPaymentMethod, string> = {

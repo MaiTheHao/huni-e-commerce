@@ -4,7 +4,7 @@
 .copy-button {
 	display: inline-flex;
 	align-items: center;
-	gap: 0.25em;
+	gap: 0.5em;
 	padding: 0.25em 0.5em;
 	background: $white;
 	color: $txt-primary;
@@ -23,6 +23,7 @@
 	}
 
 	&__text {
+		white-space: nowrap;
 		user-select: none;
 	}
 

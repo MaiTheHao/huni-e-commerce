@@ -1,4 +1,4 @@
-import { IOrder, IOrderDocument, TOrderStatus } from '@/interfaces/entity/order/order.entity';
+import { IOrder, IOrderDocument, ORDER_FILTERABLE_FIELDS, ORDER_SEARCHABLE_FIELDS, TOrderStatus } from '@/interfaces/entity/order/order.entity';
 import { MongoBaseRepository } from './mongo-base.repository';
 import OrderModel from '../database/schemas/order.schema';
 
@@ -6,7 +6,7 @@ class OrderRepository extends MongoBaseRepository<IOrder, IOrderDocument> {
 	private static instance: OrderRepository;
 
 	private constructor() {
-		super(OrderModel);
+		super(OrderModel, ORDER_SEARCHABLE_FIELDS, ORDER_FILTERABLE_FIELDS);
 	}
 
 	static getInstance(): OrderRepository {

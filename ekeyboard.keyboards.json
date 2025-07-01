@@ -1,0 +1,649 @@
+[{
+  "_id": {
+    "$oid": "6834b18542acac6ea4df6d2a"
+  },
+  "name": "AKKO MOD007B-HE PC Santorini Sakura Pink",
+  "price": 2690000,
+  "discountPercent": 10,
+  "description": "Bàn phím 75% với thiết kế Santorini, sử dụng switch từ tính Kailh Sakura Pink, hỗ trợ Rapid Trigger và kết nối đa chế độ.",
+  "images": [
+    "https://nvs.tn-cdn.net/2025/03/akko-mod007b-he-pc-santorini-sakura-8.jpg",
+    "https://nvs.tn-cdn.net/2025/03/akko-mod007b-he-pc-santorini-sakura-2.jpg",
+    "https://nvs.tn-cdn.net/2025/03/akko-mod007b-he-pc-santorini-sakura-3.jpg",
+    "https://nvs.tn-cdn.net/2025/03/akko-mod007b-he-pc-santorini-sakura-4.jpg",
+    "https://nvs.tn-cdn.net/2025/03/akko-mod007b-he-pc-santorini-sakura-5.jpg",
+    "https://nvs.tn-cdn.net/2025/03/akko-mod007b-he-pc-santorini-sakura-6.jpg",
+    "https://akkogear.com.vn/wp-content/uploads/2025/02/World-Tour-Aegean-Sea-MOD007B-PC-XQ-Q-GX.jpg"
+  ],
+  "stock": 100,
+  "isActive": true,
+  "layout": "75%",
+  "caseMaterial": "Polycarbonate",
+  "switchType": "Magnetic Linear",
+  "hotswap": true,
+  "rapidTrigger": true,
+  "rgb": true,
+  "connectivity": [
+    "Type-C",
+    "Bluetooth",
+    "2.4GHz"
+  ],
+  "collab": null,
+  "series": "MOD007B-HE",
+  "tags": [
+    "Magnetic Switch",
+    "Rapid Trigger",
+    "Santorini"
+  ],
+  "brand": "Akko",
+  "createdAt": "2024-12-25T00:00:00.000Z",
+  "updatedAt": "2025-05-29T05:10:55.038Z",
+  "modelName": "AKKO MOD007B-HE PC Santorini Kailh Pink Magnetic Switch",
+  "productType": "keyboard"
+},
+{
+  "_id": {
+    "$oid": "6834b18542acac6ea4df6d2b"
+  },
+  "name": "AKKO MOD007v3 HE Year of Dragon",
+  "price": 4990000,
+  "discountPercent": 0,
+  "description": "Bàn phím 75% phiên bản đặc biệt Year of Dragon, sử dụng switch từ tính Akko Cream Yellow, hỗ trợ Rapid Trigger và kết nối đa chế độ.",
+  "images": [
+    "https://akko.vn/wp-content/uploads/2024/04/AKKO-MOD007v3-HE-Year-of-Dragon.png",
+    "https://akkogear.com.vn/wp-content/uploads/2024/03/DSC_1204-%E6%8B%B7%E8%B4%9D-2048x1363.jpg"
+  ],
+  "stock": 100,
+  "isActive": true,
+  "layout": "75%",
+  "caseMaterial": "Aluminum",
+  "switchType": "Magnetic Linear",
+  "hotswap": true,
+  "rapidTrigger": true,
+  "rgb": true,
+  "connectivity": [
+    "Type-C"
+  ],
+  "collab": null,
+  "series": "MOD007v3 HE",
+  "tags": [
+    "Magnetic Switch",
+    "Rapid Trigger",
+    "Year of Dragon"
+  ],
+  "brand": "Akko",
+  "createdAt": "2024-12-25T00:00:00.000Z",
+  "updatedAt": "2024-12-25T00:00:00.000Z",
+  "modelName": "MOD007v3 HE Year of Dragon",
+  "productType": "keyboard"
+},
+{
+  "_id": {
+    "$oid": "6834b18542acac6ea4df6d2c"
+  },
+  "name": "Akko 5098B Ink Green",
+  "price": 2390000,
+  "discountPercent": 5,
+  "description": "Bàn phím 96% với màn hình TFT 1.47\", switch Ice Cream Pink, hỗ trợ hot-swap và kết nối đa chế độ.",
+  "images": [
+    "https://akko.vn/wp-content/uploads/2024/12/Ban-phim-AKKO-5098B-Ink-Green-1.png",
+    "https://akkogear.com.vn/wp-content/uploads/2024/12/Ink-Green-5098B-XQ-Q-GX3.jpg"
+  ],
+  "stock": 100,
+  "isActive": true,
+  "layout": "96%",
+  "caseMaterial": "PBT",
+  "switchType": "Linear",
+  "hotswap": true,
+  "rapidTrigger": false,
+  "rgb": true,
+  "connectivity": [
+    "Type-C",
+    "Bluetooth",
+    "2.4GHz"
+  ],
+  "collab": null,
+  "series": "5098B",
+  "tags": [
+    "TFT Screen",
+    "Hot-Swap",
+    "Ink Green"
+  ],
+  "brand": "Akko",
+  "createdAt": "2024-12-25T00:00:00.000Z",
+  "updatedAt": "2024-12-25T00:00:00.000Z",
+  "modelName": "5098B Ink Green",
+  "productType": "keyboard"
+},
+{
+  "_id": {
+    "$oid": "6834b18542acac6ea4df6d2d"
+  },
+  "name": "AKKO MOD007B-HE PC Tokyo Sakura Pink",
+  "price": 2690000,
+  "discountPercent": 15,
+  "description": "Bàn phím 75% với thiết kế Tokyo, sử dụng switch từ tính Akko Cream Yellow Magnetic, hỗ trợ Rapid Trigger và kết nối đa chế độ.",
+  "images": [
+    "https://akko.vn/wp-content/uploads/2024/12/Ban-phim-AKKO-MOD007B-HE-PC-Tokyo-Sakura-Pink-1.png",
+    "https://akkogear.com.vn/wp-content/uploads/2024/12/World-Tour-Tokyo-MOD007B-PC-XQ-Q-GX.jpg"
+  ],
+  "stock": 100,
+  "isActive": true,
+  "layout": "75%",
+  "caseMaterial": "Polycarbonate",
+  "switchType": "Magnetic Linear",
+  "hotswap": true,
+  "rapidTrigger": true,
+  "rgb": true,
+  "connectivity": [
+    "Type-C",
+    "Bluetooth",
+    "2.4GHz"
+  ],
+  "collab": null,
+  "series": "MOD007B-HE",
+  "tags": [
+    "Magnetic Switch",
+    "Rapid Trigger",
+    "Tokyo"
+  ],
+  "brand": "Akko",
+  "createdAt": "2024-12-25T00:00:00.000Z",
+  "updatedAt": "2024-12-25T00:00:00.000Z",
+  "modelName": "MOD007B-HE PC Tokyo",
+  "productType": "keyboard"
+},
+{
+  "_id": {
+    "$oid": "6834b18542acac6ea4df6d2e"
+  },
+  "name": "AKKO MU01 Mountain Seclusion",
+  "price": 3290000,
+  "discountPercent": 20,
+  "description": "Bàn phím 65% với khung gỗ walnut, switch Akko CS Crystal, hỗ trợ hot-swap và kết nối đa chế độ.",
+  "images": [
+    "https://akko.vn/wp-content/uploads/2024/05/ban-phim-akko-MU01-mountain-seclusion-01.png",
+    "https://akkogear.com.vn/wp-content/uploads/2024/05/Untitled.png"
+  ],
+  "stock": 100,
+  "isActive": true,
+  "layout": "65%",
+  "caseMaterial": "Walnut Wood",
+  "switchType": "Linear",
+  "hotswap": true,
+  "rapidTrigger": false,
+  "rgb": true,
+  "connectivity": [
+    "Type-C",
+    "Bluetooth",
+    "2.4GHz"
+  ],
+  "collab": null,
+  "series": "MU01",
+  "tags": [
+    "Wooden Case",
+    "Hot-Swap",
+    "Mountain Seclusion"
+  ],
+  "brand": "Akko",
+  "createdAt": "2024-12-25T00:00:00.000Z",
+  "updatedAt": "2024-12-25T00:00:00.000Z",
+  "modelName": "MU01 Mountain Seclusion",
+  "productType": "keyboard"
+},
+{
+  "_id": {
+    "$oid": "6834b18542acac6ea4df6d2f"
+  },
+  "name": "AKKO 5108B Plus Degenerate",
+  "price": 2399000,
+  "discountPercent": 0,
+  "description": "Bàn phím full-size với thiết kế Degenerate, sử dụng switch Piano Pro, hỗ trợ hot-swap và kết nối đa chế độ.",
+  "images": [
+    "https://akko.vn/wp-content/uploads/2025/03/ban-phim-akko-5108b-plus-degenerate-8.png"
+  ],
+  "stock": 100,
+  "isActive": true,
+  "layout": "Fullsize",
+  "caseMaterial": "PBT",
+  "switchType": "Linear",
+  "hotswap": true,
+  "rapidTrigger": false,
+  "rgb": true,
+  "connectivity": [
+    "Type-C",
+    "Bluetooth",
+    "2.4GHz"
+  ],
+  "collab": null,
+  "series": "5108B Plus",
+  "tags": [
+    "Fullsize",
+    "Hot-Swap",
+    "Degenerate"
+  ],
+  "brand": "Akko",
+  "createdAt": "2024-12-25T00:00:00.000Z",
+  "updatedAt": "2024-12-25T00:00:00.000Z",
+  "modelName": "5108B Plus Degenerate",
+  "productType": "keyboard"
+},
+{
+  "_id": {
+    "$oid": "6834b18542acac6ea4df6d30"
+  },
+  "name": "AKKO 3108 v3 Joy of Life",
+  "price": 1290000,
+  "discountPercent": 0,
+  "description": "Bàn phím full-size với thiết kế Joy of Life, sử dụng switch Akko V3 Cream Yellow Pro, kết nối USB Type-C.",
+  "images": [
+    "https://akko.vn/wp-content/uploads/2025/05/Ban-Phim-AKKO-3108-v3-Joy-of-Life-1.png"
+  ],
+  "stock": 100,
+  "isActive": true,
+  "layout": "Fullsize",
+  "caseMaterial": "ABS",
+  "switchType": "Linear",
+  "hotswap": false,
+  "rapidTrigger": false,
+  "rgb": false,
+  "connectivity": [
+    "Type-C"
+  ],
+  "collab": null,
+  "series": "3108 v3",
+  "tags": [
+    "Fullsize",
+    "Joy of Life"
+  ],
+  "brand": "Akko",
+  "createdAt": "2024-12-25T00:00:00.000Z",
+  "updatedAt": "2024-12-25T00:00:00.000Z",
+  "modelName": "3108 v3 Joy of Life",
+  "productType": "keyboard"
+},
+{
+  "_id": {
+    "$oid": "6834b18542acac6ea4df6d31"
+  },
+  "name": "AKKO 3087 SP Ocean Star (Cherry switch)",
+  "price": 1699000,
+  "discountPercent": 0,
+  "description": "Bàn phím TKL với thiết kế Ocean Star, sử dụng switch Cherry MX Red, kết nối USB Type-C.",
+  "images": [
+    "https://akko.vn/wp-content/uploads/2020/06/10182.jpg"
+  ],
+  "stock": 100,
+  "isActive": true,
+  "layout": "TKL",
+  "caseMaterial": "ABS",
+  "switchType": "Linear",
+  "hotswap": false,
+  "rapidTrigger": false,
+  "rgb": false,
+  "connectivity": [
+    "Type-C"
+  ],
+  "collab": null,
+  "series": "3087 SP",
+  "tags": [
+    "TKL",
+    "Ocean Star"
+  ],
+  "brand": "Akko",
+  "createdAt": "2024-12-25T00:00:00.000Z",
+  "updatedAt": "2024-12-25T00:00:00.000Z",
+  "modelName": "3087 SP Ocean Star",
+  "productType": "keyboard"
+},
+{
+  "_id": {
+    "$oid": "6834b18542acac6ea4df6d32"
+  },
+  "name": "AKKO 5098B The King’s Avatar Ye Xiu",
+  "price": 2490000,
+  "discountPercent": 5,
+  "description": "Bàn phím cơ 1800 Compact với thiết kế đặc biệt từ bộ anime \"The King’s Avatar\", tích hợp màn hình TFT 1.47\", núm xoay tùy chỉnh, switch Akko V3 Piano Pro, hỗ trợ hot-swap và kết nối đa chế độ.",
+  "images": [
+    "https://akko.vn/wp-content/uploads/2024/11/AKKO-5098B-The-Kings-Avatar-Ye-Xiu-8.png"
+  ],
+  "stock": 100,
+  "isActive": true,
+  "layout": "96%",
+  "caseMaterial": "ABS",
+  "switchType": "Linear",
+  "hotswap": true,
+  "rapidTrigger": false,
+  "rgb": true,
+  "connectivity": [
+    "Type-C",
+    "Bluetooth",
+    "2.4GHz"
+  ],
+  "collab": "The King’s Avatar",
+  "series": "5098B",
+  "tags": [
+    "Anime",
+    "TFT Screen",
+    "Gasket Mount",
+    "Hot-Swap"
+  ],
+  "brand": "Akko",
+  "createdAt": "2024-12-25T00:00:00.000Z",
+  "updatedAt": "2024-12-25T00:00:00.000Z",
+  "modelName": "5098B The King’s Avatar Ye Xiu",
+  "productType": "keyboard"
+},
+{
+  "_id": {
+    "$oid": "6834b18542acac6ea4df6d33"
+  },
+  "name": "AKKO 3084B Plus Black & Gold",
+  "price": 2099000,
+  "discountPercent": 0,
+  "description": "Bàn phím TKL với thiết kế Black & Gold, sử dụng switch Akko V3 Piano Pro, hỗ trợ hot-swap và kết nối đa chế độ.",
+  "images": [
+    "https://akko.vn/wp-content/uploads/2022/05/ban-phim-co-akko-3084b-plus-black-gold-01-510x510.png"
+  ],
+  "stock": 100,
+  "isActive": true,
+  "layout": "75%",
+  "caseMaterial": "PBT",
+  "switchType": "Linear / Tactile",
+  "hotswap": true,
+  "rapidTrigger": false,
+  "rgb": true,
+  "connectivity": [
+    "Type-C",
+    "Bluetooth",
+    "2.4GHz"
+  ],
+  "collab": null,
+  "series": "3084B Plus",
+  "tags": [
+    "TKL",
+    "Hot-Swap",
+    "Black & Gold",
+    "ASA Profile",
+    "PBT Double-Shot",
+    "Wireless",
+    "Bluetooth",
+    "2.4GHz",
+    "RGB"
+  ],
+  "brand": "Akko",
+  "createdAt": "2024-12-25T00:00:00.000Z",
+  "updatedAt": "2024-12-25T00:00:00.000Z",
+  "modelName": "3084 (84 keys)",
+  "productType": "keyboard"
+},
+{
+  "_id": {
+    "$oid": "6834b18542acac6ea4df6d34"
+  },
+  "name": "AKKO 3061S Neon RGB Bluetooth 5.0",
+  "price": 1490000,
+  "discountPercent": 0,
+  "description": "Bàn phím 61 phím, LED RGB, kết nối Bluetooth 5.0/USB Type-C tháo rời, hỗ trợ 4 thiết bị, pin 1800mAh (~200h), keycap PBT Double-Shot Cherry Profile, switch Gateron (Pink/Orange), hỗ trợ NKRO/Multimedia/Macro/Khóa Windows, tặng kèm phụ kiện, tương thích đa hệ điều hành.",
+  "images": [
+    "https://akko.vn/wp-content/uploads/2021/02/ban-phim-co-akko-3061-neon-bluetooth-01-510x631.jpg"
+  ],
+  "stock": 100,
+  "isActive": true,
+  "layout": "65%",
+  "caseMaterial": "ABS",
+  "switchType": "Linear",
+  "hotswap": false,
+  "rapidTrigger": false,
+  "rgb": true,
+  "connectivity": [
+    "Type-C",
+    "Bluetooth"
+  ],
+  "collab": null,
+  "series": "3061S",
+  "tags": [
+    "Bluetooth 5.0",
+    "LED RGB",
+    "PBT Double-Shot",
+    "Cherry Profile",
+    "Gateron Switch",
+    "NKRO",
+    "Macro",
+    "Windows Lock",
+    "61 Keys"
+  ],
+  "brand": "Akko",
+  "createdAt": "2024-12-25T00:00:00.000Z",
+  "updatedAt": "2024-12-25T00:00:00.000Z",
+  "modelName": "3061S Neon",
+  "productType": "keyboard"
+},
+{
+  "_id": {
+    "$oid": "684355d15ef2a685bbd78904"
+  },
+  "name": "AKKO PC75B Plus Year of Tiger",
+  "price": 2899000,
+  "discountPercent": 0,
+  "description": "Bàn phím cơ 75% phiên bản giới hạn Nhâm Dần 2022, hỗ trợ kết nối Bluetooth 5.0, Wireless 2.4Ghz và USB Type-C, hotswap 5 pin, foam tiêu âm, switch Akko CS Jelly (White/Silver/Wine Red), LED RGB, pin 3000mAh, knob kim loại, tương thích Windows/Mac/Linux.",
+  "images": [
+    "https://akko.vn/wp-content/uploads/2022/01/ban-phim-akko-pc75b-plus-year-of-tiger-akkovn.jpg",
+    "https://akko.vn/wp-content/uploads/2022/01/ban-phim-akko-pc75b-plus-year-of-tiger-02-768x768-1.jpg",
+    "https://akko.vn/wp-content/uploads/2022/01/ban-phim-akko-pc75b-plus-year-of-tiger-03.jpg",
+    "https://akko.vn/wp-content/uploads/2022/01/ban-phim-akko-pc75b-plus-year-of-tiger-04.jpg"
+  ],
+  "stock": 0,
+  "isActive": true,
+  "layout": "75%",
+  "caseMaterial": "Polycarbonate",
+  "switchType": "Linear",
+  "hotswap": true,
+  "rapidTrigger": false,
+  "rgb": true,
+  "connectivity": "Bluetooth",
+  "collab": null,
+  "series": "PC75B Plus",
+  "tags": [
+    "Limited",
+    "Year of Tiger",
+    "Hotswap",
+    "Foam tiêu âm"
+  ],
+  "brand": "Akko",
+  "createdAt": "2024-01-15T00:00:00.000Z",
+  "updatedAt": "2024-12-25T00:00:00.000Z",
+  "modelName": "AKKO PC75B Plus Year of Tiger",
+  "productType": "keyboard"
+},
+{
+  "_id": {
+    "$oid": "684355d15ef2a685bbd78905"
+  },
+  "name": "AKKO 5087B Multi-modes World Tour London",
+  "price": 2799000,
+  "discountPercent": 0,
+  "description": "Bàn phím cơ 87 phím, kết nối USB Type C/Bluetooth 5.0/Wireless 2.4Ghz, pin 2000mAh, LED RGB, hotswap 5 pin với TTC socket, foam tiêu âm EVA 3.5mm, stab pre-lubed, kích thước 360x132x41mm, trọng lượng 0.9kg, tương thích Windows/MacOS/Linux.",
+  "images": [
+    "https://akko.vn/wp-content/uploads/2022/01/ban-phim-co-5087b-multi-modes-world-tour-london-01-akkovn.jpg",
+    "https://akko.vn/wp-content/uploads/2022/01/ban-phim-co-5087b-multi-modes-world-tour-london-10.jpg",
+    "https://akko.vn/wp-content/uploads/2022/01/ban-phim-co-5087b-multi-modes-world-tour-london-05.jpg",
+    "https://akko.vn/wp-content/uploads/2022/01/ban-phim-co-5087b-multi-modes-world-tour-london-08.jpg"
+  ],
+  "stock": 0,
+  "isActive": true,
+  "layout": "TKL",
+  "caseMaterial": "Plastic",
+  "switchType": "Linear",
+  "hotswap": true,
+  "rapidTrigger": false,
+  "rgb": true,
+  "connectivity": "Bluetooth",
+  "collab": "World Tour London",
+  "series": "5087B Multi-modes",
+  "tags": [
+    "Multi-modes",
+    "World Tour",
+    "Hotswap",
+    "Foam tiêu âm"
+  ],
+  "brand": "Akko",
+  "createdAt": "2024-12-25T00:00:00.000Z",
+  "updatedAt": "2024-12-25T00:00:00.000Z",
+  "modelName": "5087B",
+  "productType": "keyboard"
+},
+{
+  "_id": {
+    "$oid": "684355d15ef2a685bbd78906"
+  },
+  "name": "AKKO 5108S Honkai Impact 3rd Bronya Zaychik",
+  "price": 2899000,
+  "discountPercent": 1,
+  "description": "Bàn phím cơ fullsize 108 phím phiên bản giới hạn Honkai Impact 3rd, kết nối USB Type-C, LED RGB, hotswap 5 pin, foam tiêu âm EVA 3.5mm, stab pre-lubed, kích thước 442x132x41mm, trọng lượng 1.2kg, AKKO CS Jelly Switch, tương thích Windows/MacOS/Linux.",
+  "images": [
+    "https://akko.vn/wp-content/uploads/2021/11/Ban-phim-co-akko-5108s-honkai-impact-3rd-bronya-zaychik-akkovn-01.jpg",
+    "https://akko.vn/wp-content/uploads/2021/11/2Ban-phim-co-akko-5108s-honkai-impact-3rd-bronya-zaychik-akkovn-06.jpg"
+  ],
+  "stock": 0,
+  "isActive": true,
+  "layout": "Fullsize",
+  "caseMaterial": "Plastic",
+  "switchType": "Linear",
+  "hotswap": true,
+  "rapidTrigger": false,
+  "rgb": true,
+  "connectivity": [
+    "Type-C"
+  ],
+  "collab": "Honkai Impact 3rd",
+  "series": "5108S",
+  "tags": [
+    "Limited Edition",
+    "Honkai Impact",
+    "Hotswap",
+    "Foam tiêu âm"
+  ],
+  "brand": "Akko",
+  "createdAt": "2024-12-25T00:00:00.000Z",
+  "updatedAt": "2024-12-25T00:00:00.000Z",
+  "modelName": "5108S",
+  "productType": "keyboard"
+},
+{
+  "_id": {
+    "$oid": "684355d15ef2a685bbd78907"
+  },
+  "name": "AKKO 5108S Honkai Impact 3rd Yae Sakura",
+  "price": 2849000,
+  "discountPercent": 2,
+  "description": "Bàn phím cơ fullsize 108 phím phiên bản giới hạn Honkai Impact 3rd Yae Sakura, kết nối USB Type-C, LED RGB, hotswap 5 pin, foam tiêu âm EVA 3.5mm, stab pre-lubed, kích thước 442x132x41mm, trọng lượng 1.2kg, AKKO CS Crystal Switch, tương thích Windows/MacOS/Linux.",
+  "images": [
+    "https://akko.vn/wp-content/uploads/2023/04/ban-phim-akko-5108S-honkai-impact-3rd-yae-sakura-02.png",
+    "https://akko.vn/wp-content/uploads/2023/04/006xSH7Zly1gh9we4amwkj31cj0u0u0x.jpg",
+    "https://akko.vn/wp-content/uploads/2023/04/006xSH7Zly1gh9we4eq6ij31cj0u0x6p.jpg"
+  ],
+  "stock": 0,
+  "isActive": true,
+  "layout": "Fullsize",
+  "caseMaterial": "Plastic",
+  "switchType": "Linear",
+  "hotswap": true,
+  "rapidTrigger": false,
+  "rgb": true,
+  "connectivity": [
+    "Type-C"
+  ],
+  "collab": "Honkai Impact 3rd",
+  "series": "5108S",
+  "tags": [
+    "Limited Edition",
+    "Honkai Impact",
+    "Yae Sakura",
+    "Hotswap",
+    "Foam tiêu âm"
+  ],
+  "brand": "Akko",
+  "createdAt": "2024-12-25T00:00:00.000Z",
+  "updatedAt": "2024-12-25T00:00:00.000Z",
+  "modelName": "5108S",
+  "productType": "keyboard"
+},
+{
+  "_id": {
+    "$oid": "684355d15ef2a685bbd78908"
+  },
+  "name": "Veekos Shine60 SP White",
+  "price": 859000,
+  "discountPercent": 3,
+  "description": "Bàn phím cơ 60% với cấu trúc Tray Mount, vỏ PBT Shine-through + ABS màu trắng, kết nối USB Type-C, LED South-facing ARGB 500Hz, Glare Magnetic Switches, hotswap, RT Accuracy 0.01-2.00mm, Cherry Profile keycaps, kích thước 300x115x37.6mm, trọng lượng 0.85kg.",
+  "images": [
+    "https://akko.vn/wp-content/uploads/2025/06/ban-phim-co-Veekos-Shine60-SP-White.png",
+    "https://akko.vn/wp-content/uploads/2025/06/ban-phim-co-Veekos-Shine60-SP-White-1.png",
+    "https://akko.vn/wp-content/uploads/2025/06/ban-phim-co-Veekos-Shine60-SP-White-2.png",
+    "https://akko.vn/wp-content/uploads/2025/06/ban-phim-co-Veekos-Shine60-SP-White-3.png"
+  ],
+  "stock": 5,
+  "isActive": true,
+  "layout": "60%",
+  "caseMaterial": "PBT + ABS",
+  "switchType": "Magnetic Linear",
+  "hotswap": true,
+  "rapidTrigger": true,
+  "rgb": true,
+  "connectivity": [
+    "Type-C"
+  ],
+  "collab": null,
+  "series": "Shine60 SP",
+  "tags": [
+    "Magnetic Switch",
+    "Rapid Trigger",
+    "60%",
+    "White"
+  ],
+  "brand": "Veekos",
+  "createdAt": "2024-12-25T00:00:00.000Z",
+  "updatedAt": "2024-12-25T00:00:00.000Z",
+  "modelName": "Shine60 SP",
+  "productType": "keyboard"
+},
+{
+  "_id": {
+    "$oid": "684440761ab515e123373106"
+  },
+  "name": "AKKO 5108B Plus Lord of Mysteries",
+  "price": 2399000,
+  "discountPercent": 0,
+  "description": "Bàn phím cơ full-size với thiết kế Lord of Mysteries, hỗ trợ RGB, hotswap, kết nối đa chế độ và switch Piano Pro.",
+  "images": [
+    "https://akkogear.com.vn/wp-content/uploads/2025/04/Multi-modes-1536x1536.png"
+  ],
+  "stock": 100,
+  "isActive": true,
+  "layout": "Fullsize",
+  "caseMaterial": "ABS",
+  "switchType": "Linear",
+  "hotswap": true,
+  "rapidTrigger": false,
+  "rgb": true,
+  "connectivity": [
+    "Type-C",
+    "Bluetooth",
+    "2.4GHz"
+  ],
+  "collab": "Lord of Mysteries",
+  "series": "5108B Plus",
+  "tags": [
+    "Lord of Mysteries",
+    "Piano Pro",
+    "Full-size",
+    "RGB",
+    "Hotswap"
+  ],
+  "brand": "Akko",
+  "createdAt": "2025-01-09T00:00:00.000Z",
+  "updatedAt": "2025-01-09T00:00:00.000Z",
+  "modelName": "5108B Plus Lord of Mysteries",
+  "productType": "keyboard"
+}]

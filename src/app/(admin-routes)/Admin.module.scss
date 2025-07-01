@@ -1,4 +1,5 @@
 @use '../vars' as *;
+@use 'sass:map';
 
 .block {
 	display: flex;
@@ -11,4 +12,354 @@
 	width: 100%;
 	height: max-content;
 	padding: 1em;
+}
+
+// info ITEMS TABLE
+
+.table {
+	width: 100%;
+	border-collapse: collapse;
+	background-color: $white;
+	border-radius: 0.25em;
+	font-size: 0.875em;
+	box-shadow: $box-shadow-xs;
+	overflow: hidden;
+
+	thead {
+		background-color: $gray-200;
+		tr {
+			th {
+				padding: 0.75em;
+				text-align: left;
+				font-weight: $font-weight-semibold;
+				color: $txt-primary;
+				border-bottom: 2px solid $black-200;
+
+				white-space: nowrap;
+				border-right: 1px solid $black-200;
+
+				&:last-child {
+					border-right: none;
+				}
+			}
+		}
+	}
+
+	tbody {
+		tr {
+			border-bottom: 1px solid $black-200;
+			&:nth-child(even) {
+				background-color: $gray-100;
+			}
+			td {
+				color: $txt-secondary;
+				padding: 0.75em;
+				border-right: 1px solid $black-200;
+				&:last-child {
+					border-right: none;
+				}
+			}
+		}
+	}
+}
+
+.table__actions {
+	width: 0;
+
+	&__wrapper {
+		display: flex;
+		align-items: center;
+	}
+}
+
+.table__loading {
+	padding: 2em 0;
+	text-align: center;
+	color: $txt-tertiary;
+	font-size: 1em;
+	background-color: $gray-100;
+
+	span {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.5em;
+		font-style: italic;
+		&::before {
+			content: '';
+			display: inline-block;
+			width: 1em;
+			height: 1em;
+			border: 2px solid $gray-400;
+			border-top: 2px solid $primary-color;
+			border-radius: 50%;
+			animation: table-loading-spin 0.8s linear infinite;
+		}
+	}
+}
+
+@keyframes table-loading-spin {
+	0% {
+		transform: rotate(0deg);
+	}
+	100% {
+		transform: rotate(360deg);
+	}
+}
+
+.table__action {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	padding: 0.5em 0.5em;
+	color: $txt-primary;
+	font-size: 1.15em;
+	cursor: pointer;
+	transition: color 0.2s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+
+	svg {
+		aspect-ratio: 1;
+	}
+
+	@mixin table-action-variant($color-map) {
+		color: map.get($color-map, icon);
+		border-color: transparent;
+		&:hover,
+		&:focus {
+			color: map.get($color-map, icon);
+		}
+		&:active {
+			opacity: 0.5;
+		}
+	}
+
+	&--detail {
+		@include table-action-variant($info);
+	}
+
+	&--delete {
+		@include table-action-variant($error);
+	}
+}
+
+.table__td--empty {
+	color: $txt-tertiary !important;
+	font-style: italic;
+}
+
+.table-col--id {
+	width: 25ch;
+	max-width: 25ch;
+	&__wrapper {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: 1ch;
+	}
+
+	&__value {
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		display: inline-block;
+	}
+}
+
+// info SECTION
+
+.section {
+	width: 100%;
+	background-color: $white;
+	box-shadow: $box-shadow-card;
+	padding: 1em;
+	border-radius: 0.25em;
+
+	&-title {
+		font-size: 1em;
+		font-weight: $font-weight-semibold;
+		color: $accent-color;
+		margin-bottom: 1em;
+	}
+}
+
+// info DASHBOARD PAGE
+
+.dashboard-container {
+	width: 100%;
+}
+
+.dashboard-block {
+	display: flex;
+	flex-direction: column;
+	gap: 1em;
+}
+
+// .dashboard-header {
+// }
+
+.dashboard-cards {
+	display: flex;
+	align-items: center;
+	max-width: 100%;
+	gap: 1em;
+	padding: 0;
+	margin: 0;
+	list-style: none;
+}
+
+.dashboard-card {
+	flex: 1 1 10em;
+	min-width: max-content;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	padding: 1em;
+	border-radius: 0.25em;
+	background-color: $white;
+	gap: 1em;
+
+	svg {
+		aspect-ratio: 1;
+		font-size: 1.25em;
+		border: 2px solid $white;
+		background-color: $black-700;
+		color: $white;
+		padding: 0.5em;
+		border-radius: 50%;
+	}
+
+	.dashboard-card__content {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: 0.5em;
+		width: 100%;
+	}
+
+	.dashboard-card__value {
+		font-weight: $font-weight-bold;
+		color: $txt-primary;
+		font-size: 1em;
+		line-height: 1;
+	}
+
+	.dashboard-card__label {
+		text-transform: capitalize;
+		font-size: 1em;
+		line-height: 1;
+	}
+
+	@mixin card-color($color-map) {
+		svg {
+			background-color: map.get($color-map, icon);
+			box-shadow: 0 0 5em 1em rgba(map.get($color-map, bg), 1);
+		}
+
+		.dashboard-card__label {
+			color: map.get($color-map, icon);
+		}
+	}
+
+	&--green {
+		@include card-color($success);
+	}
+
+	&--blue {
+		@include card-color($info);
+	}
+
+	&--orange {
+		@include card-color($warning);
+	}
+
+	&--red {
+		@include card-color($error);
+	}
+
+	&--highlight {
+		@include card-color($error);
+		box-shadow: 0 0 0 1px inset rgba(map.get($error, bg), 1);
+
+		svg {
+			border-color: map.get($error, border);
+		}
+
+		.dashboard-card__label {
+			color: map.get($error, text);
+		}
+
+		.dashboard-card__value {
+			color: map.get($error, icon);
+			font-size: 1.15em;
+		}
+	}
+}
+
+// info ORDER PAGE
+
+.orders-table {
+}
+
+// info ADMIN TOOLBAR
+
+.admin-toolbar {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 2em;
+	flex-wrap: wrap-reverse;
+	gap: 1em;
+	width: 100%;
+	margin-bottom: 1.5em;
+	padding: 0.5em 0;
+}
+
+.admin-toolbar__filters {
+	display: flex;
+	gap: 0.5em;
+	align-items: center;
+	flex-wrap: wrap;
+}
+
+.admin-toolbar__search {
+	display: flex;
+	align-items: center;
+	gap: 0.5em;
+	border: 1px solid $black-200;
+	background: $white;
+	padding: 0.5em 1em;
+	border-radius: 2em;
+	min-width: 28em;
+	box-shadow: none;
+	transition: border-color 0.2s;
+
+	&:focus-within {
+		border-color: $primary-color;
+	}
+}
+
+.admin-toolbar__search-input {
+	border: none;
+	outline: none;
+	background: transparent;
+	font-size: 1em;
+	color: $txt-primary;
+	width: 100%;
+	min-width: 12em;
+	padding: 0;
+
+	&::placeholder {
+		color: $txt-secondary;
+		opacity: 1;
+	}
+}
+
+.admin-toolbar__search-icon {
+	color: $primary-color;
+	font-size: 1.1em;
+	margin-left: $spacing-4;
+}
+
+// info ADMIN PAGINATION BAR
+.admin-pagination-bar {
+	font-size: 0.875em;
 }

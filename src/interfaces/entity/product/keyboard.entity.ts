@@ -6,9 +6,9 @@ import { ISwitchType } from './switch.entity';
 export interface IKeyboardBase extends IProductBase {
 	caseMaterial: string;
 	collab: string | null;
-	connectivity: IKeyboardConnectivity[];
+	connectivity: TKeyboardConnectivity[];
 	hotswap: boolean;
-	layout: IKeyboardLayout;
+	layout: TKeyboardLayout;
 	modelName: string;
 	rapidTrigger: boolean;
 	rgb: boolean;
@@ -23,20 +23,20 @@ export interface IKeyboard extends IKeyboardBase {
 export interface IKeyboardDocument extends IKeyboardBase, mongoose.Document<mongoose.Types.ObjectId> {}
 
 export const KEYBOARD_LAYOUTS = ['Fullsize', '96%', 'TKL', '75%', '65%', '60%'] as const;
-export type IKeyboardLayout = (typeof KEYBOARD_LAYOUTS)[number];
+export type TKeyboardLayout = (typeof KEYBOARD_LAYOUTS)[number];
 
 export const KEYBOARD_CONNECTIVITIES = ['Type-C', 'Bluetooth', '2.4GHz', 'USB-A'] as const;
-export type IKeyboardConnectivity = (typeof KEYBOARD_CONNECTIVITIES)[number];
+export type TKeyboardConnectivity = (typeof KEYBOARD_CONNECTIVITIES)[number];
 
 export const KEYBOARD_SEARCHABLE_FIELDS = [...PRODUCT_SEARCHABLE_FIELDS, 'modelName', 'collab', 'series', 'switchType'] as const;
-export type KeyboardSearchableFields = (typeof KEYBOARD_SEARCHABLE_FIELDS)[number];
+export type TKeyboardSearchableFields = (typeof KEYBOARD_SEARCHABLE_FIELDS)[number];
 
 export const KEYBOARD_SORTABLE_FIELDS = [...PRODUCT_SORTABLE_FIELDS, 'layout'] as const;
-export type KeyboardSortableFields = (typeof KEYBOARD_SORTABLE_FIELDS)[number];
+export type TKeyboardSortableFields = (typeof KEYBOARD_SORTABLE_FIELDS)[number];
 
 export const KEYBOARD_FILTERABLE_FIELDS = [...PRODUCT_FILTERABLE_FIELDS, 'caseMaterial', 'collab', 'connectivity', 'hotswap', 'layout', 'series', 'switchType', 'rapidTrigger', 'rgb'] as const;
-export type KeyboardFilterableFields = (typeof KEYBOARD_FILTERABLE_FIELDS)[number];
+export type TKeyboardFilterableFields = (typeof KEYBOARD_FILTERABLE_FIELDS)[number];
 
-export type KeyboardFilterCriteria = TFilterCriteria<KeyboardFilterableFields>;
-export type KeyboardSortCriteria = TSortCriteria<KeyboardSortableFields>;
-export type KeyboardSearchCriteria = ProductSearchCriteria;
+export type TKeyboardFilterCriteria = TFilterCriteria<TKeyboardFilterableFields>;
+export type TKeyboardSortCriteria = TSortCriteria<TKeyboardSortableFields>;
+export type TKeyboardSearchCriteria = ProductSearchCriteria;

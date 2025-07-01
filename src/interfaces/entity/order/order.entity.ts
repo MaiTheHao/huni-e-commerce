@@ -1,3 +1,4 @@
+import { TFilterCriteria, TSearchCriteria, TSortCriteria } from '@/interfaces/filter';
 import mongoose from 'mongoose';
 
 export interface IOrderItem {
@@ -69,3 +70,16 @@ export interface ICreateOrderData {
 	shippingFee?: number;
 	totalPrice: number;
 }
+
+export const ORDER_SEARCHABLE_FIELDS = ['_id', 'customerName', 'customerEmail', 'customerPhone', 'customerAddress'] as const;
+export type TOrderSearchableFields = (typeof ORDER_SEARCHABLE_FIELDS)[number];
+
+export const ORDER_FILTERABLE_FIELDS = ['status', 'paymentMethod', 'type'] as const;
+export type TOrderFilterableFields = (typeof ORDER_FILTERABLE_FIELDS)[number];
+
+export const ORDER_SORTABLE_FIELDS = ['createdAt', 'totalPrice'] as const;
+export type TOrderSortableFields = (typeof ORDER_SORTABLE_FIELDS)[number];
+
+export type TOrderFilterCriteria = TFilterCriteria<TOrderFilterableFields>;
+export type TOrderSortCriteria = TSortCriteria<TOrderSortableFields>;
+export type TOrderSearchCriteria = TSearchCriteria;

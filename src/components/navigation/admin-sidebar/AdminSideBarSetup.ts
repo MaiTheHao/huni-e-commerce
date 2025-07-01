@@ -1,4 +1,4 @@
-import { faHouse, faTruckRampBox, faUsers } from '@fortawesome/free-solid-svg-icons';
+import { faHouse, faKeyboard, faTruckRampBox, faUsers } from '@fortawesome/free-solid-svg-icons';
 
 type NavItem = {
 	title: string;
@@ -22,12 +22,12 @@ export const NAV_LIST: NavSection[] = [
 			},
 			{
 				title: 'Đơn hàng',
-				path: '/admin/orders',
+				path: '/admin/order',
 				icon: faTruckRampBox,
 			},
 			{
 				title: 'Khách hàng',
-				path: '/admin/customers',
+				path: '/admin/customer',
 				icon: faUsers,
 			},
 		],
@@ -37,8 +37,8 @@ export const NAV_LIST: NavSection[] = [
 		items: [
 			{
 				title: 'Bàn phím',
-				path: '/admin/products/keyboard',
-				icon: faHouse,
+				path: '/admin/product/keyboard',
+				icon: faKeyboard,
 			},
 		],
 	},

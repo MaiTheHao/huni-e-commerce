@@ -1,9 +1,9 @@
 import React from 'react';
-import styles from './Dashboard.module.scss';
+import styles from '../../Admin.module.scss';
 import { IOrder } from '@/interfaces/entity/order/order.entity';
 import AdminDashboardClientWrapper from './AdminDashboardClientWrapper';
 import { getPotentialCustomers } from '@/server/actions/user';
-import { getAllOrders } from '@/server/actions/order';
+import { getOrdersWithPagination } from '@/server/actions/order';
 import { countUsers } from '@/server/actions/user/count';
 import { IUser } from '@/interfaces';
 import { countProduct } from '@/server/actions/product/count-product';
@@ -32,7 +32,8 @@ export interface IProductStats {
 
 export default async function AdminDashboardServerWrapper() {
 	// ORDER LOGIC
-	const [orderError, orders] = await getAllOrders({}, { _id: -1 });
+	const [orderError, orderResult] = await getOrdersWithPagination(1, 10, {}, { _id: -1 });
+	const orders = orderResult?.data || null;
 	const successOrders = orders ? orders.filter((order) => order.status === 'delivered') : [];
 	const pendingOrders = orders ? orders.filter((order) => order.status === 'pending') : [];
 
@@ -65,8 +66,8 @@ export default async function AdminDashboardServerWrapper() {
 	};
 
 	return (
-		<div className={styles.container}>
-			<div className={styles.block}>
+		<div className={styles['dashboard-container']}>
+			<div className={styles['dashboard-block']}>
 				<AdminDashboardClientWrapper orderStats={orderStats} customerStats={customerStats} productStats={productStats} />
 			</div>
 		</div>

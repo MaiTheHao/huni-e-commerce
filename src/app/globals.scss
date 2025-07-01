@@ -126,7 +126,6 @@ $link-underline-offset: -0.5ch !default;
 	&::before {
 		content: 'ℹ️';
 		margin-right: 0.5em;
-		vertical-align: middle;
 		opacity: 0.7;
 		font-size: 1.1em;
 	}

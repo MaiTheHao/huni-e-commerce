@@ -1,11 +1,11 @@
-import { IUser, IUserDocument } from '@/interfaces';
+import { IUser, IUserDocument, USER_FILTERABLE_FIELDS, USER_SEARCHABLE_FIELDS } from '@/interfaces';
 import { MongoBaseRepository } from './mongo-base.repository';
 import { UserModel } from '../database/schemas/user.schema';
 
 class UserRepository extends MongoBaseRepository<IUser, IUserDocument> {
 	private static instance: UserRepository;
 	private constructor() {
-		super(UserModel);
+		super(UserModel, USER_SEARCHABLE_FIELDS, USER_FILTERABLE_FIELDS);
 	}
 	static getInstance(): UserRepository {
 		if (!UserRepository.instance) {
