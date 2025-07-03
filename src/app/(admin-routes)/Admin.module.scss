@@ -168,6 +168,7 @@
 
 .section {
 	width: 100%;
+	min-width: max-content;
 	background-color: $white;
 	box-shadow: $box-shadow-card;
 	padding: 1em;

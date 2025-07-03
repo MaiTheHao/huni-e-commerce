@@ -3,7 +3,6 @@ import React from 'react';
 import styles from '../../../Admin.module.scss';
 import AdminItemsTable from '../../components/AdminItemsTable';
 import CopyButton from '@/components/ui/copy-button/CopyButton';
-import { formatDateToVietnameseString } from '@/util/date';
 import { IUser } from '@/interfaces';
 import { toLocalePrice } from '@/util';
 
@@ -44,8 +43,8 @@ function AdminCustomersTable({ users, emptyMessage = 'Không có người dùng 
 						user.name,
 						<span>
 							{user.email}
-							{!user.isEmailVerified && (
-								<span title='Email chưa xác thực' style={{ color: 'red', marginLeft: 4 }}>
+							{!user?.isEmailVerified && (
+								<span title='Email chưa xác thực' style={{ color: 'red', marginLeft: '1ch' }}>
 									(chưa xác thực)
 								</span>
 							)}

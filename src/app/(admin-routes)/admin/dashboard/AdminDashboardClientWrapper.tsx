@@ -1,5 +1,5 @@
 'use client';
-import React from 'react';
+import React, { useEffect } from 'react';
 import styles from '../../Admin.module.scss';
 import { ICustomerStats, IOrderStats, IProductStats } from './AdminDashboardServerWrapper';
 import AdminDashboardCards from './components/AdminDashboardCards';

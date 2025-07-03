@@ -49,6 +49,14 @@ function AdminCustomerUIWrapperComponent({
 		[]
 	);
 
+	const emailVerifiedStatusOptions = useMemo(
+		() => [
+			{ value: 'verified', label: 'Đã xác thực' },
+			{ value: 'unverified', label: 'Chưa xác thực' },
+		],
+		[]
+	);
+
 	const sortOptions = useMemo(
 		() => [
 			{ value: 'createdAt--desc', label: 'Mới nhất' },
@@ -68,6 +76,7 @@ function AdminCustomerUIWrapperComponent({
 					{/* Nếu có status filter thì thêm vào đây */}
 					{/* <Select options={statusOptions} placeholder='Trạng thái' onSelect={onStatusChange} /> */}
 					<Select options={roleOptions} placeholder='Vai trò' onSelect={onRoleChange} />
+					<Select options={emailVerifiedStatusOptions} placeholder='Trạng thái email' onSelect={onRoleChange} />
 					<Select options={sortOptions} placeholder='Sắp xếp theo' onSelect={onSortFieldChange} />
 				</div>
 				<div className={styles['admin-toolbar__search']}>
