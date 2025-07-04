@@ -17,6 +17,7 @@ interface AdminOrderUIWrapperProps {
 	filterCriteria: ISearchFilterOrderRequest['criteria'];
 	sortCriteria: TOrderSortCriteria;
 	searchKeyword: string;
+	onRefetch?: () => void;
 	onStatusChange: (value: string | null) => void;
 	onPaymentMethodChange: (value: string | null) => void;
 	onOrderTypeChange: (value: string | null) => void;
@@ -33,6 +34,7 @@ function AdminOrderUIWrapperComponent({
 	filterCriteria,
 	sortCriteria,
 	searchKeyword,
+	onRefetch,
 	onStatusChange,
 	onPaymentMethodChange,
 	onOrderTypeChange,
@@ -104,7 +106,7 @@ function AdminOrderUIWrapperComponent({
 				</div>
 			</div>
 			<span className='note'>Các đơn bị xóa sẽ không được hiển thị.</span>
-			<AdminOrdersTable orders={orders} emptyMessage='Không có đơn hàng nào.' isLoading={isLoading} />
+			<AdminOrdersTable orders={orders} emptyMessage='Không có đơn hàng nào.' isLoading={isLoading} onDeleted={onRefetch} />
 			<PaginationBar
 				page={pagination.page}
 				limit={pagination.limit}

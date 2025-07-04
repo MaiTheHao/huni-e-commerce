@@ -6,20 +6,43 @@ import CopyButton from '@/components/ui/copy-button/CopyButton';
 import { formatDateToVietnameseString } from '@/util/date';
 import { IUser } from '@/interfaces';
 import { toLocalePrice } from '@/util';
+import { deleteUser } from '../apis';
+import Swal from 'sweetalert2';
 
 type AdminPotentialCustomersTableProps = {
 	users: IUser[];
 	emptyMessage?: string;
+	onDeleted?: () => void;
 	isLoading?: boolean;
 };
 
-function AdminPotentialCustomersTable({ users, emptyMessage = 'Không có khách hàng tiềm năng nào.', isLoading = false }: AdminPotentialCustomersTableProps) {
-	const handleDetailUser = (user: IUser) => {
-		alert(`View user details: ${JSON.stringify(user, null, 2)}`);
-	};
+function AdminPotentialCustomersTable({ users, emptyMessage = 'Không có khách hàng tiềm năng nào.', onDeleted, isLoading = false }: AdminPotentialCustomersTableProps) {
+	const handleDeleteUser = async (user: IUser) => {
+		const controller = new AbortController();
+		const [err, result] = await deleteUser(user, controller.signal);
 
-	const handleDeleteUser = (user: IUser) => {
-		alert(`Delete user: ${JSON.stringify(user, null, 2)}`);
+		if (result === 'canceled') {
+			return;
+		}
+
+		if (err) {
+			await Swal.fire({
+				icon: 'error',
+				title: 'Lỗi',
+				text: err?.message || 'Xóa người dùng thất bại.',
+				confirmButtonText: 'Đóng',
+			});
+		} else if (result === 'deleted') {
+			if (onDeleted) {
+				onDeleted();
+			}
+			await Swal.fire({
+				icon: 'success',
+				title: 'Thành công',
+				text: 'Người dùng đã được xóa.',
+				confirmButtonText: 'Đóng',
+			});
+		}
 	};
 
 	return (
@@ -46,11 +69,11 @@ function AdminPotentialCustomersTable({ users, emptyMessage = 'Không có khách
 						</span>,
 						user.metrics?.lastOrderDate ? formatDateToVietnameseString(user.metrics.lastOrderDate) : '',
 					],
+					href: `/admin/customer/${user._id}`,
 					data: user,
 				})) ?? []
 			}
 			emptyMessage={emptyMessage}
-			onDetail={(row) => handleDetailUser(row.data)}
 			onDelete={(row) => handleDeleteUser(row.data)}
 			loading={isLoading}
 		/>

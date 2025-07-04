@@ -8,20 +8,46 @@ import OrderStatus from '@/components/ui/order-status/OrderStatus';
 import AdminItemsTable from '../../components/AdminItemsTable';
 import { IOrder } from '@/interfaces';
 import { PAYMENT_METHOD_TEXT_MAP } from '@/consts/map-value';
+import { deleteOrder } from '../apis';
+import Swal from 'sweetalert2';
+import { useRouter } from 'next/navigation';
 
 type AdminOrdersTableProps = {
 	orders: IOrder[];
 	emptyMessage?: string;
 	isLoading?: boolean;
+	onDeleted?: () => void;
 };
 
-function AdminOrdersTable({ orders, emptyMessage = 'Không có đơn hàng nào.', isLoading = false }: AdminOrdersTableProps) {
-	const handleDetailUser = (order: IOrder) => {
-		alert(`View order details: ${JSON.stringify(order, null, 2)}`);
-	};
+function AdminOrdersTable({ orders, emptyMessage = 'Không có đơn hàng nào.', isLoading = false, onDeleted }: AdminOrdersTableProps) {
+	const router = useRouter();
 
-	const handleDeleteOrder = (order: IOrder) => {
-		console.log('Delete order:', order);
+	const handleDeleteOrder = async (order: IOrder) => {
+		const controller = new AbortController();
+		const [err, result] = await deleteOrder(order, controller.signal);
+
+		if (result === 'canceled') {
+			return;
+		}
+
+		if (err) {
+			await Swal.fire({
+				icon: 'error',
+				title: 'Lỗi',
+				text: err?.message || 'Xóa đơn hàng thất bại.',
+				confirmButtonText: 'Đóng',
+			});
+		} else if (result === 'deleted') {
+			if (onDeleted) {
+				onDeleted();
+			}
+			await Swal.fire({
+				icon: 'success',
+				title: 'Thành công',
+				text: 'Đơn hàng đã được xóa.',
+				confirmButtonText: 'Đóng',
+			});
+		}
 	};
 
 	return (
@@ -50,11 +76,11 @@ function AdminOrdersTable({ orders, emptyMessage = 'Không có đơn hàng nào.
 						</span>,
 						<OrderStatus status={order.status} key='status' />,
 					],
+					href: `/admin/order/${order._id}`,
 					data: order,
 				})) ?? []
 			}
 			emptyMessage={emptyMessage}
-			onDetail={(row) => handleDetailUser(row.data)}
 			onDelete={(row) => handleDeleteOrder(row.data)}
 			loading={isLoading}
 		/>

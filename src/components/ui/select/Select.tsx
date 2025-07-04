@@ -8,6 +8,8 @@ import { calcOptimalPosition } from '@/util/calcOptimalPosition';
 
 type SelectProps = {
 	options: { value: string | null; label: string }[];
+	defaultValue?: string | null;
+	defaultLabel?: string;
 	customFaIcon?: any;
 	placeholder?: string;
 	onSelect?: (value: string | null) => void;
@@ -22,7 +24,7 @@ type SelectProps = {
 	};
 };
 
-function Select({ options, placeholder = 'Select', onSelect, selectedValue = null, searchable = false, customFaIcon, customClassName }: SelectProps) {
+function Select({ options, placeholder = 'Select', onSelect, selectedValue = null, defaultValue = null, defaultLabel = 'Mặc định', customFaIcon, searchable = false, customClassName }: SelectProps) {
 	const [isOpen, setIsOpen] = useState(false);
 	const [searchTerm, setSearchTerm] = useState('');
 	const [filteredOptions, setFilteredOptions] = useState(options);
@@ -47,8 +49,8 @@ function Select({ options, placeholder = 'Select', onSelect, selectedValue = nul
 	};
 
 	useEffect(() => {
-		const hasDefault = options.some((option) => option.value === null && option.label === 'Mặc định');
-		const newOptions = hasDefault ? [...options] : [{ value: null, label: 'Mặc định' }, ...options];
+		const hasDefault = options.some((option) => option.value === defaultValue && option.label === defaultLabel);
+		const newOptions = hasDefault ? [...options] : [{ value: defaultValue, label: defaultLabel }, ...options];
 		setFilteredOptions(newOptions);
 	}, [options]);
 
@@ -84,7 +86,7 @@ function Select({ options, placeholder = 'Select', onSelect, selectedValue = nul
 		setSelectedOption(selectedValue);
 	}, [selectedValue]);
 
-	const selectedLabel = selectedOption ? options.find((opt) => opt.value === selectedOption)?.label : placeholder;
+	const selectedLabel = selectedOption ? filteredOptions.find((opt) => opt.value === selectedOption)?.label : placeholder;
 	return (
 		<div ref={selectRef} className={clsx(styles.select, customClassName?.select)} aria-label={`Select ${placeholder}`} title={`${placeholder}`}>
 			<button type='button' className={clsx(styles.trigger, { [styles.null]: !selectedOption }, customClassName?.trigger)} onClick={toggleDropdown} aria-expanded={isOpen}>

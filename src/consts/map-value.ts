@@ -29,7 +29,7 @@ export const ORDER_STATUS_TEXT_MAP: Record<TOrderStatus, string> = {
 };
 
 export const ORDER_TYPE_TEXT_MAP: Record<TOrderType, string> = {
-	normal: 'Đơn hàng thường',
+	normal: 'Đơn hàng có tài khoản',
 	anonymous: 'Đơn hàng ẩn danh',
 };
 

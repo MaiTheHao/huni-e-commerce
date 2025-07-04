@@ -95,8 +95,19 @@ function AdminCustomerPage() {
 		}
 	};
 
+	const handleEmailVerifiedStatusChange = (value: string | null) => {
+		setFilterCriteria((prev) => ({
+			...prev,
+			isEmailVerified: value ? value === 'true' : undefined,
+		}));
+	};
+
 	const handleSearchChange = (keyword: string) => {
 		setSearchKeyword(keyword || '');
+	};
+
+	const handleRefetch = () => {
+		fetchUsers(1, pagination.limit);
 	};
 
 	return (
@@ -107,8 +118,10 @@ function AdminCustomerPage() {
 			filterCriteria={filterCriteria}
 			sortCriteria={sortCriteria}
 			searchKeyword={searchKeyword}
+			onRefetch={handleRefetch}
 			onRoleChange={handleRoleChange}
 			onSortFieldChange={handleSortFieldChange}
+			onEmailVerifiedStatusChange={handleEmailVerifiedStatusChange}
 			onSearchChange={handleSearchChange}
 			onPageChange={handlePageChange}
 		/>

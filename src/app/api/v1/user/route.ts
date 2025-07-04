@@ -1,5 +1,6 @@
 import { userRepository } from '@/server/repositories/user.repository';
 import { authService } from '@/services/auth/auth.service';
+import { userService } from '@/services/entity/user.service';
 import { loggerService } from '@/services/logger.service';
 import { responseService } from '@/services/response.service';
 import { tokenService } from '@/services/token.service';
@@ -42,4 +43,53 @@ export async function GET(req: NextRequest) {
 		},
 		'Lấy thông tin người dùng thành công'
 	);
+}
+
+export async function DELETE(req: NextRequest) {
+	let id: string | null = null;
+	try {
+		const body = await req.json();
+		id = body.id;
+	} catch {
+		id = null;
+	}
+
+	if (!id) {
+		return responseService.badRequest('Thiếu id');
+	}
+
+	const [authErr, userPayload] = await authService.validUser(req);
+	if (authErr || !userPayload) {
+		return responseService.unauthorized(authErr || 'Không xác thực được người dùng');
+	}
+
+	const isAdmin = Array.isArray(userPayload.roles) && userPayload.roles.includes('admin');
+	if (isAdmin) {
+		const [adminErr, adminPayload] = await authService.validAdmin(req);
+		if (adminErr || !adminPayload) {
+			return responseService.forbidden(adminErr || 'Không có quyền admin');
+		}
+	}
+
+	if (!isAdmin) {
+		const [getErr, user] = await userService.getById(id);
+		if (getErr || !user) {
+			return responseService.notFound('Không tìm thấy người dùng');
+		}
+
+		// Đảm bảo chỉ được xóa chính mình
+		if (userPayload.uid !== id || userPayload.uid !== user._id.toString()) {
+			return responseService.forbidden('Bạn không có quyền xóa người dùng này');
+		}
+	}
+
+	try {
+		const deleted = await userRepository.delete(id);
+		if (!deleted) {
+			return responseService.notFound('Không tìm thấy người dùng hoặc xóa thất bại');
+		}
+		return responseService.success(null, 'Xóa người dùng thành công');
+	} catch (error) {
+		return responseService.internalServerError('Đã xảy ra lỗi khi xóa người dùng');
+	}
 }

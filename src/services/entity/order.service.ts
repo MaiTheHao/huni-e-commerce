@@ -145,6 +145,49 @@ class OrderService {
 		}
 	}
 
+	async updateById(orderId: string, updateData: Partial<ICreateOrderData>): Promise<TErrorFirst<any, IOrderDocument | null>> {
+		if (isEmpty(orderId)) {
+			return ['ID đơn hàng không được để trống', null];
+		}
+
+		// Remove empty/undefined fields from updateData
+		const cleanUpdateData = Object.entries(updateData).reduce((acc, [key, value]) => {
+			if (value !== undefined && value !== null && value !== '') {
+				acc[key] = value;
+			}
+			return acc;
+		}, {} as Record<string, any>);
+
+		if (Object.keys(cleanUpdateData).length === 0) {
+			return ['Không có dữ liệu để cập nhật', null];
+		}
+
+		try {
+			const updatedOrder = await orderRepository.update({ _id: orderId.trim() }, cleanUpdateData);
+			if (!updatedOrder) return ['Cập nhật đơn hàng thất bại', null];
+			return [null, updatedOrder];
+		} catch (error) {
+			loggerService.error('Lỗi trong quá trình cập nhật đơn hàng:', error);
+			return [error instanceof Error ? error.message : 'Đã xảy ra lỗi khi cập nhật đơn hàng', null];
+		}
+	}
+
+	// DELETE METHODS
+
+	async deleteById(orderId: string): Promise<TErrorFirst<any, boolean>> {
+		if (isEmpty(orderId)) {
+			return ['ID đơn hàng không được để trống', false];
+		}
+		try {
+			const deleted = await orderRepository.delete(orderId.trim());
+			if (!deleted) return ['Xóa đơn hàng thất bại', false];
+			return [null, true];
+		} catch (error) {
+			loggerService.error('Lỗi trong quá trình xóa đơn hàng:', error);
+			return [error instanceof Error ? error.message : 'Đã xảy ra lỗi khi xóa đơn hàng', false];
+		}
+	}
+
 	// UTILITY METHODS
 
 	async setConfirmed(orderId: string): Promise<TErrorFirst<any, IOrderDocument | null>> {

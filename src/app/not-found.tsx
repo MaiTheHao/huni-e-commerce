@@ -1,16 +1,13 @@
 import React from 'react';
 import styles from './not-found.module.scss';
-import AppBody from '@/components/layout/app-body/AppBody';
 
-function RootNotFound() {
+function NotFound({ message = 'Trang bạn đang tìm kiếm không tồn tại.' }: { message?: string }) {
 	return (
-		<AppBody>
-			<div className={styles.notFound}>
-				<h1 className={styles.title}>404 - Not Found</h1>
-				<p className={styles.message}>Trang bạn đang tìm kiếm không tồn tại.</p>
-			</div>
-		</AppBody>
+		<div className={styles.notFound}>
+			<h1 className={styles.title}>404 - Not Found</h1>
+			<p className={styles.message}>{message}</p>
+		</div>
 	);
 }
 
-export default RootNotFound;
+export default NotFound;

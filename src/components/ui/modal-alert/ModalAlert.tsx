@@ -1,11 +1,11 @@
 'use client';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import styles from './ModalAlert.module.scss';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { faBug, faCircleCheck, faCircleInfo, faTriangleExclamation, faXmark } from '@fortawesome/free-solid-svg-icons';
 import clsx from 'clsx';
 
-const ANIMATION_DURATION = 500;
+const ANIMATION_DURATION = 300;
 const ICON_MAP = {
 	info: faCircleInfo,
 	warning: faTriangleExclamation,
@@ -25,27 +25,29 @@ function ModalAlert({ title, message, type = 'success', timeout, onClose }: Moda
 	const [visible, setVisible] = useState(true);
 	const [animation, setAnimation] = useState<'slide-in' | 'slide-out'>('slide-in');
 
+	const handleClose = useCallback(() => {
+		setAnimation('slide-out');
+	}, []);
+
 	useEffect(() => {
 		if (timeout) {
-			const timer = setTimeout(() => setAnimation('slide-out'), timeout);
+			const timer = setTimeout(handleClose, timeout);
 			return () => clearTimeout(timer);
 		}
-	}, [timeout]);
+	}, [timeout, handleClose]);
 
 	useEffect(() => {
 		if (animation === 'slide-out') {
 			const timer = setTimeout(() => {
 				setVisible(false);
-				if (onClose) onClose();
+				onClose?.();
 			}, ANIMATION_DURATION);
-			return () => {
-				if (onClose) onClose();
-				clearTimeout(timer);
-			};
+			return () => clearTimeout(timer);
 		}
 	}, [animation, onClose]);
 
 	if (!visible) return null;
+
 	return (
 		<div className={clsx(styles.modal, styles[type], styles[animation])}>
 			<FontAwesomeIcon className={styles.icon} icon={ICON_MAP[type]} />
@@ -54,7 +56,7 @@ function ModalAlert({ title, message, type = 'success', timeout, onClose }: Moda
 					<h2 className={styles.title}>{title}</h2>
 					<p className={styles.message}>{message}</p>
 				</div>
-				<button className={styles.button} onClick={() => setAnimation('slide-out')}>
+				<button className={styles.button} onClick={handleClose}>
 					<FontAwesomeIcon icon={faXmark} />
 				</button>
 			</div>

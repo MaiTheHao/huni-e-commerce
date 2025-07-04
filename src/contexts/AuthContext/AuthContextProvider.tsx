@@ -152,6 +152,7 @@ function AuthContextProvider({ children }: AuthContextProviderProps) {
 	const validAdmin = useCallback(async (): Promise<boolean> => {
 		setIsLoading(true);
 		try {
+			if (isAuthenticated && !user?.roles?.includes('admin')) return false;
 			const response = await api.get('/admin/valid');
 			const data: IResponse = response.data;
 			return !data.error;

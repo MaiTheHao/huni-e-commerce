@@ -10,6 +10,7 @@ import { getOrderDetail } from '../../apis';
 import OrderItem from '../OrderProduct';
 import { formatDateToVietnameseString } from '@/util/date';
 import OrderStatus from '@/components/ui/order-status/OrderStatus';
+import CopyButton from '@/components/ui/copy-button/CopyButton';
 
 const OrderDetailPage = () => {
 	const { id } = useParams<{ id: string }>();
@@ -64,8 +65,13 @@ const OrderDetailPage = () => {
 			<div className={styles['part']}>
 				<div className={styles['order-detail']}>
 					<header className={styles['order-detail__header']}>
-						<span className={styles.date}>{formatDateToVietnameseString(order.createdAt)}</span>
-						<OrderStatus status={order.status} className={styles['order-detail__header__status']} />
+						<div className={styles['order-detail__header__basic']}>
+							<OrderStatus status={order.status} />
+							<span className={styles.date}>{formatDateToVietnameseString(order.createdAt)}</span>
+						</div>
+						<span>
+							#{order._id} <CopyButton value={order._id} />
+						</span>
 					</header>
 				</div>
 			</div>

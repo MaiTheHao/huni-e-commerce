@@ -9,8 +9,9 @@
 }
 
 .body {
+	position: relative;
 	width: 100%;
-	height: max-content;
+	height: 100%;
 	padding: 1em;
 }
 
@@ -63,15 +64,6 @@
 	}
 }
 
-.table__actions {
-	width: 0;
-
-	&__wrapper {
-		display: flex;
-		align-items: center;
-	}
-}
-
 .table__loading {
 	padding: 2em 0;
 	text-align: center;
@@ -106,6 +98,15 @@
 	}
 }
 
+.table__actions {
+	width: 0;
+
+	&__wrapper {
+		display: flex;
+		align-items: center;
+	}
+}
+
 .table__action {
 	display: flex;
 	justify-content: center;
@@ -123,11 +124,12 @@
 	@mixin table-action-variant($color-map) {
 		color: map.get($color-map, icon);
 		border-color: transparent;
-		&:hover,
-		&:focus {
+
+		&:not(.table__action--disabled):hover,
+		&:not(.table__action--disabled):focus {
 			color: map.get($color-map, icon);
 		}
-		&:active {
+		&:not(.table__action--disabled):active {
 			opacity: 0.5;
 		}
 	}
@@ -138,6 +140,11 @@
 
 	&--delete {
 		@include table-action-variant($error);
+	}
+
+	&--disabled {
+		cursor: not-allowed;
+		color: $black-200;
 	}
 }
 

@@ -168,6 +168,7 @@
 	background-color: $primary-color;
 	border-radius: 0 0 0.25em 0;
 	transition: background-color 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+	z-index: 1000;
 
 	svg {
 		aspect-ratio: 1;

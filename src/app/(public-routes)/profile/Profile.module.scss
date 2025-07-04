@@ -687,6 +687,12 @@
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
+
+	&__basic {
+		display: flex;
+		align-items: center;
+		gap: 1em;
+	}
 }
 
 .order-detail__price {

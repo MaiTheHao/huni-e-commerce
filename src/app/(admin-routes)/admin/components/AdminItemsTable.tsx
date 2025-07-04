@@ -4,6 +4,7 @@ import styles from '../../Admin.module.scss';
 import clsx from 'clsx';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircleInfo, faEye, faPenToSquare, faTrashCan } from '@fortawesome/free-solid-svg-icons';
+import Link from 'next/link';
 
 type TableColumn = {
 	header: React.ReactNode;
@@ -14,6 +15,7 @@ type TableColumn = {
 type TableRow = {
 	key?: string | number;
 	cells: React.ReactNode[];
+	href?: string;
 	className?: string;
 	data?: any;
 };
@@ -26,9 +28,6 @@ type AdminItemsTableProps = {
 	bodyClassName?: string;
 	emptyMessage?: React.ReactNode;
 	cellEmptyValue?: string;
-	// onView?: (row: TableRow, rowIndex: number) => void;
-	// onEdit?: (row: TableRow, rowIndex: number) => void;
-	onDetail?: (row: TableRow, rowIndex: number) => void;
 	onDelete?: (row: TableRow, rowIndex: number) => void;
 	loading?: boolean;
 };
@@ -40,15 +39,10 @@ function AdminItemsTable({
 	headClassName,
 	bodyClassName,
 	emptyMessage = 'Không tìm thấy dữ liệu',
-	cellEmptyValue = 'Rỗng',
-	// onView,
-	// onEdit,
-	onDetail,
+	cellEmptyValue = '-',
 	onDelete,
 	loading = false,
 }: AdminItemsTableProps) {
-	const hasActions = !!onDetail || !!onDelete;
-
 	return (
 		<table className={`${styles.table} ${tableClassName ?? ''}`}>
 			<thead className={`${headClassName ?? ''}`}>
@@ -58,13 +52,13 @@ function AdminItemsTable({
 							{col.header}
 						</th>
 					))}
-					{hasActions && <th className={`${styles['table__actions']}`}>Thao tác</th>}
+					<th className={`${styles['table__actions']}`}>Thao tác</th>
 				</tr>
 			</thead>
 			<tbody className={`${bodyClassName ?? ''}`}>
 				{loading ? (
 					<tr>
-						<td colSpan={columns.length + (hasActions ? 1 : 0)} className={styles['table__loading']}>
+						<td colSpan={columns.length + 1} className={styles['table__loading']}>
 							<span>Đang tải dữ liệu...</span>
 						</td>
 					</tr>
@@ -76,10 +70,10 @@ function AdminItemsTable({
 									{cell || cellEmptyValue}
 								</td>
 							))}
-							{hasActions && (
-								<td className={styles['table__actions']}>
-									<div className={styles['table__actions__wrapper']}>
-										{/* {onView && (
+
+							<td className={styles['table__actions']}>
+								<div className={styles['table__actions__wrapper']}>
+									{/* {onView && (
 											<button type='button' className={`${styles['table__action']} ${styles['table__action--view']}`} title='Xem' onClick={() => onView(row, idx)}>
 												<FontAwesomeIcon icon={faEye} />
 											</button>
@@ -89,24 +83,23 @@ function AdminItemsTable({
 												<FontAwesomeIcon icon={faPenToSquare} />
 											</button>
 										)} */}
-										{onDetail && (
-											<button type='button' className={`${styles['table__action']} ${styles['table__action--detail']}`} title='Chi tiết' onClick={() => onDetail(row, idx)}>
-												<FontAwesomeIcon icon={faCircleInfo} />
-											</button>
-										)}
-										{onDelete && (
-											<button type='button' className={`${styles['table__action']} ${styles['table__action--delete']}`} title='Xóa' onClick={() => onDelete(row, idx)}>
-												<FontAwesomeIcon icon={faTrashCan} />
-											</button>
-										)}
-									</div>
-								</td>
-							)}
+									{row?.href && (
+										<Link href={row?.href || '#'} className={`${styles['table__action']} ${styles['table__action--detail']}`} title='Chi tiết'>
+											<FontAwesomeIcon icon={faCircleInfo} />
+										</Link>
+									)}
+									{onDelete && (
+										<button type='button' className={`${styles['table__action']} ${styles['table__action--delete']}`} title='Xóa' onClick={() => onDelete(row, idx)}>
+											<FontAwesomeIcon icon={faTrashCan} />
+										</button>
+									)}
+								</div>
+							</td>
 						</tr>
 					))
 				) : (
 					<tr>
-						<td colSpan={columns.length + (hasActions ? 1 : 0)} style={{ textAlign: 'center' }}>
+						<td colSpan={columns.length + 1} style={{ textAlign: 'center' }}>
 							<span>{emptyMessage}</span>
 						</td>
 					</tr>

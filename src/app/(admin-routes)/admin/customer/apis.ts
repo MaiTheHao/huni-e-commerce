@@ -1,5 +1,6 @@
-import { ISearchFilterUserRequest, ISearchFilterUsersResponse, TErrorFirst, TUserSortCriteria } from '@/interfaces';
+import { ISearchFilterUserRequest, ISearchFilterUsersResponse, IUser, TErrorFirst, TUserSortCriteria } from '@/interfaces';
 import api from '@/services/http-client/axios-interceptor';
+import Swal from 'sweetalert2';
 
 export async function fetchSearchFilterUsers(
 	page: number = 1,
@@ -24,6 +25,29 @@ export async function fetchSearchFilterUsers(
 			}
 		);
 		return [null, response.data.data];
+	} catch (err: any) {
+		return [err?.response?.data || err, null];
+	}
+}
+
+export async function deleteUser(user: IUser, signal: AbortSignal): Promise<TErrorFirst<any, 'deleted' | 'canceled' | null>> {
+	const result = await Swal.fire({
+		title: 'Bạn có chắc chắn?',
+		text: 'Hành động này không thể hoàn tác.',
+		icon: 'warning',
+		showCancelButton: true,
+		confirmButtonText: 'Vẫn xóa!',
+		cancelButtonText: 'Hủy',
+	});
+	if (!result.isConfirmed) {
+		return [null, 'canceled'];
+	}
+	try {
+		const response = await api.delete('/user', {
+			data: { id: user._id },
+			signal,
+		});
+		return [null, 'deleted'];
 	} catch (err: any) {
 		return [err?.response?.data || err, null];
 	}

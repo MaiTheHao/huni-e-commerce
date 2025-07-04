@@ -15,8 +15,10 @@ interface AdminCustomerUIWrapperProps {
 	filterCriteria: ISearchFilterUserRequest['criteria'];
 	sortCriteria: TUserSortCriteria;
 	searchKeyword: string;
+	onRefetch: () => void;
 	onRoleChange: (value: string | null) => void;
 	onSortFieldChange: (value: string | null) => void;
+	onEmailVerifiedStatusChange: (value: string | null) => void;
 	onSearchChange: (keyword: string) => void;
 	onResetFilters?: () => void;
 	onPageChange: (page: number) => void;
@@ -29,8 +31,10 @@ function AdminCustomerUIWrapperComponent({
 	filterCriteria,
 	sortCriteria,
 	searchKeyword,
+	onRefetch,
 	onRoleChange,
 	onSortFieldChange,
+	onEmailVerifiedStatusChange,
 	onSearchChange,
 	onResetFilters,
 	onPageChange,
@@ -51,8 +55,8 @@ function AdminCustomerUIWrapperComponent({
 
 	const emailVerifiedStatusOptions = useMemo(
 		() => [
-			{ value: 'verified', label: 'Đã xác thực' },
-			{ value: 'unverified', label: 'Chưa xác thực' },
+			{ value: 'true', label: 'Đã xác thực' },
+			{ value: 'false', label: 'Chưa xác thực' },
 		],
 		[]
 	);
@@ -76,7 +80,7 @@ function AdminCustomerUIWrapperComponent({
 					{/* Nếu có status filter thì thêm vào đây */}
 					{/* <Select options={statusOptions} placeholder='Trạng thái' onSelect={onStatusChange} /> */}
 					<Select options={roleOptions} placeholder='Vai trò' onSelect={onRoleChange} />
-					<Select options={emailVerifiedStatusOptions} placeholder='Trạng thái email' onSelect={onRoleChange} />
+					<Select options={emailVerifiedStatusOptions} placeholder='Trạng thái email' onSelect={onEmailVerifiedStatusChange} />
 					<Select options={sortOptions} placeholder='Sắp xếp theo' onSelect={onSortFieldChange} />
 				</div>
 				<div className={styles['admin-toolbar__search']}>
@@ -84,7 +88,7 @@ function AdminCustomerUIWrapperComponent({
 					<FontAwesomeIcon icon={faSearch} className={styles['admin-toolbar__search-icon']} />
 				</div>
 			</div>
-			<AdminCustomersTable users={users} emptyMessage='Không có người dùng nào.' isLoading={isLoading} />
+			<AdminCustomersTable users={users} emptyMessage='Không có người dùng nào.' onDeleted={onRefetch} isLoading={isLoading} />
 			<PaginationBar
 				page={pagination.page}
 				limit={pagination.limit}

@@ -1,4 +1,3 @@
-import AppBody from '@/components/layout/app-body/AppBody';
 import React, { Suspense } from 'react';
 import KeyboardsHeroSection from './KeyboardsHeroSection';
 import styles from './Keyboards.module.scss';

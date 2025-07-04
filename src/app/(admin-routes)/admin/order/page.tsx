@@ -83,18 +83,21 @@ function AdminOrderPage() {
 			status: value ? [value] : undefined,
 		}));
 	};
+
 	const handlePaymentMethodChange = (value: string | null) => {
 		setFilterCriteria((prev) => ({
 			...prev,
 			paymentMethod: value ? [value] : undefined,
 		}));
 	};
+
 	const handleOrderTypeChange = (value: string | null) => {
 		setFilterCriteria((prev) => ({
 			...prev,
 			type: value ? [value] : undefined,
 		}));
 	};
+
 	const handleSortFieldChange = (value: string | null) => {
 		const [field, order] = value ? value.split('--') : [];
 		const isAsc = order === 'asc';
@@ -105,13 +108,12 @@ function AdminOrderPage() {
 			setSortCriteria({});
 		}
 	};
+
 	const handleSearchChange = (keyword: string) => {
 		setSearchKeyword(keyword || '');
 	};
-	const handleResetFilters = () => {
-		setFilterCriteria({});
-		setSortCriteria({});
-		setSearchKeyword('');
+
+	const handleRefetch = () => {
 		fetchOrders(1, pagination.limit);
 	};
 
@@ -123,6 +125,7 @@ function AdminOrderPage() {
 			filterCriteria={filterCriteria}
 			sortCriteria={sortCriteria}
 			searchKeyword={searchKeyword}
+			onRefetch={handleRefetch}
 			onStatusChange={handleStatusChange}
 			onPaymentMethodChange={handlePaymentMethodChange}
 			onOrderTypeChange={handleOrderTypeChange}

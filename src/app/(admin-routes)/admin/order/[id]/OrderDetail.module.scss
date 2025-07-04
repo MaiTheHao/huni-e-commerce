@@ -1,0 +1,327 @@
+@use '../../../../vars' as *;
+@use 'sass:map';
+@use 'sass:color';
+
+// info COMMON
+
+// Common section styles
+.section {
+	width: 100%;
+	background-color: $white;
+	box-shadow: $box-shadow-xs;
+	padding: 1.25em;
+	border-radius: 0.25em;
+	margin-bottom: 1.5em;
+	border: 1px solid $black-200;
+
+	&__title {
+		font-size: 1.125em;
+		font-weight: $font-weight-semibold;
+		color: $accent-color;
+		margin-bottom: 1em;
+
+		// For sections with title and action
+		&--with-action {
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+			margin-bottom: 1em;
+
+			&-text {
+				font-size: 1.125em;
+				font-weight: $font-weight-semibold;
+				color: $accent-color;
+			}
+		}
+	}
+}
+
+// Common link styles
+.link {
+	color: $txt-accent;
+	font-size: 0.875em;
+	text-decoration: none;
+	display: inline-block;
+
+	&:hover {
+		text-decoration: underline;
+	}
+}
+
+.container {
+	position: relative;
+	max-width: 64em;
+	margin: 0 auto;
+	padding: 1.5em;
+	background-color: $white;
+	border-radius: 0.25em;
+	box-shadow: $box-shadow-card;
+}
+
+.header {
+	display: flex;
+	align-content: center;
+	justify-content: space-between;
+	margin-bottom: 1.5em;
+
+	&__left {
+		display: flex;
+		align-items: center;
+		gap: 1em;
+	}
+
+	&__actions {
+		display: flex;
+		align-items: center;
+		font-size: 0.875em;
+	}
+
+	&__title {
+		font-size: 1.25em;
+		font-weight: $font-weight-bold;
+		color: $txt-primary;
+	}
+
+	&__id {
+		font-size: 0.875em;
+		font-weight: $font-weight-semibold;
+		color: $txt-secondary;
+	}
+}
+
+// info CUSTOMER_INFO
+
+.info {
+	&__grid {
+		display: grid;
+		grid-template-columns: repeat(2, 1fr);
+		gap: 1em;
+		align-items: start;
+
+		// Full width for edit mode fields
+		&--edit {
+			grid-template-columns: 1fr;
+			gap: 1em; // Remove gap since edit-form__field already has margin-bottom
+		}
+	}
+
+	&__item {
+		display: flex;
+		flex-direction: column;
+		gap: 0.25em;
+	}
+
+	&__label {
+		font-weight: $font-weight-semibold;
+		color: $txt-primary;
+		font-size: 0.875em;
+	}
+
+	&__value {
+		color: $txt-secondary;
+		font-size: 1em;
+		line-height: 1.4;
+	}
+}
+
+// info PRODUCTS_TABLE
+
+.table {
+	width: 100%;
+	border-collapse: collapse;
+	border-radius: $spacing-4;
+	font-size: $font-size-14;
+	box-shadow: $box-shadow-xs;
+	overflow: hidden;
+	border: 1px solid $black-200;
+
+	thead {
+		background-color: $gray-200;
+		tr {
+			th {
+				padding: $spacing-12;
+				text-align: left;
+				font-weight: $font-weight-semibold;
+				color: $txt-primary;
+				border-bottom: 2px solid $black-200;
+				white-space: nowrap;
+				border-right: 1px solid $black-200;
+
+				&:last-child {
+					border-right: none;
+				}
+
+				&--center {
+					text-align: center;
+				}
+
+				&--right {
+					text-align: right;
+				}
+			}
+		}
+	}
+
+	tbody {
+		tr {
+			border-bottom: 1px solid $black-200;
+			transition: background-color 0.2s ease;
+
+			&:nth-child(even) {
+				background-color: $gray-100;
+			}
+
+			td {
+				color: $txt-secondary;
+				padding: $spacing-12;
+				border-right: 1px solid $black-200;
+				vertical-align: middle;
+
+				&:last-child {
+					border-right: none;
+				}
+
+				&--center {
+					text-align: center;
+				}
+
+				&--right {
+					text-align: right;
+					font-weight: $font-weight-semibold;
+				}
+			}
+		}
+	}
+}
+
+.product {
+	&__image {
+		width: 3em;
+		height: 3em;
+		object-fit: cover;
+		border-radius: 0.25em;
+		border: 1px solid $black-200;
+	}
+}
+
+// info SUMMARY
+
+.summary {
+	display: flex;
+	flex-direction: column;
+	gap: 0.5em;
+	padding-top: 1em;
+	border-top: 2px solid $black-200;
+	margin-top: 1em;
+
+	&__item {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		gap: 2em;
+	}
+
+	&__label {
+		font-weight: $font-weight-semibold;
+		color: $txt-primary;
+	}
+
+	&__value {
+		font-weight: $font-weight-regular;
+		color: $txt-secondary;
+		text-align: right;
+
+		&--total {
+			font-size: 1.25em;
+			color: $txt-primary;
+		}
+	}
+}
+
+// info STATUS_INFO
+
+.status {
+	&__grid {
+		display: grid;
+		grid-template-columns: repeat(3, 1fr);
+		gap: 1em;
+		align-items: start;
+	}
+
+	&__item {
+		display: flex;
+		flex-direction: column;
+		gap: 0.5em;
+	}
+
+	&__label {
+		font-weight: $font-weight-semibold;
+		color: $txt-primary;
+		font-size: 0.875em;
+	}
+
+	&__value {
+		font-size: 1em;
+		color: $txt-secondary;
+		font-weight: $font-weight-regular;
+	}
+
+	&__date {
+		color: $txt-tertiary;
+		font-size: 0.875em;
+	}
+}
+
+// info EDIT FORM
+
+.edit-form {
+	&__field {
+		display: flex;
+		flex-direction: column;
+		gap: 0.25em;
+		margin-bottom: 1em;
+	}
+
+	&__label {
+		font-weight: $font-weight-semibold;
+		color: $txt-primary;
+		font-size: 0.875em;
+	}
+
+	&__input {
+		padding: 0.75em;
+		border: 1px solid $black-200;
+		border-radius: 0.25em;
+		font-size: 1em;
+		color: $txt-secondary;
+		background-color: $white;
+		transition: border-color 0.2s;
+
+		&:focus {
+			outline: none;
+			border-color: $primary-color;
+		}
+
+		&--textarea {
+			min-height: 4em;
+			resize: vertical;
+			font-family: inherit;
+		}
+	}
+
+	&__select {
+		padding: 0.75em;
+		border: 1px solid $black-200;
+		border-radius: 0.25em;
+		font-size: 1em;
+		color: $txt-secondary;
+		background-color: $white;
+		cursor: pointer;
+		transition: border-color 0.2s;
+
+		&:focus {
+			outline: none;
+			border-color: $primary-color;
+		}
+	}
+}

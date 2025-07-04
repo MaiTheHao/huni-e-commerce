@@ -42,7 +42,7 @@ function AdminValidate({ children }: { children: React.ReactNode }) {
 			mounted = false;
 			clearTimeout(timeoutId);
 		};
-	}, [validAdmin]);
+	}, []);
 
 	if ((isLoading || isAdmin === null) && !passedGate) {
 		return <Loading loadingText='Đang xác thực quyền truy cập' />;

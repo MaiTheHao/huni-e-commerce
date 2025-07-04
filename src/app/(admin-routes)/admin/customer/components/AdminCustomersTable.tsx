@@ -5,20 +5,43 @@ import AdminItemsTable from '../../components/AdminItemsTable';
 import CopyButton from '@/components/ui/copy-button/CopyButton';
 import { IUser } from '@/interfaces';
 import { toLocalePrice } from '@/util';
+import { deleteUser } from '../apis';
+import Swal from 'sweetalert2';
 
 type AdminCustomersTableProps = {
 	users: IUser[];
 	emptyMessage?: string;
+	onDeleted?: () => void;
 	isLoading?: boolean;
 };
 
-function AdminCustomersTable({ users, emptyMessage = 'Không có người dùng nào.', isLoading = false }: AdminCustomersTableProps) {
-	const handleDetailUser = (user: IUser) => {
-		alert(`View user details: ${JSON.stringify(user, null, 2)}`);
-	};
+function AdminCustomersTable({ users, emptyMessage = 'Không có người dùng nào.', onDeleted, isLoading = false }: AdminCustomersTableProps) {
+	const handleDeleteUser = async (user: IUser) => {
+		const controller = new AbortController();
+		const [err, result] = await deleteUser(user, controller.signal);
 
-	const handleDeleteUser = (user: IUser) => {
-		alert(`Delete user: ${JSON.stringify(user, null, 2)}`);
+		if (result === 'canceled') {
+			return;
+		}
+
+		if (err) {
+			await Swal.fire({
+				icon: 'error',
+				title: 'Lỗi',
+				text: err?.message || 'Xóa người dùng thất bại.',
+				confirmButtonText: 'Đóng',
+			});
+		} else if (result === 'deleted') {
+			if (onDeleted) {
+				onDeleted();
+			}
+			await Swal.fire({
+				icon: 'success',
+				title: 'Thành công',
+				text: 'Người dùng đã được xóa.',
+				confirmButtonText: 'Đóng',
+			});
+		}
 	};
 
 	return (
@@ -56,11 +79,11 @@ function AdminCustomersTable({ users, emptyMessage = 'Không có người dùng 
 							{toLocalePrice(user?.metrics?.totalAmountSpent || 0)}
 						</span>,
 					],
+					href: `/admin/customer/${user._id}`,
 					data: user,
 				})) ?? []
 			}
 			emptyMessage={emptyMessage}
-			onDetail={(row) => handleDetailUser(row.data)}
 			onDelete={(row) => handleDeleteUser(row.data)}
 			loading={isLoading}
 		/>

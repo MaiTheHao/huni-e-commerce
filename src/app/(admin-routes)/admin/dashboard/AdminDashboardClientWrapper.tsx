@@ -1,5 +1,5 @@
 'use client';
-import React, { useEffect } from 'react';
+import React from 'react';
 import styles from '../../Admin.module.scss';
 import { ICustomerStats, IOrderStats, IProductStats } from './AdminDashboardServerWrapper';
 import AdminDashboardCards from './components/AdminDashboardCards';
@@ -13,6 +13,10 @@ type Props = {
 };
 
 function AdminDashboardClientWrapper({ orderStats, customerStats, productStats }: Props) {
+	const handleDeletedItem = async () => {
+		window.location.reload();
+	};
+
 	return (
 		<>
 			<div className={styles['dashboard-header']}>
@@ -21,13 +25,13 @@ function AdminDashboardClientWrapper({ orderStats, customerStats, productStats }
 
 			<div className={styles.section}>
 				<h2 className={styles['section-title']}>Đơn hàng gần đây</h2>
-				<AdminOrdersTable orders={orderStats.orders ?? []} emptyMessage='Không có đơn hàng nào gần đây.' />
+				<AdminOrdersTable orders={orderStats.orders ?? []} emptyMessage='Không có đơn hàng nào gần đây.' onDeleted={handleDeletedItem} />
 			</div>
 
 			<div className={styles.section}>
 				<h2 className={styles['section-title']}>Khách hàng tiềm năng</h2>
 				<span className='note'>Lưu ý: Số đơn hàng và tổng chi tiêu chỉ bao gồm các đơn hàng đã giao thành công.</span>
-				<AdminPotentialCustomersTable users={customerStats.potential ?? []} emptyMessage='Không có khách hàng tiềm năng nào.' />
+				<AdminPotentialCustomersTable users={customerStats.potential ?? []} onDeleted={handleDeletedItem} emptyMessage='Không có khách hàng tiềm năng nào.' />
 			</div>
 		</>
 	);
